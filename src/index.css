@@ -1,0 +1,176 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 220 60% 20%;
+    --foreground: 210 40% 95%;
+
+    --card: 222 55% 25%;
+    --card-foreground: 210 40% 95%;
+
+    --popover: 222 55% 25%;
+    --popover-foreground: 210 40% 95%;
+
+    --primary: 217 91% 60%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 222 50% 28%;
+    --secondary-foreground: 210 40% 95%;
+
+    --muted: 222 50% 28%;
+    --muted-foreground: 215 30% 65%;
+
+    --accent: 0 84% 55%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84% 55%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 200 80% 45%;
+    --input: 200 80% 45%;
+    --ring: 200 80% 55%;
+    --glow: 200 80% 50%;
+
+    --radius: 0.75rem;
+
+    --sidebar-background: 222 58% 16%;
+    --sidebar-foreground: 210 40% 90%;
+    --sidebar-primary: 217 91% 60%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 222 50% 22%;
+    --sidebar-accent-foreground: 210 40% 90%;
+    --sidebar-border: 200 80% 40%;
+    --sidebar-ring: 200 80% 55%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    letter-spacing: 0.01em;
+    word-spacing: 0.05em;
+    line-height: 1.6;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    letter-spacing: -0.02em;
+    word-spacing: 0.02em;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+
+  p, span, a, li, td, th, label {
+    letter-spacing: 0.015em;
+    word-spacing: 0.04em;
+  }
+
+  button {
+    letter-spacing: 0.02em;
+    word-spacing: 0.03em;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* Glassmorphism utilities */
+.glass {
+  @apply backdrop-blur-xl border shadow-xl;
+  background: hsl(var(--card) / 0.6);
+  border-color: hsl(var(--border) / 0.3);
+}
+
+.glass-card {
+  @apply backdrop-blur-2xl rounded-2xl shadow-2xl transition-all duration-300;
+  background: hsl(var(--card) / 0.5);
+  border: 1px solid hsl(var(--border) / 0.2);
+}
+
+/* Gradient text utility */
+.gradient-text {
+  @apply bg-clip-text text-transparent;
+  background-image: linear-gradient(to right, hsl(217 91% 60%), hsl(260 70% 60%), hsl(330 80% 60%));
+}
+
+/* Animations */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+}
+
+@keyframes glow {
+  0%, 100% { box-shadow: 0 0 20px hsl(270 70% 60% / 0.4); }
+  50% { box-shadow: 0 0 40px hsl(270 70% 60% / 0.8); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -1000px 0; }
+  100% { background-position: 1000px 0; }
+}
+
+@keyframes gradient-border {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+.animate-gradient-border {
+  background: linear-gradient(90deg, hsl(225 73% 57%), hsl(270 70% 60%), hsl(330 80% 60%), hsl(225 73% 57%), hsl(270 70% 60%));
+  background-size: 300% 300%;
+  animation: gradient-border 3s ease infinite;
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+.animate-glow {
+  animation: glow 2s ease-in-out infinite;
+}
+
+.animate-shimmer {
+  background: linear-gradient(90deg, transparent, hsl(0 0% 100% / 0.1), transparent);
+  background-size: 1000px 100%;
+  animation: shimmer 2s infinite;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Glow effects */
+.glow-border {
+  border: 1px solid hsl(var(--border) / 0.6);
+  box-shadow: 0 0 8px hsl(var(--glow) / 0.15), inset 0 0 8px hsl(var(--glow) / 0.05);
+}
+
+.glow-border-strong {
+  border: 1px solid hsl(var(--border) / 0.8);
+  box-shadow: 0 0 12px hsl(var(--glow) / 0.25), 0 0 4px hsl(var(--glow) / 0.1);
+}
+
+/* Auto-glow on common elements */
+@layer components {
+  .bg-card {
+    box-shadow: 0 0 10px hsl(var(--glow) / 0.1), 0 1px 3px hsl(var(--glow) / 0.08);
+  }
+
+  .rounded-2xl[class*="border"],
+  .rounded-xl[class*="border"],
+  .rounded-lg[class*="border"] {
+    box-shadow: 0 0 8px hsl(var(--glow) / 0.12);
+  }
+}
