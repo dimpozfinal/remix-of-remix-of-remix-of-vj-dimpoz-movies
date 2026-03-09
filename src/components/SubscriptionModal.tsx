@@ -82,7 +82,7 @@ export default function SubscriptionModal({ isOpen, onClose }: SubscriptionModal
     let attempts = 0;
     pollingRef.current = setInterval(async () => {
       attempts++;
-      if (attempts > 60) {
+      if (attempts > 90) {
         stopPolling();
         setStatusMsg("Payment timed out. Please try again.");
         setStep("failed");
@@ -90,19 +90,24 @@ export default function SubscriptionModal({ isOpen, onClose }: SubscriptionModal
       }
       try {
         const res = await checkRequestStatus(internalRefRef.current);
-        if (res.success && (res.relworx?.request_status === "success" || res.request_status === "success")) {
+        console.log("Payment status poll:", res);
+        const status = res.relworx?.request_status || res.relworx?.status || res.request_status;
+        if (status === "success") {
           stopPolling();
+          setStatusMsg("Payment confirmed! Activating subscription...");
           await activateSubscription();
           setStep("success");
-        } else if (res.relworx?.request_status === "failed" || res.request_status === "failed") {
+        } else if (status === "failed" || status === "cancelled") {
           stopPolling();
-          setStatusMsg(res.relworx?.message || res.message || "Payment failed or was declined.");
+          setStatusMsg(res.relworx?.message || "Payment failed or was declined.");
           setStep("failed");
+        } else {
+          setStatusMsg(`Waiting for payment confirmation... (${attempts})`);
         }
       } catch {
-        // continue polling
+        // continue polling on network errors
       }
-    }, 2000);
+    }, 3000);
   };
 
   const activateSubscription = async () => {
