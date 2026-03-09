@@ -65,23 +65,15 @@ export default function SubscriptionModal({ isOpen, onClose }: SubscriptionModal
       const result = await requestPayment(msisdn, selectedPlan.price, `DIMPOZ ${selectedPlan.name} Subscription`);
       if (result.success && result.relworx?.internal_reference) {
         internalRefRef.current = result.relworx.internal_reference;
-        // Activate immediately — unlock all services right away
-        await activateSubscription();
-        setStep("success");
+        setStatusMsg("Payment prompt sent! Waiting for confirmation...");
+        startPolling();
       } else {
-        // Even if payment API returns unexpected response, still activate
-        await activateSubscription();
-        setStep("success");
-      }
-    } catch (err: any) {
-      // Activate even on network issues to ensure user gets access
-      try {
-        await activateSubscription();
-        setStep("success");
-      } catch {
-        setStatusMsg(err?.message || "Network error. Please try again.");
+        setStatusMsg(result.relworx?.message || result.message || "Failed to initiate payment. Please try again.");
         setStep("failed");
       }
+    } catch (err: any) {
+      setStatusMsg(err?.message || "Network error. Please try again.");
+      setStep("failed");
     }
   };
 
@@ -90,7 +82,7 @@ export default function SubscriptionModal({ isOpen, onClose }: SubscriptionModal
     let attempts = 0;
     pollingRef.current = setInterval(async () => {
       attempts++;
-      if (attempts > 60) {
+      if (attempts > 90) {
         stopPolling();
         setStatusMsg("Payment timed out. Please try again.");
         setStep("failed");
@@ -98,19 +90,24 @@ export default function SubscriptionModal({ isOpen, onClose }: SubscriptionModal
       }
       try {
         const res = await checkRequestStatus(internalRefRef.current);
-        if (res.success && (res.relworx?.request_status === "success" || res.request_status === "success")) {
+        console.log("Payment status poll:", res);
+        const status = res.relworx?.request_status || res.relworx?.status || res.request_status;
+        if (status === "success") {
           stopPolling();
+          setStatusMsg("Payment confirmed! Activating subscription...");
           await activateSubscription();
           setStep("success");
-        } else if (res.relworx?.request_status === "failed" || res.request_status === "failed") {
+        } else if (status === "failed" || status === "cancelled") {
           stopPolling();
-          setStatusMsg(res.relworx?.message || res.message || "Payment failed or was declined.");
+          setStatusMsg(res.relworx?.message || "Payment failed or was declined.");
           setStep("failed");
+        } else {
+          setStatusMsg(`Waiting for payment confirmation... (${attempts})`);
         }
       } catch {
-        // continue polling
+        // continue polling on network errors
       }
-    }, 2000);
+    }, 3000);
   };
 
   const activateSubscription = async () => {
