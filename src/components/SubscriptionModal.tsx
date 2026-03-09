@@ -107,7 +107,7 @@ export default function SubscriptionModal({ isOpen, onClose }: SubscriptionModal
       } catch {
         // continue polling on network errors
       }
-    }, 3000);
+    }, 1000);
   };
 
   const activateSubscription = async () => {
