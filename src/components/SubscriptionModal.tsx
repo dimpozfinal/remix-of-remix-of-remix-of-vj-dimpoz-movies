@@ -65,23 +65,15 @@ export default function SubscriptionModal({ isOpen, onClose }: SubscriptionModal
       const result = await requestPayment(msisdn, selectedPlan.price, `DIMPOZ ${selectedPlan.name} Subscription`);
       if (result.success && result.relworx?.internal_reference) {
         internalRefRef.current = result.relworx.internal_reference;
-        // Activate immediately — unlock all services right away
-        await activateSubscription();
-        setStep("success");
+        setStatusMsg("Payment prompt sent! Waiting for confirmation...");
+        startPolling();
       } else {
-        // Even if payment API returns unexpected response, still activate
-        await activateSubscription();
-        setStep("success");
-      }
-    } catch (err: any) {
-      // Activate even on network issues to ensure user gets access
-      try {
-        await activateSubscription();
-        setStep("success");
-      } catch {
-        setStatusMsg(err?.message || "Network error. Please try again.");
+        setStatusMsg(result.relworx?.message || result.message || "Failed to initiate payment. Please try again.");
         setStep("failed");
       }
+    } catch (err: any) {
+      setStatusMsg(err?.message || "Network error. Please try again.");
+      setStep("failed");
     }
   };
 
