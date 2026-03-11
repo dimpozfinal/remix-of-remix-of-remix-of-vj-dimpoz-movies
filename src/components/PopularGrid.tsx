@@ -433,12 +433,13 @@ function ContentGrid({ items, onPosterClick, onSelectSeries, showDateBadge }: Co
             onClick={() => onPosterClick(movie)}
             className="flex flex-col items-center group focus:outline-none"
           >
-            <div className="relative bg-card w-full hover:scale-105 transition-all duration-200 border-2 border-transparent rounded-sm overflow-hidden group-focus:border-green-500 group-active:border-green-500 hover:border-[hsl(var(--glow))] hover:shadow-[0_0_12px_hsl(var(--glow)/0.4)]">
+            <div className="relative bg-card w-full hover:scale-105 transition-all duration-200 border-2 border-transparent rounded-lg overflow-hidden group-focus:border-green-500 group-active:border-green-500 hover:border-[hsl(var(--glow))] hover:shadow-[0_0_12px_hsl(var(--glow)/0.4)]">
               <div className="relative w-full" style={{ aspectRatio: "2/3" }}>
+                <div className="absolute inset-0 bg-secondary" />
                 <img
                   src={movie.image || "/placeholder.svg"}
                   alt={movie.title}
-                  className="absolute inset-0 w-full h-full object-fill"
+                  className="absolute inset-0 w-full h-full object-cover"
                   loading="lazy"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition" />
