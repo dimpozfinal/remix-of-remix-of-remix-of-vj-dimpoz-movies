@@ -4,7 +4,7 @@ interface CategoriesRowProps {
 }
 
 const GENRES = [
-  "Action", "Comedy", "Drama", "Horror", "Romance", "Sci-Fi",
+  "Action", "Adventure", "Comedy", "Drama", "Horror", "Romance", "Sci-Fi",
   "Thriller", "Fantasy", "Western", "Documentary", "Nigerian",
   "Ugandan", "Bongo", "Ghanaian",
 ];

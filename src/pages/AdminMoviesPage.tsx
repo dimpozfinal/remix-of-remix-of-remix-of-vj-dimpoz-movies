@@ -20,7 +20,7 @@ interface Movie {
   isRecentlyAdded?: boolean;
 }
 
-const CATEGORIES = ["Action", "Comedy", "Drama", "Horror", "Romance", "Sci-Fi", "Thriller", "Fantasy", "Western", "Documentary", "Nigerian", "Ugandan", "Bongo", "Ghanaian", "Animation", "Music", "Special"];
+const CATEGORIES = ["Action", "Adventure", "Comedy", "Drama", "Horror", "Romance", "Sci-Fi", "Thriller", "Fantasy", "Western", "Documentary", "Nigerian", "Ugandan", "Bongo", "Ghanaian", "Animation", "Music", "Special"];
 
 export default function AdminMoviesPage() {
   const { user, loading, isAdmin } = useAuth();
