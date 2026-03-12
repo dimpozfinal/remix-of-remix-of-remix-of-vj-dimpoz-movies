@@ -94,7 +94,7 @@ export default function SubscribePage() {
         </div>
 
         {/* Plans - compact horizontal cards on mobile, grid on larger */}
-        <div className="space-y-3 md:space-y-0 md:grid md:grid-cols-2 lg:grid-cols-5 md:gap-4 mb-8 md:mb-14">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2.5 sm:gap-3 mb-8 md:mb-14">
           {SUBSCRIPTION_PLANS.map((plan, i) => {
             const style = PLAN_STYLES[i] || PLAN_STYLES[0];
             const Icon = style.icon;
@@ -106,58 +106,45 @@ export default function SubscribePage() {
                 key={plan.id}
                 onMouseEnter={() => setHoveredIdx(i)}
                 onMouseLeave={() => setHoveredIdx(null)}
-                className={`relative group rounded-xl md:rounded-2xl transition-all duration-500 ${
-                  isHovered ? `shadow-2xl ${style.glow} md:-translate-y-2 md:scale-[1.02]` : "shadow-lg shadow-black/20"
+                className={`relative group rounded-xl transition-all duration-500 ${
+                  isHovered ? `shadow-xl ${style.glow} -translate-y-1 scale-[1.03]` : "shadow-md shadow-black/20"
                 } ${isPopular ? "lg:scale-[1.04] lg:z-10" : ""}`}
               >
                 {isPopular && (
-                  <div className="absolute -top-2.5 left-1/2 -translate-x-1/2 z-20">
-                    <span className="px-3 py-0.5 bg-gradient-to-r from-amber-400 to-orange-500 text-black text-[9px] sm:text-[10px] font-black rounded-full shadow-lg shadow-amber-500/30 uppercase tracking-wider">
-                      Most Popular
+                  <div className="absolute -top-2 left-1/2 -translate-x-1/2 z-20">
+                    <span className="px-2.5 py-0.5 bg-gradient-to-r from-amber-400 to-orange-500 text-black text-[8px] font-black rounded-full shadow-lg shadow-amber-500/30 uppercase tracking-wider whitespace-nowrap">
+                      Popular
                     </span>
                   </div>
                 )}
 
-                <div className={`h-full rounded-xl md:rounded-2xl border transition-all duration-500 overflow-hidden ${
+                <div className={`h-full rounded-xl border transition-all duration-500 overflow-hidden ${
                   isPopular ? "border-amber-400/40" : isHovered ? "border-white/20" : "border-white/[0.06]"
                 }`}
                   style={{ background: "linear-gradient(180deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 100%)" }}
                 >
-                  {/* Top gradient line */}
-                  <div className={`h-0.5 md:h-1 w-full bg-gradient-to-r ${style.gradient} opacity-60 group-hover:opacity-100 transition-opacity`} />
+                  <div className={`h-0.5 w-full bg-gradient-to-r ${style.gradient} opacity-60 group-hover:opacity-100 transition-opacity`} />
 
-                  {/* Mobile: horizontal row layout. Desktop: vertical card */}
-                  <div className="flex items-center gap-3 p-3 md:p-5 md:flex-col md:items-stretch md:h-full">
+                  <div className="p-2.5 sm:p-3 flex flex-col items-center text-center">
                     {/* Icon */}
-                    <div className={`w-10 h-10 md:w-12 md:h-12 rounded-lg md:rounded-xl bg-gradient-to-br ${style.gradient} flex items-center justify-center shadow-lg ${style.glow} shrink-0 md:mb-4`}>
-                      <Icon className="w-5 h-5 md:w-6 md:h-6 text-white" />
+                    <div className={`w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-gradient-to-br ${style.gradient} flex items-center justify-center shadow-md ${style.glow} mb-2`}>
+                      <Icon className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
                     </div>
 
-                    {/* Info: name + price inline on mobile */}
-                    <div className="flex-1 min-w-0 md:flex-none">
-                      <h3 className="text-white font-bold text-sm md:text-base leading-tight">{plan.name}</h3>
-                      <p className="text-white/30 text-[10px] md:text-xs">{plan.duration}</p>
-                      <div className="flex items-baseline gap-1 mt-0.5 md:mt-3 md:mb-5">
-                        <span className="text-white/40 text-[9px] md:text-[10px] font-semibold">UGX</span>
-                        <span className={`text-xl md:text-3xl font-black bg-gradient-to-r ${style.gradient} bg-clip-text text-transparent`}>
-                          {plan.price.toLocaleString()}
-                        </span>
-                      </div>
-                    </div>
+                    <h3 className="text-white font-bold text-xs sm:text-sm leading-tight">{plan.name}</h3>
+                    <p className="text-white/30 text-[9px] sm:text-[10px] mb-1.5">{plan.duration}</p>
 
-                    {/* Features - hidden on mobile for compactness */}
-                    <div className="hidden md:block space-y-2 mb-5 flex-1">
-                      {FEATURES.map(({ icon: FIcon, label }) => (
-                        <div key={label} className="flex items-center gap-2">
-                          <FIcon className="w-3.5 h-3.5 text-white/20" />
-                          <span className="text-[11px] text-white/40">{label}</span>
-                        </div>
-                      ))}
+                    {/* Price */}
+                    <div className="mb-2.5">
+                      <span className="text-white/40 text-[8px] font-semibold">UGX </span>
+                      <span className={`text-base sm:text-lg font-black bg-gradient-to-r ${style.gradient} bg-clip-text text-transparent`}>
+                        {plan.price.toLocaleString()}
+                      </span>
                     </div>
 
                     {/* CTA */}
                     <button
-                      className={`px-5 py-2 md:w-full md:py-2.5 rounded-lg md:rounded-xl text-xs md:text-sm font-bold text-white transition-all duration-300 ${style.btnBg} shadow-lg ${isHovered ? style.glow : ""} shrink-0`}
+                      className={`w-full py-1.5 sm:py-2 rounded-lg text-[10px] sm:text-xs font-bold text-white transition-all duration-300 ${style.btnBg} shadow-md ${isHovered ? style.glow : ""}`}
                     >
                       Subscribe
                     </button>
