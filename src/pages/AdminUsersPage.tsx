@@ -90,7 +90,15 @@ export default function AdminUsersPage() {
   const getUserSubEnd = (userId: string): string => {
     const sub = subscriptions[userId];
     if (!sub) return "";
-    return new Date(sub.endDate).toLocaleDateString();
+    const end = new Date(sub.endDate);
+    const now = new Date();
+    const diffMs = end.getTime() - now.getTime();
+    const days = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diffMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const mins = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+    const dateStr = end.toLocaleString();
+    if (diffMs <= 0) return `Expired on ${dateStr}`;
+    return `${dateStr} (${days}d ${hours}h ${mins}m left)`;
   };
 
   const handleActivateSubscription = async (userId: string) => {

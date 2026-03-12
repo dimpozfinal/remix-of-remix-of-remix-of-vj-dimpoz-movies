@@ -1,132 +1,164 @@
-import { Check, Crown, Zap, Star, Clock, ArrowLeft, Sparkles } from "lucide-react";
+import { Check, Crown, Zap, Star, Clock, ArrowLeft, Sparkles, Shield, Tv, Download, Film } from "lucide-react";
 import { SUBSCRIPTION_PLANS } from "@/lib/subscription-context";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
-const PLAN_ACCENTS = [
-  { icon: Clock, gradient: "from-sky-400 to-blue-500", bg: "bg-sky-500/10", text: "text-sky-400" },
-  { icon: Zap, gradient: "from-emerald-400 to-teal-500", bg: "bg-emerald-500/10", text: "text-emerald-400" },
-  { icon: Star, gradient: "from-amber-400 to-orange-500", bg: "bg-amber-500/10", text: "text-amber-400" },
-  { icon: Crown, gradient: "from-violet-400 to-purple-500", bg: "bg-violet-500/10", text: "text-violet-400" },
-  { icon: Sparkles, gradient: "from-rose-400 to-pink-500", bg: "bg-rose-500/10", text: "text-rose-400" },
+const PLAN_STYLES = [
+  {
+    icon: Clock,
+    gradient: "from-cyan-400 via-sky-500 to-blue-600",
+    glow: "shadow-cyan-500/25",
+    ring: "ring-cyan-400/30",
+    badge: "bg-cyan-500/15 text-cyan-300 border-cyan-400/30",
+    btnBg: "bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500",
+  },
+  {
+    icon: Zap,
+    gradient: "from-emerald-400 via-green-500 to-teal-600",
+    glow: "shadow-emerald-500/25",
+    ring: "ring-emerald-400/30",
+    badge: "bg-emerald-500/15 text-emerald-300 border-emerald-400/30",
+    btnBg: "bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500",
+  },
+  {
+    icon: Star,
+    gradient: "from-amber-400 via-orange-500 to-red-500",
+    glow: "shadow-amber-500/30",
+    ring: "ring-amber-400/30",
+    badge: "bg-amber-500/15 text-amber-300 border-amber-400/30",
+    btnBg: "bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500",
+    popular: true,
+  },
+  {
+    icon: Crown,
+    gradient: "from-violet-400 via-purple-500 to-indigo-600",
+    glow: "shadow-violet-500/25",
+    ring: "ring-violet-400/30",
+    badge: "bg-violet-500/15 text-violet-300 border-violet-400/30",
+    btnBg: "bg-gradient-to-r from-violet-500 to-indigo-600 hover:from-violet-400 hover:to-indigo-500",
+  },
+  {
+    icon: Sparkles,
+    gradient: "from-rose-400 via-pink-500 to-fuchsia-600",
+    glow: "shadow-rose-500/25",
+    ring: "ring-rose-400/30",
+    badge: "bg-rose-500/15 text-rose-300 border-rose-400/30",
+    btnBg: "bg-gradient-to-r from-rose-500 to-fuchsia-600 hover:from-rose-400 hover:to-fuchsia-500",
+  },
 ];
 
-const FEATURES = ["Unlimited streaming", "HD quality", "Download offline", "All content"];
+const FEATURES = [
+  { icon: Tv, label: "Unlimited streaming" },
+  { icon: Film, label: "HD quality content" },
+  { icon: Download, label: "Download offline" },
+  { icon: Star, label: "All movies & series" },
+];
 
 export default function SubscribePage() {
   const navigate = useNavigate();
+  const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
 
   return (
-    <div className="min-h-screen bg-background relative overflow-hidden">
-      {/* Background decoration */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-primary/8 rounded-full blur-3xl" />
-        <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-accent/6 rounded-full blur-3xl" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/3 rounded-full blur-[120px]" />
+    <div className="min-h-screen bg-[#0a0a0f] relative overflow-hidden">
+      {/* Animated background blobs */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute -top-32 -left-32 w-[500px] h-[500px] bg-purple-600/10 rounded-full blur-[150px] animate-pulse" />
+        <div className="absolute top-1/3 -right-20 w-[400px] h-[400px] bg-cyan-600/8 rounded-full blur-[130px]" />
+        <div className="absolute -bottom-40 left-1/3 w-[500px] h-[500px] bg-amber-600/8 rounded-full blur-[140px] animate-pulse" style={{ animationDelay: "2s" }} />
+        {/* Grid pattern overlay */}
+        <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: "radial-gradient(circle, white 1px, transparent 1px)", backgroundSize: "40px 40px" }} />
       </div>
 
-      <div className="relative z-10 max-w-5xl mx-auto px-4 py-8 md:py-16">
+      <div className="relative z-10 max-w-6xl mx-auto px-4 py-8 md:py-14">
         {/* Back */}
         <button
           onClick={() => navigate("/")}
-          className="flex items-center gap-1.5 text-muted-foreground hover:text-foreground text-sm mb-8 transition group"
+          className="flex items-center gap-1.5 text-white/40 hover:text-white/80 text-sm mb-10 transition-colors group"
         >
-          <ArrowLeft className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform" />
-          Back to Home
+          <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+          Back
         </button>
 
         {/* Header */}
-        <div className="text-center mb-10 md:mb-14">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-[11px] font-semibold mb-4">
-            <Sparkles className="w-3 h-3" />
-            Premium Plans
+        <div className="text-center mb-12 md:mb-16">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/10 bg-white/5 text-white/60 text-[11px] font-medium mb-5 backdrop-blur-sm">
+            <Sparkles className="w-3 h-3 text-amber-400" />
+            Choose Your Experience
           </div>
-          <h1 className="text-3xl md:text-5xl font-extrabold text-foreground mb-3 tracking-tight font-display leading-tight">
-            Pick Your Perfect Plan
+          <h1 className="text-4xl md:text-6xl font-black text-white mb-4 tracking-tight leading-[1.1]">
+            Unlock <span className="bg-gradient-to-r from-amber-400 via-orange-400 to-rose-500 bg-clip-text text-transparent">Premium</span> Access
           </h1>
-          <p className="text-muted-foreground text-sm md:text-base max-w-lg mx-auto leading-relaxed">
-            Start streaming movies, series & more. Pay with MTN or Airtel Money.
+          <p className="text-white/40 text-sm md:text-base max-w-md mx-auto">
+            Stream unlimited movies, series & more. Pay easily with MTN or Airtel Money.
           </p>
         </div>
 
-        {/* Plans — stacked on mobile, row on desktop */}
-        <div className="space-y-3 md:space-y-0 md:grid md:grid-cols-5 md:gap-3 lg:gap-4 mb-12">
+        {/* Plans Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-14">
           {SUBSCRIPTION_PLANS.map((plan, i) => {
-            const accent = PLAN_ACCENTS[i] || PLAN_ACCENTS[0];
-            const Icon = accent.icon;
-            const isPopular = plan.id === "1week";
+            const style = PLAN_STYLES[i] || PLAN_STYLES[0];
+            const Icon = style.icon;
+            const isHovered = hoveredIdx === i;
+            const isPopular = i === 2;
 
             return (
               <div
                 key={plan.id}
-                className={`relative group transition-all duration-300 md:hover:-translate-y-1 ${
-                  isPopular ? "md:scale-[1.03] md:z-10" : ""
-                }`}
+                onMouseEnter={() => setHoveredIdx(i)}
+                onMouseLeave={() => setHoveredIdx(null)}
+                className={`relative group rounded-2xl transition-all duration-500 ${
+                  isHovered ? `shadow-2xl ${style.glow} -translate-y-2 scale-[1.02]` : "shadow-lg shadow-black/20"
+                } ${isPopular ? "lg:scale-[1.04] lg:z-10" : ""}`}
               >
                 {isPopular && (
-                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 z-10 hidden md:block">
-                    <span className={`px-3 py-1 bg-gradient-to-r ${accent.gradient} text-white text-[10px] font-bold rounded-full shadow-lg`}>
-                      ⭐ Best Value
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 z-20">
+                    <span className="px-4 py-1 bg-gradient-to-r from-amber-400 to-orange-500 text-black text-[10px] font-black rounded-full shadow-lg shadow-amber-500/30 uppercase tracking-wider">
+                      Most Popular
                     </span>
                   </div>
                 )}
 
-                <div
-                  className={`rounded-2xl border-2 transition-all duration-300 overflow-hidden ${
-                    isPopular
-                      ? "border-primary/40 shadow-lg shadow-primary/10"
-                      : "border-border/60 hover:border-primary/30 hover:shadow-md"
-                  }`}
-                  style={{ background: "hsl(var(--card) / 0.8)" }}
+                <div className={`h-full rounded-2xl border transition-all duration-500 overflow-hidden ${
+                  isPopular ? "border-amber-400/40" : isHovered ? "border-white/20" : "border-white/[0.06]"
+                }`}
+                  style={{ background: "linear-gradient(180deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 100%)" }}
                 >
-                  {/* Mobile: horizontal layout | Desktop: vertical */}
-                  <div className="flex items-center gap-4 p-4 md:flex-col md:items-stretch md:p-5">
-                    {/* Icon + Plan name row (mobile) / stacked (desktop) */}
-                    <div className="flex items-center gap-3 md:flex-col md:items-center md:text-center flex-1 md:flex-initial">
-                      <div className={`w-11 h-11 md:w-12 md:h-12 rounded-xl bg-gradient-to-br ${accent.gradient} flex items-center justify-center shadow-md flex-shrink-0`}>
-                        <Icon className="w-5 h-5 md:w-6 md:h-6 text-white" />
-                      </div>
-                      <div className="md:mt-2">
-                        <div className="flex items-center gap-2 md:justify-center">
-                          <h3 className="text-sm md:text-base font-bold text-foreground">{plan.name}</h3>
-                          {isPopular && (
-                            <span className={`px-1.5 py-0.5 bg-gradient-to-r ${accent.gradient} text-white text-[8px] font-bold rounded md:hidden`}>
-                              BEST
-                            </span>
-                          )}
-                        </div>
-                        <p className="text-[10px] md:text-xs text-muted-foreground">{plan.duration}</p>
-                      </div>
+                  {/* Top gradient line */}
+                  <div className={`h-1 w-full bg-gradient-to-r ${style.gradient} opacity-60 group-hover:opacity-100 transition-opacity`} />
+
+                  <div className="p-5 flex flex-col h-full">
+                    {/* Icon */}
+                    <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${style.gradient} flex items-center justify-center shadow-lg ${style.glow} mb-4`}>
+                      <Icon className="w-6 h-6 text-white" />
                     </div>
 
+                    {/* Plan info */}
+                    <h3 className="text-white font-bold text-base mb-0.5">{plan.name}</h3>
+                    <p className="text-white/30 text-xs mb-4">{plan.duration}</p>
+
                     {/* Price */}
-                    <div className="text-right md:text-center md:my-3 flex-shrink-0">
-                      <div className="flex items-baseline gap-1 md:justify-center">
-                        <span className="text-[9px] md:text-[10px] text-green-400 font-semibold">UGX</span>
-                        <span className="text-xl md:text-2xl font-extrabold text-green-400 tracking-tight">
+                    <div className="mb-5">
+                      <div className="flex items-baseline gap-1">
+                        <span className="text-white/40 text-[10px] font-semibold">UGX</span>
+                        <span className={`text-3xl font-black bg-gradient-to-r ${style.gradient} bg-clip-text text-transparent`}>
                           {plan.price.toLocaleString()}
                         </span>
                       </div>
                     </div>
 
-                    {/* Features — hidden on mobile, shown on desktop */}
-                    <div className="hidden md:block space-y-1.5 mb-4">
-                      {FEATURES.map((f) => (
-                        <div key={f} className="flex items-center gap-2">
-                          <div className={`w-4 h-4 rounded-full ${accent.bg} flex items-center justify-center flex-shrink-0`}>
-                            <Check className={`w-2.5 h-2.5 ${accent.text}`} />
-                          </div>
-                          <span className="text-[10px] text-muted-foreground">{f}</span>
+                    {/* Features */}
+                    <div className="space-y-2 mb-5 flex-1">
+                      {FEATURES.map(({ icon: FIcon, label }) => (
+                        <div key={label} className="flex items-center gap-2">
+                          <FIcon className="w-3.5 h-3.5 text-white/20" />
+                          <span className="text-[11px] text-white/40">{label}</span>
                         </div>
                       ))}
                     </div>
 
-                    {/* CTA — inline on mobile, full width on desktop */}
+                    {/* CTA */}
                     <button
-                      className={`px-5 py-2 md:w-full md:py-2.5 rounded-xl text-xs font-bold transition-all duration-200 flex-shrink-0 ${
-                        isPopular
-                          ? `bg-gradient-to-r ${accent.gradient} text-white shadow-md hover:shadow-lg hover:opacity-90`
-                          : `${accent.bg} ${accent.text} hover:opacity-80`
-                      }`}
+                      className={`w-full py-2.5 rounded-xl text-sm font-bold text-white transition-all duration-300 ${style.btnBg} shadow-lg ${isHovered ? style.glow : ""}`}
                     >
                       Subscribe
                     </button>
@@ -137,43 +169,18 @@ export default function SubscribePage() {
           })}
         </div>
 
-        {/* Features summary — shown on mobile */}
-        <div className="md:hidden mb-8">
-          <div className="bg-card/60 border border-border/40 rounded-2xl p-4">
-            <p className="text-xs font-bold text-foreground mb-3">All plans include:</p>
-            <div className="grid grid-cols-2 gap-2">
-              {FEATURES.map((f) => (
-                <div key={f} className="flex items-center gap-2">
-                  <div className="w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                    <Check className="w-3 h-3 text-primary" />
-                  </div>
-                  <span className="text-[11px] text-muted-foreground">{f}</span>
-                </div>
-              ))}
+        {/* Trust bar */}
+        <div className="flex items-center justify-center gap-8 flex-wrap">
+          {[
+            { icon: Shield, label: "Secure Payment", color: "text-emerald-400" },
+            { icon: Zap, label: "Instant Access", color: "text-cyan-400" },
+            { icon: Star, label: "MTN & Airtel Money", color: "text-amber-400" },
+          ].map(({ icon: TIcon, label, color }) => (
+            <div key={label} className="flex items-center gap-2 text-white/30 text-xs">
+              <TIcon className={`w-4 h-4 ${color}`} />
+              {label}
             </div>
-          </div>
-        </div>
-
-        {/* Trust */}
-        <div className="flex items-center justify-center gap-6 flex-wrap">
-          <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
-            <div className="w-5 h-5 rounded-full bg-green-500/10 flex items-center justify-center">
-              <Check className="w-3 h-3 text-green-500" />
-            </div>
-            Secure Payment
-          </div>
-          <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
-            <div className="w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center">
-              <Zap className="w-3 h-3 text-primary" />
-            </div>
-            Instant Access
-          </div>
-          <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
-            <div className="w-5 h-5 rounded-full bg-amber-500/10 flex items-center justify-center">
-              <Star className="w-3 h-3 text-amber-500" />
-            </div>
-            MTN & Airtel Money
-          </div>
+          ))}
         </div>
       </div>
     </div>

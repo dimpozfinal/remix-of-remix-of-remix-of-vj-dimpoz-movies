@@ -12,8 +12,6 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 const ADMIN_EMAILS = [
-  "mainplatform.nexus@gmail.com",
-  "arthurdimpz@gmail.com",
   "arthurdimpoz@gmail.com",
 ].map((e) => e.toLowerCase());
 
