@@ -68,15 +68,15 @@ export default function PlayPage() {
           if (raw.episodes) {
             if (Array.isArray(raw.episodes)) {
               episodes = raw.episodes.filter(Boolean).map((ep: any, i: number) => ({
-                episodeNumber: ep.episodeNumber ?? i + 1,
-                title: ep.title || `Episode ${ep.episodeNumber ?? i + 1}`,
+                episodeNumber: (ep.episodeNumber != null) ? ep.episodeNumber : (i + 1),
+                title: ep.title || `Episode ${(ep.episodeNumber != null) ? ep.episodeNumber : (i + 1)}`,
                 streamlink: ep.streamlink || ep.streamLink || ep.link || "",
                 season: ep.season ? Number(ep.season) : 1,
               }));
             } else {
               episodes = Object.entries(raw.episodes).map(([key, ep]: [string, any]) => ({
-                episodeNumber: ep.episodeNumber ?? parseInt(key) || 1,
-                title: ep.title || `Episode ${ep.episodeNumber ?? key}`,
+                episodeNumber: (ep.episodeNumber != null) ? ep.episodeNumber : (parseInt(key) || 1),
+                title: ep.title || `Episode ${(ep.episodeNumber != null) ? ep.episodeNumber : key}`,
                 streamlink: ep.streamlink || ep.streamLink || ep.link || "",
                 season: ep.season ? Number(ep.season) : 1,
               }));
