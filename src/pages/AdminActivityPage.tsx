@@ -42,6 +42,13 @@ interface TransactionData {
   userId?: string;
 }
 
+interface NavActivity {
+  userId: string;
+  userEmail: string;
+  section: string;
+  timestamp: string;
+}
+
 const CHART_COLORS = [
   "hsl(200, 80%, 50%)",
   "hsl(140, 60%, 45%)",
