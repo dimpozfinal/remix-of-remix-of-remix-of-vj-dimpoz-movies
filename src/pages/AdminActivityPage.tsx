@@ -217,6 +217,42 @@ export default function AdminActivityPage() {
     { name: "Animation", value: contentStats.animation },
   ].filter(c => c.value > 0);
 
+  // Navigation section icons
+  const sectionIcons: Record<string, typeof Home> = {
+    home: Home, movies: Film, series: Tv, music: Music,
+    "top-rated": Star, search: Search, animation: Film,
+  };
+
+  const sectionColors: Record<string, string> = {
+    home: "hsl(200, 80%, 50%)", movies: "hsl(350, 70%, 50%)", series: "hsl(280, 60%, 55%)",
+    music: "hsl(140, 60%, 45%)", "top-rated": "hsl(40, 80%, 55%)", search: "hsl(200, 60%, 60%)",
+    animation: "hsl(30, 80%, 55%)",
+  };
+
+  // Navigation stats - section visit counts
+  const navSectionCounts = navActivities.reduce<Record<string, number>>((acc, n) => {
+    acc[n.section] = (acc[n.section] || 0) + 1;
+    return acc;
+  }, {});
+
+  const navSectionData = Object.entries(navSectionCounts)
+    .map(([name, value]) => ({ name: name.charAt(0).toUpperCase() + name.slice(1).replace("-", " "), key: name, value }))
+    .sort((a, b) => b.value - a.value);
+
+  // Navigation trend (last 7 days)
+  const navTrend = Array.from({ length: 7 }, (_, i) => {
+    const date = new Date(today.getTime() - (6 - i) * 24 * 60 * 60 * 1000);
+    const nextDate = new Date(date.getTime() + 24 * 60 * 60 * 1000);
+    const count = navActivities.filter(n => {
+      const d = new Date(n.timestamp);
+      return d >= date && d < nextDate;
+    }).length;
+    return { day: date.toLocaleDateString("en", { weekday: "short" }), visits: count };
+  });
+
+  // Recent navigation activity (last 30 entries)
+  const recentNav = navActivities.slice(0, 30);
+
   // Recent activity feed
   const recentLogins = users
     .filter(u => u.lastLogin)
