@@ -65,6 +65,7 @@ export default function AdminActivityPage() {
   const [users, setUsers] = useState<(UserData & { id: string })[]>([]);
   const [subscriptions, setSubscriptions] = useState<Record<string, UserSubscription>>({});
   const [transactions, setTransactions] = useState<TransactionData[]>([]);
+  const [navActivities, setNavActivities] = useState<NavActivity[]>([]);
   const [contentStats, setContentStats] = useState({ movies: 0, series: 0, music: 0, animation: 0 });
   const [refreshing, setRefreshing] = useState(false);
   const [lastUpdated, setLastUpdated] = useState(new Date());
