@@ -108,6 +108,15 @@ export default function AdminActivityPage() {
       }
     });
 
+    // Real-time listener for navigation activity
+    const navRef = dbRef(database, "navigation_activity");
+    const unsubNav = onValue(navRef, (snap) => {
+      if (snap.exists()) {
+        const navList = Object.values(snap.val()) as NavActivity[];
+        setNavActivities(navList.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()));
+      }
+    });
+
     // Fetch content stats
     fetchContentStats();
 
@@ -115,6 +124,7 @@ export default function AdminActivityPage() {
       unsubUsers();
       unsubSubs();
       unsubTx();
+      unsubNav();
     };
   }, [isAdmin]);
 
