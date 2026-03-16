@@ -6,7 +6,8 @@ import { ref as dbRef, get, onValue } from "firebase/database";
 import { Card } from "@/components/ui/card";
 import {
   Activity, Users, Crown, TrendingUp, Clock, Eye, LogIn,
-  Film, Tv, Music, ArrowLeft, RefreshCw, Smartphone, Globe
+  Film, Tv, Music, ArrowLeft, RefreshCw, Smartphone, Globe,
+  Home, Star, Search, Navigation
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import AdminPasswordGate from "@/components/AdminPasswordGate";
@@ -41,6 +42,13 @@ interface TransactionData {
   userId?: string;
 }
 
+interface NavActivity {
+  userId: string;
+  userEmail: string;
+  section: string;
+  timestamp: string;
+}
+
 const CHART_COLORS = [
   "hsl(200, 80%, 50%)",
   "hsl(140, 60%, 45%)",
@@ -57,6 +65,7 @@ export default function AdminActivityPage() {
   const [users, setUsers] = useState<(UserData & { id: string })[]>([]);
   const [subscriptions, setSubscriptions] = useState<Record<string, UserSubscription>>({});
   const [transactions, setTransactions] = useState<TransactionData[]>([]);
+  const [navActivities, setNavActivities] = useState<NavActivity[]>([]);
   const [contentStats, setContentStats] = useState({ movies: 0, series: 0, music: 0, animation: 0 });
   const [refreshing, setRefreshing] = useState(false);
   const [lastUpdated, setLastUpdated] = useState(new Date());
@@ -99,6 +108,15 @@ export default function AdminActivityPage() {
       }
     });
 
+    // Real-time listener for navigation activity
+    const navRef = dbRef(database, "navigation_activity");
+    const unsubNav = onValue(navRef, (snap) => {
+      if (snap.exists()) {
+        const navList = Object.values(snap.val()) as NavActivity[];
+        setNavActivities(navList.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()));
+      }
+    });
+
     // Fetch content stats
     fetchContentStats();
 
@@ -106,6 +124,7 @@ export default function AdminActivityPage() {
       unsubUsers();
       unsubSubs();
       unsubTx();
+      unsubNav();
     };
   }, [isAdmin]);
 
@@ -197,6 +216,42 @@ export default function AdminActivityPage() {
     { name: "Music", value: contentStats.music },
     { name: "Animation", value: contentStats.animation },
   ].filter(c => c.value > 0);
+
+  // Navigation section icons
+  const sectionIcons: Record<string, typeof Home> = {
+    home: Home, movies: Film, series: Tv, music: Music,
+    "top-rated": Star, search: Search, animation: Film,
+  };
+
+  const sectionColors: Record<string, string> = {
+    home: "hsl(200, 80%, 50%)", movies: "hsl(350, 70%, 50%)", series: "hsl(280, 60%, 55%)",
+    music: "hsl(140, 60%, 45%)", "top-rated": "hsl(40, 80%, 55%)", search: "hsl(200, 60%, 60%)",
+    animation: "hsl(30, 80%, 55%)",
+  };
+
+  // Navigation stats - section visit counts
+  const navSectionCounts = navActivities.reduce<Record<string, number>>((acc, n) => {
+    acc[n.section] = (acc[n.section] || 0) + 1;
+    return acc;
+  }, {});
+
+  const navSectionData = Object.entries(navSectionCounts)
+    .map(([name, value]) => ({ name: name.charAt(0).toUpperCase() + name.slice(1).replace("-", " "), key: name, value }))
+    .sort((a, b) => b.value - a.value);
+
+  // Navigation trend (last 7 days)
+  const navTrend = Array.from({ length: 7 }, (_, i) => {
+    const date = new Date(today.getTime() - (6 - i) * 24 * 60 * 60 * 1000);
+    const nextDate = new Date(date.getTime() + 24 * 60 * 60 * 1000);
+    const count = navActivities.filter(n => {
+      const d = new Date(n.timestamp);
+      return d >= date && d < nextDate;
+    }).length;
+    return { day: date.toLocaleDateString("en", { weekday: "short" }), visits: count };
+  });
+
+  // Recent navigation activity (last 30 entries)
+  const recentNav = navActivities.slice(0, 30);
 
   // Recent activity feed
   const recentLogins = users
@@ -472,6 +527,111 @@ export default function AdminActivityPage() {
               </div>
             </Card>
           </div>
+
+          {/* User Navigation Activity */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+            {/* Navigation Bar Chart */}
+            <Card className="p-4 bg-card border-border md:col-span-2">
+              <h3 className="text-sm font-semibold text-foreground mb-3 flex items-center gap-2">
+                <Navigation className="w-4 h-4 text-primary" />
+                Page Visits (7 days)
+              </h3>
+              <div className="h-48">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={navTrend}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+                    <XAxis dataKey="day" tick={{ fontSize: 10, fill: "hsl(var(--muted-foreground))" }} />
+                    <YAxis tick={{ fontSize: 10, fill: "hsl(var(--muted-foreground))" }} allowDecimals={false} />
+                    <Tooltip
+                      contentStyle={{
+                        background: "hsl(var(--card))",
+                        border: "1px solid hsl(var(--border))",
+                        borderRadius: 8,
+                        fontSize: 12,
+                      }}
+                    />
+                    <Bar dataKey="visits" fill="hsl(280, 60%, 55%)" radius={[4, 4, 0, 0]} />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+            </Card>
+
+            {/* Section Popularity */}
+            <Card className="p-4 bg-card border-border">
+              <h3 className="text-sm font-semibold text-foreground mb-3 flex items-center gap-2">
+                <Eye className="w-4 h-4 text-primary" />
+                Most Visited Sections
+              </h3>
+              {navSectionData.length > 0 ? (
+                <div className="space-y-2">
+                  {navSectionData.map((s) => {
+                    const Icon = sectionIcons[s.key] || Globe;
+                    const maxVal = navSectionData[0]?.value || 1;
+                    return (
+                      <div key={s.key} className="flex items-center gap-2">
+                        <Icon className="w-3.5 h-3.5 flex-shrink-0" style={{ color: sectionColors[s.key] || "hsl(var(--muted-foreground))" }} />
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center justify-between mb-0.5">
+                            <span className="text-[11px] font-medium text-foreground">{s.name}</span>
+                            <span className="text-[10px] text-muted-foreground">{s.value}</span>
+                          </div>
+                          <div className="w-full h-1.5 bg-secondary rounded-full overflow-hidden">
+                            <div
+                              className="h-full rounded-full transition-all"
+                              style={{
+                                width: `${(s.value / maxVal) * 100}%`,
+                                background: sectionColors[s.key] || "hsl(var(--primary))",
+                              }}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              ) : (
+                <p className="text-muted-foreground text-xs text-center py-8">No navigation data yet</p>
+              )}
+            </Card>
+          </div>
+
+          {/* Recent Navigation Feed */}
+          <Card className="p-4 bg-card border-border mb-6">
+            <h3 className="text-sm font-semibold text-foreground mb-3 flex items-center gap-2">
+              <Navigation className="w-4 h-4 text-primary animate-pulse" />
+              Recent User Navigation
+            </h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 max-h-64 overflow-y-auto pr-1">
+              {recentNav.length === 0 ? (
+                <p className="text-muted-foreground text-xs text-center py-8 col-span-full">No navigation activity yet</p>
+              ) : (
+                recentNav.map((nav, i) => {
+                  const Icon = sectionIcons[nav.section] || Globe;
+                  return (
+                    <div
+                      key={i}
+                      className="flex items-center gap-2 p-2 rounded-lg bg-secondary/50 border border-border/50"
+                    >
+                      <div
+                        className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0"
+                        style={{ background: `${sectionColors[nav.section] || "hsl(var(--primary))"}20` }}
+                      >
+                        <Icon className="w-3.5 h-3.5" style={{ color: sectionColors[nav.section] || "hsl(var(--primary))" }} />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-[11px] text-foreground truncate font-medium">
+                          {nav.userEmail?.split("@")[0] || "User"}
+                        </p>
+                        <p className="text-[9px] text-muted-foreground">
+                          → {nav.section.charAt(0).toUpperCase() + nav.section.slice(1).replace("-", " ")} · {timeAgo(nav.timestamp)}
+                        </p>
+                      </div>
+                    </div>
+                  );
+                })
+              )}
+            </div>
+          </Card>
 
           {/* Recent Users Table */}
           <Card className="p-4 bg-card border-border">
