@@ -62,7 +62,28 @@ export default function PlayPage() {
         const path = type === "series" ? "series" : type === "original" ? "originals" : "movies";
         const snapshot = await get(ref(database, `${path}/${id}`));
         if (snapshot.exists()) {
-          const data = { id: id!, ...snapshot.val() };
+          const raw = snapshot.val();
+          // Normalize episodes: Firebase may return object or sparse array
+          let episodes: Episode[] = [];
+          if (raw.episodes) {
+            if (Array.isArray(raw.episodes)) {
+              episodes = raw.episodes.filter(Boolean).map((ep: any, i: number) => ({
+                episodeNumber: (ep.episodeNumber != null) ? ep.episodeNumber : (i + 1),
+                title: ep.title || `Episode ${(ep.episodeNumber != null) ? ep.episodeNumber : (i + 1)}`,
+                streamlink: ep.streamlink || ep.streamLink || ep.link || "",
+                season: ep.season ? Number(ep.season) : 1,
+              }));
+            } else {
+              episodes = Object.entries(raw.episodes).map(([key, ep]: [string, any]) => ({
+                episodeNumber: (ep.episodeNumber != null) ? ep.episodeNumber : (parseInt(key) || 1),
+                title: ep.title || `Episode ${(ep.episodeNumber != null) ? ep.episodeNumber : key}`,
+                streamlink: ep.streamlink || ep.streamLink || ep.link || "",
+                season: ep.season ? Number(ep.season) : 1,
+              }));
+            }
+          }
+          const data: ContentData = { id: id!, ...raw, episodes };
+          console.log("Series data loaded:", data.title, "Episodes:", episodes.length, episodes);
           setContent(data);
           fetchRelated(data);
         }
