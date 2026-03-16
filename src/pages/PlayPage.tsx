@@ -157,8 +157,10 @@ export default function PlayPage() {
 
   const getDownloadFilename = () => {
     if (type === "series" && content.episodes?.length) {
-      const ep = content.episodes.find((e) => e.episodeNumber === currentEpisode);
-      return `${content.title} - EP${currentEpisode}${ep?.title ? ` - ${ep.title}` : ""}.mp4`;
+      const ep = content.episodes.find(
+        (e) => e.episodeNumber === currentEpisode && (e.season || 1) === currentSeason
+      );
+      return `${content.title} - S${currentSeason}EP${currentEpisode}${ep?.title ? ` - ${ep.title}` : ""}.mp4`;
     }
     return `${content.title} (${content.year}).mp4`;
   };
