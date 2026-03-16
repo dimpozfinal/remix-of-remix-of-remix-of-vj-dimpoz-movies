@@ -129,7 +129,9 @@ export default function PlayPage() {
 
   const getStreamUrl = () => {
     if (type === "series" && content.episodes?.length) {
-      const ep = content.episodes.find((e) => e.episodeNumber === currentEpisode);
+      const ep = content.episodes.find(
+        (e) => e.episodeNumber === currentEpisode && (e.season || 1) === currentSeason
+      );
       return ep?.streamlink || content.streamlink || "";
     }
     return content.streamlink || "";
