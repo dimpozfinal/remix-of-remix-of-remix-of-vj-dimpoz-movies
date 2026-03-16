@@ -6,7 +6,8 @@ import { ref as dbRef, get, onValue } from "firebase/database";
 import { Card } from "@/components/ui/card";
 import {
   Activity, Users, Crown, TrendingUp, Clock, Eye, LogIn,
-  Film, Tv, Music, ArrowLeft, RefreshCw, Smartphone, Globe
+  Film, Tv, Music, ArrowLeft, RefreshCw, Smartphone, Globe,
+  Home, Star, Search, Navigation
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import AdminPasswordGate from "@/components/AdminPasswordGate";
