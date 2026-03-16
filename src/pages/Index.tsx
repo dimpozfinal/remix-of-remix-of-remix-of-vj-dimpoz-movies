@@ -8,6 +8,7 @@ import CategoriesRow from "@/components/CategoriesRow";
 import AuthModal from "@/components/AuthModal";
 import SubscriptionModal from "@/components/SubscriptionModal";
 import { useAuth } from "@/lib/auth-context";
+import { trackNavigation } from "@/lib/track-navigation";
 
 const Index = () => {
   const [activeFilter, setActiveFilter] = useState("home");
@@ -21,6 +22,7 @@ const Index = () => {
     setActiveFilter(filter);
     setSearchQuery("");
     setCategoryFilter("all");
+    if (user) trackNavigation(user.uid, filter, user.email || undefined);
   };
 
   return (
