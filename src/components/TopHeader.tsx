@@ -5,6 +5,7 @@ import { auth } from "@/lib/firebase";
 import { signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { usePwaInstall } from "@/hooks/use-pwa-install";
+import NotificationBell from "./NotificationBell";
 
 interface TopHeaderProps {
   onSearch?: (query: string) => void;
