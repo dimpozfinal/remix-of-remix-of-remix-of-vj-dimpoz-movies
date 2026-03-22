@@ -5,6 +5,7 @@ import { auth } from "@/lib/firebase";
 import { signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { usePwaInstall } from "@/hooks/use-pwa-install";
+import NotificationBell from "./NotificationBell";
 
 interface TopHeaderProps {
   onSearch?: (query: string) => void;
@@ -68,6 +69,7 @@ export default function TopHeader({ onSearch }: TopHeaderProps) {
 
       {/* Actions */}
       <div className="flex items-center gap-2 flex-shrink-0 ml-auto">
+        <NotificationBell />
         <button
           onClick={() => install()}
           className="flex items-center gap-1.5 px-3 py-1.5 bg-accent/90 hover:bg-accent text-accent-foreground rounded-xl text-[11px] font-semibold transition-all shadow-sm hover:shadow-md"
