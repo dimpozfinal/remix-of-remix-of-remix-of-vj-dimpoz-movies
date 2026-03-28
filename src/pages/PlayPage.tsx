@@ -47,7 +47,7 @@ export default function PlayPage() {
   const type = searchParams.get("type") || "movie";
   const epNum = searchParams.get("ep");
   const { user, isAdmin } = useAuth();
-  const { hasActiveSubscription } = useSubscription();
+  const { hasActiveSubscription, currentPlanId, subscription } = useSubscription();
 
   const [content, setContent] = useState<ContentData | null>(null);
   const [loading, setLoading] = useState(true);
@@ -198,6 +198,40 @@ export default function PlayPage() {
   };
 
   const handleDownload = () => {
+    // Initialize tracker for 30 min plan if needed
+    if (isThirtyMinPlan(currentPlanId || undefined) && subscription) {
+      const counts = getDownloadCounts();
+      if (counts.movies === 0 && counts.episodes === 0) {
+        resetTracker("30min", subscription.startDate);
+      }
+    }
+
+    const downloadType = isSeries ? "episode" : "movie";
+
+    if (isThirtyMinPlan(currentPlanId || undefined)) {
+      if (!canDownload(downloadType)) {
+        const counts = getDownloadCounts();
+        toast.error(
+          downloadType === "movie"
+            ? `Download limit reached! You've used your 1 movie download for this 30 Min Pass.`
+            : `Download limit reached! You've used all 3 episode downloads for this 30 Min Pass. (${counts.episodes}/${counts.maxEpisodes})`,
+          { duration: 5000 }
+        );
+        return;
+      }
+    }
+
+    const contentKey = isSeries ? `${id}-S${currentSeason}E${currentEpisode}` : id!;
+    recordDownload(downloadType, contentKey);
+
+    if (isThirtyMinPlan(currentPlanId || undefined)) {
+      const counts = getDownloadCounts();
+      const remaining = downloadType === "movie"
+        ? counts.maxMovies - counts.movies
+        : counts.maxEpisodes - counts.episodes;
+      toast.info(`Download started! ${remaining} ${downloadType} download${remaining !== 1 ? "s" : ""} remaining on your 30 Min Pass.`, { duration: 4000 });
+    }
+
     const url = getDownloadUrl(getStreamUrl());
     window.open(url, "_blank", "noopener,noreferrer");
   };
