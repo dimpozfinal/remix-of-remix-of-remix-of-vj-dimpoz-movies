@@ -348,23 +348,31 @@ export default function PlayPage() {
       </div>
 
       {/* Action buttons below player */}
-      <div className="px-4 py-3 flex items-center gap-3 border-b border-border">
-        {streamUrl && (
+      <div className="px-4 py-3 border-b border-border">
+        <div className="flex items-center gap-3">
+          {streamUrl && (
+            <button
+              onClick={handleDownload}
+              className="flex items-center gap-2 px-4 py-2 bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg text-sm font-medium transition shadow-lg shadow-primary/20"
+            >
+              <Download className="w-4 h-4" />
+              Download
+            </button>
+          )}
           <button
-            onClick={handleDownload}
-            className="flex items-center gap-2 px-4 py-2 bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg text-sm font-medium transition shadow-lg shadow-primary/20"
+            onClick={handleShare}
+            className="flex items-center gap-1.5 px-3 py-2 bg-secondary border border-border text-foreground rounded-lg text-sm font-medium hover:bg-muted transition"
           >
-            <Download className="w-4 h-4" />
-            Download
+            <Share2 className="w-3.5 h-3.5" />
+            Share
           </button>
+        </div>
+        {is30Min && dlCounts && (
+          <div className="mt-2 flex items-center gap-2 text-[10px] text-muted-foreground">
+            <AlertTriangle className="w-3 h-3 text-amber-400" />
+            <span>30 Min Pass: {dlCounts.movies}/{dlCounts.maxMovies} movie · {dlCounts.episodes}/{dlCounts.maxEpisodes} episodes downloaded</span>
+          </div>
         )}
-        <button
-          onClick={handleShare}
-          className="flex items-center gap-1.5 px-3 py-2 bg-secondary border border-border text-foreground rounded-lg text-sm font-medium hover:bg-muted transition"
-        >
-          <Share2 className="w-3.5 h-3.5" />
-          Share
-        </button>
       </div>
 
       {/* Content Info */}
