@@ -62,19 +62,62 @@ export default function HeroCarousel() {
   const [transition, setTransition] = useState<TransitionType>("fade");
 
   useEffect(() => {
+    const TWO_DAYS_MS = 2 * 24 * 60 * 60 * 1000;
+    const now = Date.now();
+
+    // Load carousel items
     const carouselRef = ref(database, "carousel");
-    const unsubscribe = onValue(carouselRef, (snapshot) => {
+    const unsubCarousel = onValue(carouselRef, (snapshot) => {
+      const carouselItems: CarouselItem[] = [];
       if (snapshot.exists()) {
         const data = snapshot.val();
-        setItems(
-          Object.entries(data).map(([id, value]: [string, any]) => ({
-            id,
-            ...value,
-          }))
-        );
+        Object.entries(data).forEach(([id, value]: [string, any]) => {
+          carouselItems.push({ id, title: value.title || "", subtitle: value.subtitle || "", image: value.image || "" });
+        });
       }
+      setItems((prev) => {
+        const recentIds = prev.filter((p) => p.id.startsWith("recent-")).map((p) => p);
+        const merged = [...carouselItems, ...recentIds];
+        return Array.from(new Map(merged.map((m) => [m.id, m])).values());
+      });
     });
-    return () => unsubscribe();
+
+    // Auto-add recently added movies/series/originals to carousel
+    const addRecent = (path: string, type: string) => {
+      const dbRef = ref(database, path);
+      return onValue(dbRef, (snapshot) => {
+        const recentItems: CarouselItem[] = [];
+        if (snapshot.exists()) {
+          Object.entries(snapshot.val()).forEach(([id, value]: [string, any]) => {
+            const createdAt = value.createdAt ? new Date(value.createdAt).getTime() : 0;
+            const updatedAt = value.updatedAt ? new Date(value.updatedAt).getTime() : 0;
+            const latest = Math.max(createdAt, updatedAt);
+            if (now - latest < TWO_DAYS_MS && value.image) {
+              const isNewEpisode = type === "series" && updatedAt > createdAt;
+              recentItems.push({
+                id: `recent-${type}-${id}`,
+                title: value.title || "New Content",
+                subtitle: isNewEpisode ? "🆕 New episodes added!" : `✨ Just added`,
+                image: value.image,
+              });
+            }
+          });
+        }
+        setItems((prev) => {
+          const filtered = prev.filter((p) => !p.id.startsWith(`recent-${type}-`));
+          return [...filtered, ...recentItems];
+        });
+      });
+    };
+
+    const unsubs = [
+      unsubCarousel,
+      addRecent("movies", "movie"),
+      addRecent("series", "series"),
+      addRecent("originals", "original"),
+    ];
+
+    return () => unsubs.forEach((u) => u());
   }, []);
 
   const advance = useCallback(() => {
