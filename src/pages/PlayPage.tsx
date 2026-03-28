@@ -249,6 +249,8 @@ export default function PlayPage() {
 
   const streamUrl = getStreamUrl();
   const isSeries = type === "series" && content.episodes && content.episodes.length > 0;
+  const is30Min = isThirtyMinPlan(currentPlanId || undefined);
+  const dlCounts = is30Min ? getDownloadCounts() : null;
 
   // Derive available seasons and filter episodes by current season
   const availableSeasons = isSeries
