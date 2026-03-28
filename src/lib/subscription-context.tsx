@@ -31,6 +31,7 @@ interface SubscriptionContextType {
   hasActiveSubscription: boolean;
   loading: boolean;
   refreshSubscription: () => Promise<void>;
+  currentPlanId: string | null;
 }
 
 const SubscriptionContext = createContext<SubscriptionContextType | undefined>(undefined);
@@ -84,9 +85,11 @@ export function SubscriptionProvider({ children }: { children: React.ReactNode }
     return endDate > new Date();
   })();
 
+  const currentPlanId = subscription?.planId || null;
+
   return (
     <SubscriptionContext.Provider
-      value={{ subscription, hasActiveSubscription, loading, refreshSubscription: checkSubscription }}
+      value={{ subscription, hasActiveSubscription, loading, refreshSubscription: checkSubscription, currentPlanId }}
     >
       {children}
     </SubscriptionContext.Provider>
