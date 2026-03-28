@@ -1,4 +1,4 @@
-import { Check, Crown, Zap, Star, Clock, ArrowLeft, Sparkles, Shield, Tv, Download, Film } from "lucide-react";
+import { Crown, Zap, Star, Clock, ArrowLeft, Sparkles, Shield } from "lucide-react";
 import { SUBSCRIPTION_PLANS } from "@/lib/subscription-context";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
@@ -7,51 +7,39 @@ const PLAN_STYLES = [
   {
     icon: Clock,
     gradient: "from-cyan-400 via-sky-500 to-blue-600",
-    glow: "shadow-cyan-500/25",
-    ring: "ring-cyan-400/30",
-    badge: "bg-cyan-500/15 text-cyan-300 border-cyan-400/30",
+    glow: "0 0 20px rgba(6,182,212,0.4), 0 0 40px rgba(6,182,212,0.15)",
+    border: "border-cyan-500/30",
     btnBg: "bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500",
   },
   {
     icon: Zap,
     gradient: "from-emerald-400 via-green-500 to-teal-600",
-    glow: "shadow-emerald-500/25",
-    ring: "ring-emerald-400/30",
-    badge: "bg-emerald-500/15 text-emerald-300 border-emerald-400/30",
+    glow: "0 0 20px rgba(16,185,129,0.4), 0 0 40px rgba(16,185,129,0.15)",
+    border: "border-emerald-500/30",
     btnBg: "bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500",
   },
   {
     icon: Star,
     gradient: "from-amber-400 via-orange-500 to-red-500",
-    glow: "shadow-amber-500/30",
-    ring: "ring-amber-400/30",
-    badge: "bg-amber-500/15 text-amber-300 border-amber-400/30",
+    glow: "0 0 25px rgba(245,158,11,0.5), 0 0 50px rgba(245,158,11,0.2)",
+    border: "border-amber-400/40",
     btnBg: "bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500",
     popular: true,
   },
   {
     icon: Crown,
     gradient: "from-violet-400 via-purple-500 to-indigo-600",
-    glow: "shadow-violet-500/25",
-    ring: "ring-violet-400/30",
-    badge: "bg-violet-500/15 text-violet-300 border-violet-400/30",
+    glow: "0 0 20px rgba(139,92,246,0.4), 0 0 40px rgba(139,92,246,0.15)",
+    border: "border-violet-500/30",
     btnBg: "bg-gradient-to-r from-violet-500 to-indigo-600 hover:from-violet-400 hover:to-indigo-500",
   },
   {
     icon: Sparkles,
     gradient: "from-rose-400 via-pink-500 to-fuchsia-600",
-    glow: "shadow-rose-500/25",
-    ring: "ring-rose-400/30",
-    badge: "bg-rose-500/15 text-rose-300 border-rose-400/30",
+    glow: "0 0 20px rgba(244,63,94,0.4), 0 0 40px rgba(244,63,94,0.15)",
+    border: "border-rose-500/30",
     btnBg: "bg-gradient-to-r from-rose-500 to-fuchsia-600 hover:from-rose-400 hover:to-fuchsia-500",
   },
-];
-
-const FEATURES = [
-  { icon: Tv, label: "Unlimited streaming" },
-  { icon: Film, label: "HD quality content" },
-  { icon: Download, label: "Download offline" },
-  { icon: Star, label: "All movies & series" },
 ];
 
 export default function SubscribePage() {
@@ -59,94 +47,100 @@ export default function SubscribePage() {
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
 
   return (
-    <div className="min-h-screen bg-[#0a0a0f] relative overflow-hidden">
-      {/* Animated background blobs */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute -top-32 -left-32 w-[500px] h-[500px] bg-purple-600/10 rounded-full blur-[150px] animate-pulse" />
-        <div className="absolute top-1/3 -right-20 w-[400px] h-[400px] bg-cyan-600/8 rounded-full blur-[130px]" />
-        <div className="absolute -bottom-40 left-1/3 w-[500px] h-[500px] bg-amber-600/8 rounded-full blur-[140px] animate-pulse" style={{ animationDelay: "2s" }} />
-        {/* Grid pattern overlay */}
-        <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: "radial-gradient(circle, white 1px, transparent 1px)", backgroundSize: "40px 40px" }} />
+    <div className="min-h-screen bg-[#07070d] relative overflow-hidden">
+      {/* Background glow effects */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-purple-600/8 rounded-full blur-[120px]" />
+        <div className="absolute bottom-0 left-1/4 w-[400px] h-[200px] bg-cyan-600/6 rounded-full blur-[100px]" />
+        <div className="absolute bottom-1/4 right-0 w-[300px] h-[200px] bg-amber-600/5 rounded-full blur-[100px]" />
       </div>
 
-    <div className="relative z-10 max-w-6xl mx-auto px-3 sm:px-4 py-5 md:py-14">
+      <div className="relative z-10 max-w-5xl mx-auto px-3 py-4 md:py-10">
         {/* Back */}
         <button
           onClick={() => navigate("/")}
-          className="flex items-center gap-1.5 text-white/40 hover:text-white/80 text-sm mb-6 md:mb-10 transition-colors group"
+          className="flex items-center gap-1.5 text-white/30 hover:text-white/70 text-xs mb-4 md:mb-8 transition-colors group"
         >
-          <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+          <ArrowLeft className="w-3.5 h-3.5 group-hover:-translate-x-1 transition-transform" />
           Back
         </button>
 
         {/* Header */}
-        <div className="text-center mb-6 md:mb-16">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/10 bg-white/5 text-white/60 text-[10px] sm:text-[11px] font-medium mb-3 md:mb-5 backdrop-blur-sm">
-            <Sparkles className="w-3 h-3 text-amber-400" />
-            Choose Your Experience
-          </div>
-          <h1 className="text-2xl sm:text-4xl md:text-6xl font-black text-white mb-2 md:mb-4 tracking-tight leading-[1.1]">
-            Unlock <span className="bg-gradient-to-r from-amber-400 via-orange-400 to-rose-500 bg-clip-text text-transparent">Premium</span> Access
+        <div className="text-center mb-4 md:mb-10">
+          <h1 className="text-xl sm:text-3xl md:text-5xl font-black text-white mb-1 md:mb-3 tracking-tight">
+            Unlock <span className="bg-gradient-to-r from-amber-400 via-orange-400 to-rose-500 bg-clip-text text-transparent">Premium</span>
           </h1>
-          <p className="text-white/40 text-xs sm:text-sm md:text-base max-w-md mx-auto">
-            Stream unlimited movies, series & more. Pay easily with MTN or Airtel Money.
+          <p className="text-white/30 text-[10px] sm:text-xs max-w-sm mx-auto">
+            Pay with MTN or Airtel Money
           </p>
         </div>
 
-        {/* Plans - compact horizontal cards on mobile, grid on larger */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2.5 sm:gap-3 mb-8 md:mb-14">
+        {/* Plans — single row */}
+        <div className="flex gap-2 sm:gap-2.5 mb-6 md:mb-10 overflow-x-auto pb-2 scrollbar-hide justify-center">
           {SUBSCRIPTION_PLANS.map((plan, i) => {
             const style = PLAN_STYLES[i] || PLAN_STYLES[0];
             const Icon = style.icon;
             const isHovered = hoveredIdx === i;
-            const isPopular = i === 2;
+            const isPopular = style.popular;
 
             return (
               <div
                 key={plan.id}
                 onMouseEnter={() => setHoveredIdx(i)}
                 onMouseLeave={() => setHoveredIdx(null)}
-                className={`relative group rounded-xl transition-all duration-500 ${
-                  isHovered ? `shadow-xl ${style.glow} -translate-y-1 scale-[1.03]` : "shadow-md shadow-black/20"
-                } ${isPopular ? "lg:scale-[1.04] lg:z-10" : ""}`}
+                className={`relative flex-shrink-0 w-[110px] sm:w-[130px] md:w-[150px] rounded-xl transition-all duration-500 ${
+                  isHovered ? "-translate-y-1.5 scale-[1.05]" : ""
+                } ${isPopular && !isHovered ? "scale-[1.02]" : ""}`}
+                style={{
+                  boxShadow: isHovered || isPopular ? style.glow : "0 4px 20px rgba(0,0,0,0.3)",
+                }}
               >
                 {isPopular && (
                   <div className="absolute -top-2 left-1/2 -translate-x-1/2 z-20">
-                    <span className="px-2.5 py-0.5 bg-gradient-to-r from-amber-400 to-orange-500 text-black text-[8px] font-black rounded-full shadow-lg shadow-amber-500/30 uppercase tracking-wider whitespace-nowrap">
-                      Popular
+                    <span className="px-2 py-[2px] bg-gradient-to-r from-amber-400 to-orange-500 text-black text-[7px] font-black rounded-full shadow-lg shadow-amber-500/40 uppercase tracking-wider whitespace-nowrap">
+                      Best
                     </span>
                   </div>
                 )}
 
-                <div className={`h-full rounded-xl border transition-all duration-500 overflow-hidden ${
-                  isPopular ? "border-amber-400/40" : isHovered ? "border-white/20" : "border-white/[0.06]"
-                }`}
-                  style={{ background: "linear-gradient(180deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 100%)" }}
+                <div
+                  className={`h-full rounded-xl border transition-all duration-500 overflow-hidden backdrop-blur-sm ${
+                    isPopular ? style.border : isHovered ? "border-white/15" : "border-white/[0.05]"
+                  }`}
+                  style={{
+                    background: isHovered
+                      ? "linear-gradient(180deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%)"
+                      : "linear-gradient(180deg, rgba(255,255,255,0.03) 0%, rgba(0,0,0,0.2) 100%)",
+                  }}
                 >
-                  <div className={`h-0.5 w-full bg-gradient-to-r ${style.gradient} opacity-60 group-hover:opacity-100 transition-opacity`} />
+                  {/* Top glow bar */}
+                  <div className={`h-[2px] w-full bg-gradient-to-r ${style.gradient} ${isHovered ? "opacity-100" : "opacity-40"} transition-opacity`} />
 
-                  <div className="p-2.5 sm:p-3 flex flex-col items-center text-center">
+                  <div className="p-2 sm:p-2.5 flex flex-col items-center text-center">
                     {/* Icon */}
-                    <div className={`w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-gradient-to-br ${style.gradient} flex items-center justify-center shadow-md ${style.glow} mb-2`}>
-                      <Icon className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
+                    <div
+                      className={`w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-gradient-to-br ${style.gradient} flex items-center justify-center mb-1.5`}
+                      style={{ boxShadow: isHovered ? style.glow : "none" }}
+                    >
+                      <Icon className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white" />
                     </div>
 
-                    <h3 className="text-white font-bold text-xs sm:text-sm leading-tight">{plan.name}</h3>
-                    <p className="text-white/30 text-[9px] sm:text-[10px] mb-1.5">{plan.duration}</p>
+                    <p className="text-white/40 text-[8px] sm:text-[9px] font-medium">{plan.duration}</p>
 
                     {/* Price */}
-                    <div className="mb-2.5">
-                      <span className="text-white/40 text-[8px] font-semibold">UGX </span>
-                      <span className={`text-base sm:text-lg font-black bg-gradient-to-r ${style.gradient} bg-clip-text text-transparent`}>
+                    <div className="my-1">
+                      <span className={`text-sm sm:text-base md:text-lg font-black bg-gradient-to-r ${style.gradient} bg-clip-text text-transparent`}>
                         {plan.price.toLocaleString()}
                       </span>
+                      <span className="text-white/25 text-[7px] block">UGX</span>
                     </div>
 
                     {/* CTA */}
                     <button
-                      className={`w-full py-1.5 sm:py-2 rounded-lg text-[10px] sm:text-xs font-bold text-white transition-all duration-300 ${style.btnBg} shadow-md ${isHovered ? style.glow : ""}`}
+                      className={`w-full py-1 sm:py-1.5 rounded-lg text-[9px] sm:text-[10px] font-bold text-white transition-all duration-300 ${style.btnBg}`}
+                      style={{ boxShadow: isHovered ? style.glow : "none" }}
                     >
-                      Subscribe
+                      Get
                     </button>
                   </div>
                 </div>
@@ -155,15 +149,15 @@ export default function SubscribePage() {
           })}
         </div>
 
-        {/* Trust bar */}
-        <div className="flex items-center justify-center gap-4 sm:gap-8 flex-wrap">
+        {/* Trust */}
+        <div className="flex items-center justify-center gap-4 sm:gap-6">
           {[
-            { icon: Shield, label: "Secure Payment", color: "text-emerald-400" },
-            { icon: Zap, label: "Instant Access", color: "text-cyan-400" },
-            { icon: Star, label: "MTN & Airtel Money", color: "text-amber-400" },
+            { icon: Shield, label: "Secure", color: "text-emerald-400" },
+            { icon: Zap, label: "Instant", color: "text-cyan-400" },
+            { icon: Star, label: "MTN & Airtel", color: "text-amber-400" },
           ].map(({ icon: TIcon, label, color }) => (
-            <div key={label} className="flex items-center gap-1.5 text-white/30 text-[10px] sm:text-xs">
-              <TIcon className={`w-3.5 h-3.5 sm:w-4 sm:h-4 ${color}`} />
+            <div key={label} className="flex items-center gap-1 text-white/20 text-[9px] sm:text-[10px]">
+              <TIcon className={`w-3 h-3 ${color}`} />
               {label}
             </div>
           ))}
