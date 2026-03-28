@@ -69,6 +69,8 @@ const Index = () => {
         isOpen={showSubscriptionModal}
         onClose={() => setShowSubscriptionModal(false)}
       />
+
+      <NewContentToast />
     </div>
   );
 };
