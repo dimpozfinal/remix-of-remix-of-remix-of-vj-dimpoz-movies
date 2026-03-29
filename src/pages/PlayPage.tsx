@@ -27,6 +27,7 @@ interface ContentData {
   country?: string;
   streamlink?: string;
   episodes?: Episode[];
+  createdAt?: string;
 }
 
 interface RelatedItem {
