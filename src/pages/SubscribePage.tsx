@@ -135,6 +135,13 @@ export default function SubscribePage() {
                       <span className="text-white/25 text-[7px] block">UGX</span>
                     </div>
 
+                    {plan.id === "30min" && (
+                      <div className="text-[7px] sm:text-[8px] text-cyan-300/60 leading-tight mb-1 space-y-0.5">
+                        <p>🎬 1 movie download</p>
+                        <p>📺 3 episode downloads</p>
+                      </div>
+                    )}
+
                     {/* CTA */}
                     <button
                       className={`w-full py-1 sm:py-1.5 rounded-lg text-[9px] sm:text-[10px] font-bold text-white transition-all duration-300 ${style.btnBg}`}
