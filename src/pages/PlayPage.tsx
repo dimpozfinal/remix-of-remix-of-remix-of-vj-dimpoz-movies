@@ -198,6 +198,13 @@ export default function PlayPage() {
     return url;
   };
 
+  const isContentNew = () => {
+    if (!content?.createdAt) return false;
+    const created = new Date(content.createdAt).getTime();
+    const now = Date.now();
+    return (now - created) < 24 * 60 * 60 * 1000; // within 24 hours
+  };
+
   const handleDownload = () => {
     // Initialize tracker for 30 min plan if needed
     if (isThirtyMinPlan(currentPlanId || undefined) && subscription) {
@@ -209,7 +216,8 @@ export default function PlayPage() {
 
     const downloadType = isSeries ? "episode" : "movie";
 
-    if (isThirtyMinPlan(currentPlanId || undefined)) {
+    // Download limits only apply to content added within the last 24 hours
+    if (isThirtyMinPlan(currentPlanId || undefined) && isContentNew()) {
       if (!canDownload(downloadType)) {
         const counts = getDownloadCounts();
         toast.error(
@@ -220,12 +228,10 @@ export default function PlayPage() {
         );
         return;
       }
-    }
 
-    const contentKey = isSeries ? `${id}-S${currentSeason}E${currentEpisode}` : id!;
-    recordDownload(downloadType, contentKey);
+      const contentKey = isSeries ? `${id}-S${currentSeason}E${currentEpisode}` : id!;
+      recordDownload(downloadType, contentKey);
 
-    if (isThirtyMinPlan(currentPlanId || undefined)) {
       const counts = getDownloadCounts();
       const remaining = downloadType === "movie"
         ? counts.maxMovies - counts.movies
