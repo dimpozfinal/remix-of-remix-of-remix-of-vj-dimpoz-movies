@@ -452,6 +452,16 @@ function ContentGrid({ items, onPosterClick, onSelectSeries, showDateBadge }: Co
                     {badge}
                   </div>
                 )}
+                {(() => {
+                  if (!movie.createdAt) return null;
+                  const isNew = Date.now() - new Date(movie.createdAt).getTime() < 48 * 60 * 60 * 1000;
+                  if (!isNew) return null;
+                  return (
+                    <div className="absolute bottom-1 right-1 px-1.5 py-0.5 bg-primary text-primary-foreground text-[7px] font-bold rounded animate-pulse shadow-[0_0_8px_hsl(var(--primary)/0.6)]">
+                      NEW
+                    </div>
+                  );
+                })()}
                 {movie.type === "series" && movie.episodes && (() => {
                   const eps = Array.isArray(movie.episodes) ? movie.episodes : Object.values(movie.episodes) as Episode[];
                   if (eps.length === 0) return null;
