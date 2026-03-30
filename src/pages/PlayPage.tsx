@@ -202,7 +202,7 @@ export default function PlayPage() {
     if (!content?.createdAt) return false;
     const created = new Date(content.createdAt).getTime();
     const now = Date.now();
-    return (now - created) < 24 * 60 * 60 * 1000; // within 24 hours
+    return (now - created) < 48 * 60 * 60 * 1000; // within 48 hours
   };
 
   const handleDownload = () => {
