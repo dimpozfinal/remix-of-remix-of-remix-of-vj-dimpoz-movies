@@ -8,6 +8,8 @@ import CategoriesRow from "@/components/CategoriesRow";
 import AuthModal from "@/components/AuthModal";
 import SubscriptionModal from "@/components/SubscriptionModal";
 import NewContentToast from "@/components/NewContentToast";
+import EasterDecorations from "@/components/EasterDecorations";
+import EasterBanner from "@/components/EasterBanner";
 import { useAuth } from "@/lib/auth-context";
 import { trackNavigation } from "@/lib/track-navigation";
 
@@ -28,6 +30,7 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background flex overflow-x-hidden max-w-[100vw]">
+      <EasterDecorations />
       <Sidebar onFilterChange={handleFilterChange} activeFilter={activeFilter} onShowSubscription={() => setShowSubscriptionModal(true)} />
 
       <div className="flex-1 md:ml-[72px] flex flex-col min-w-0 overflow-x-hidden">
@@ -38,6 +41,7 @@ const Index = () => {
           }}
         />
 
+        <EasterBanner />
         <main className="flex-1 pt-16 px-3 md:px-5 lg:px-6 overflow-x-hidden">
           {activeFilter === "home" && (
             <div className="space-y-3">
