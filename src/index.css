@@ -4,52 +4,46 @@
 
 @layer base {
   :root {
-    /* 🐣 Easter Theme */
-    --background: 270 30% 12%;
-    --foreground: 60 30% 95%;
+    /* ✝️ Holy Week Theme — Solemn, reverent, golden */
+    --background: 30 15% 8%;
+    --foreground: 40 30% 90%;
 
-    --card: 270 25% 16%;
-    --card-foreground: 60 30% 95%;
+    --card: 30 12% 12%;
+    --card-foreground: 40 30% 90%;
 
-    --popover: 270 25% 16%;
-    --popover-foreground: 60 30% 95%;
+    --popover: 30 12% 12%;
+    --popover-foreground: 40 30% 90%;
 
-    --primary: 280 60% 55%;
-    --primary-foreground: 0 0% 100%;
+    --primary: 40 70% 50%;
+    --primary-foreground: 30 15% 8%;
 
-    --secondary: 270 25% 20%;
-    --secondary-foreground: 60 30% 95%;
+    --secondary: 30 12% 16%;
+    --secondary-foreground: 40 30% 90%;
 
-    --muted: 270 20% 22%;
-    --muted-foreground: 280 20% 60%;
+    --muted: 30 10% 18%;
+    --muted-foreground: 35 15% 55%;
 
-    --accent: 340 75% 55%;
+    --accent: 15 60% 45%;
     --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 84% 55%;
+    --destructive: 0 70% 45%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 280 40% 40%;
-    --input: 280 40% 40%;
-    --ring: 280 50% 55%;
-    --glow: 280 50% 50%;
-
-    --easter-pink: 340 75% 65%;
-    --easter-yellow: 50 90% 65%;
-    --easter-green: 150 50% 50%;
-    --easter-blue: 200 70% 60%;
-    --easter-lavender: 270 60% 70%;
+    --border: 35 25% 25%;
+    --input: 35 25% 25%;
+    --ring: 40 60% 45%;
+    --glow: 40 50% 35%;
 
     --radius: 0.75rem;
 
-    --sidebar-background: 270 30% 10%;
-    --sidebar-foreground: 60 30% 90%;
-    --sidebar-primary: 280 60% 55%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 270 25% 18%;
-    --sidebar-accent-foreground: 60 30% 90%;
-    --sidebar-border: 280 40% 35%;
-    --sidebar-ring: 280 50% 55%;
+    --sidebar-background: 30 15% 6%;
+    --sidebar-foreground: 40 25% 85%;
+    --sidebar-primary: 40 70% 50%;
+    --sidebar-primary-foreground: 30 15% 8%;
+    --sidebar-accent: 30 12% 14%;
+    --sidebar-accent-foreground: 40 25% 85%;
+    --sidebar-border: 35 20% 20%;
+    --sidebar-ring: 40 60% 45%;
   }
 }
 
@@ -103,23 +97,23 @@
   border: 1px solid hsl(var(--border) / 0.2);
 }
 
-/* Gradient text utility - Easter */
+/* Gradient text utility - Holy Week */
 .gradient-text {
   @apply bg-clip-text text-transparent;
-  background-image: linear-gradient(to right, hsl(280 60% 55%), hsl(340 75% 65%), hsl(50 90% 65%));
+  background-image: linear-gradient(to right, hsl(40 70% 50%), hsl(30 60% 65%), hsl(15 50% 55%));
 }
 
-/* Easter floating eggs */
-@keyframes egg-float-1 {
-  0%, 100% { transform: translateY(0) rotate(0deg); }
-  50% { transform: translateY(-15px) rotate(10deg); }
+/* Holy Week floating elements */
+@keyframes holy-glow {
+  0%, 100% { opacity: 0.2; transform: translateY(0); }
+  50% { opacity: 0.4; transform: translateY(-10px); }
 }
-@keyframes egg-float-2 {
-  0%, 100% { transform: translateY(0) rotate(0deg); }
-  50% { transform: translateY(-20px) rotate(-8deg); }
+@keyframes candle-flicker {
+  0%, 100% { opacity: 0.25; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(1.1); }
 }
-.easter-egg-float-1 { animation: egg-float-1 4s ease-in-out infinite; }
-.easter-egg-float-2 { animation: egg-float-2 5s ease-in-out infinite; }
+.holy-float { animation: holy-glow 6s ease-in-out infinite; }
+.candle-flicker { animation: candle-flicker 3s ease-in-out infinite; }
 
 /* Animations */
 @keyframes float {
@@ -143,7 +137,7 @@
 }
 
 .animate-gradient-border {
-  background: linear-gradient(90deg, hsl(280 60% 55%), hsl(340 75% 65%), hsl(50 90% 65%), hsl(150 50% 50%), hsl(280 60% 55%));
+  background: linear-gradient(90deg, hsl(40 70% 50%), hsl(30 50% 40%), hsl(15 60% 45%), hsl(40 70% 50%));
   background-size: 300% 300%;
   animation: gradient-border 3s ease infinite;
 }

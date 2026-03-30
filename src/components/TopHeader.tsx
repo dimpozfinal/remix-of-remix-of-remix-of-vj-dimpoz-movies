@@ -49,7 +49,7 @@ export default function TopHeader({ onSearch }: TopHeaderProps) {
           className="w-8 h-8 drop-shadow-md"
         />
         <span className="font-extrabold text-sm gradient-text hidden sm:block tracking-tight font-display">
-          DIMPOZ MOVIES 🐣
+          DIMPOZ MOVIES ✝️
         </span>
       </div>
 
