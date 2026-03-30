@@ -39,13 +39,13 @@ export default function Sidebar({ onFilterChange, activeFilter, onShowSubscripti
     >
       {/* Logo */}
       <div className="mb-6 mt-1">
-        <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-primary to-[hsl(340_75%_65%)] flex items-center justify-center shadow-lg shadow-primary/20 relative">
+        <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-primary to-[hsl(30_50%_40%)] flex items-center justify-center shadow-lg shadow-primary/20 relative">
           <img
             src="https://i.postimg.cc/Fs2nssw-m/logo.png"
             alt="Logo"
             className="w-6 h-6"
           />
-          <span className="absolute -top-1 -right-1 text-xs easter-egg-float-1">🐣</span>
+          <span className="absolute -top-1 -right-1 text-xs candle-flicker">✝️</span>
         </div>
       </div>
 
