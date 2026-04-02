@@ -222,8 +222,8 @@ export default function PlayPage() {
         const counts = getDownloadCounts();
         toast.error(
           downloadType === "movie"
-            ? `Download limit reached! You've used your 1 movie download for this 30 Min Pass.`
-            : `Download limit reached! You've used all 3 episode downloads for this 30 Min Pass. (${counts.episodes}/${counts.maxEpisodes})`,
+            ? `Download limit reached! You've used your 1 movie download for this 3 Hour Pass.`
+            : `Download limit reached! You've used all 3 episode downloads for this 3 Hour Pass. (${counts.episodes}/${counts.maxEpisodes})`,
           { duration: 5000 }
         );
         return;
@@ -236,7 +236,7 @@ export default function PlayPage() {
       const remaining = downloadType === "movie"
         ? counts.maxMovies - counts.movies
         : counts.maxEpisodes - counts.episodes;
-      toast.info(`Download started! ${remaining} ${downloadType} download${remaining !== 1 ? "s" : ""} remaining on your 30 Min Pass.`, { duration: 4000 });
+      toast.info(`Download started! ${remaining} ${downloadType} download${remaining !== 1 ? "s" : ""} remaining on your 3 Hour Pass.`, { duration: 4000 });
     }
 
     const url = getDownloadUrl(getStreamUrl());
@@ -377,7 +377,7 @@ export default function PlayPage() {
         {is30Min && dlCounts && (
           <div className="mt-2 flex items-center gap-2 text-[10px] text-muted-foreground">
             <AlertTriangle className="w-3 h-3 text-amber-400" />
-            <span>30 Min Pass: {dlCounts.movies}/{dlCounts.maxMovies} movie · {dlCounts.episodes}/{dlCounts.maxEpisodes} episodes downloaded</span>
+            <span>3 Hour Pass: {dlCounts.movies}/{dlCounts.maxMovies} movie · {dlCounts.episodes}/{dlCounts.maxEpisodes} episodes downloaded (new content only)</span>
           </div>
         )}
       </div>

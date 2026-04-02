@@ -137,8 +137,9 @@ export default function SubscribePage() {
 
                     {plan.id === "30min" && (
                       <div className="text-[7px] sm:text-[8px] text-cyan-300/60 leading-tight mb-1 space-y-0.5">
-                        <p>🎬 1 movie download</p>
-                        <p>📺 3 episode downloads</p>
+                        <p>⏱️ 3 hours access</p>
+                        <p>🎬 1 new movie DL</p>
+                        <p>📺 3 new episode DLs</p>
                       </div>
                     )}
 
