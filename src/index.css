@@ -137,7 +137,7 @@
 }
 
 .animate-gradient-border {
-  background: linear-gradient(90deg, hsl(40 70% 50%), hsl(30 50% 40%), hsl(15 60% 45%), hsl(40 70% 50%));
+  background: linear-gradient(90deg, hsl(0 45% 40%), hsl(0 20% 25%), hsl(0 50% 35%), hsl(0 45% 40%));
   background-size: 300% 300%;
   animation: gradient-border 3s ease infinite;
 }
