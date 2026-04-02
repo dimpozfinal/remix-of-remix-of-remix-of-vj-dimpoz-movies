@@ -97,10 +97,10 @@
   border: 1px solid hsl(var(--border) / 0.2);
 }
 
-/* Gradient text utility - Holy Week */
+/* Gradient text utility - Good Friday */
 .gradient-text {
   @apply bg-clip-text text-transparent;
-  background-image: linear-gradient(to right, hsl(40 70% 50%), hsl(30 60% 65%), hsl(15 50% 55%));
+  background-image: linear-gradient(to right, hsl(0 40% 55%), hsl(0 20% 70%), hsl(0 35% 45%));
 }
 
 /* Holy Week floating elements */
