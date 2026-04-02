@@ -222,8 +222,8 @@ export default function PlayPage() {
         const counts = getDownloadCounts();
         toast.error(
           downloadType === "movie"
-            ? `Download limit reached! You've used your 1 movie download for this 30 Min Pass.`
-            : `Download limit reached! You've used all 3 episode downloads for this 30 Min Pass. (${counts.episodes}/${counts.maxEpisodes})`,
+            ? `Download limit reached! You've used your 1 movie download for this 3 Hour Pass.`
+            : `Download limit reached! You've used all 3 episode downloads for this 3 Hour Pass. (${counts.episodes}/${counts.maxEpisodes})`,
           { duration: 5000 }
         );
         return;
