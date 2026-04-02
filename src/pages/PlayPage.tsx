@@ -236,7 +236,7 @@ export default function PlayPage() {
       const remaining = downloadType === "movie"
         ? counts.maxMovies - counts.movies
         : counts.maxEpisodes - counts.episodes;
-      toast.info(`Download started! ${remaining} ${downloadType} download${remaining !== 1 ? "s" : ""} remaining on your 30 Min Pass.`, { duration: 4000 });
+      toast.info(`Download started! ${remaining} ${downloadType} download${remaining !== 1 ? "s" : ""} remaining on your 3 Hour Pass.`, { duration: 4000 });
     }
 
     const url = getDownloadUrl(getStreamUrl());
