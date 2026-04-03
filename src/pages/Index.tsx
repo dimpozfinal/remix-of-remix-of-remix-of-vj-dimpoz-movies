@@ -41,8 +41,8 @@ const Index = () => {
           }}
         />
 
-        <EasterBanner />
-        <main className="flex-1 pt-16 px-3 md:px-5 lg:px-6 overflow-x-hidden">
+        <main className="flex-1 pt-14 px-3 md:px-5 lg:px-6 overflow-x-hidden">
+          <EasterBanner />
           {activeFilter === "home" && (
             <div className="space-y-3">
               <HeroCarousel />
