@@ -1,8 +1,11 @@
 // Developer tools protection
 export function enableDevProtection() {
-  // Disable right-click context menu
+  // Disable right-click context menu (except on admin pages)
   document.addEventListener("contextmenu", (e) => {
-    e.preventDefault();
+    const isAdminPage = window.location.pathname.startsWith("/admin");
+    if (!isAdminPage) {
+      e.preventDefault();
+    }
   });
 
   // Disable keyboard shortcuts for dev tools
