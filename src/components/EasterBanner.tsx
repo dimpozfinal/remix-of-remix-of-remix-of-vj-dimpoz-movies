@@ -10,7 +10,7 @@ export default function EasterBanner() {
       }}
     >
       <span className="relative z-10">
-        ✝️ Good Friday — "It is finished." · John 19:30 🕊️
+        ✝️ DIMPOZ MOVIES — Good Friday · "It is finished." · John 19:30 🕊️
       </span>
     </div>
   );
