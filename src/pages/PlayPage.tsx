@@ -186,7 +186,7 @@ export default function PlayPage() {
       );
       return `DIMPOZ MOVIES - ${content.title} - S${currentSeason}EP${currentEpisode}${ep?.title ? ` - ${ep.title}` : ""}.mp4`;
     }
-    return `DIMPOZ MOVIES - ${content.title} (${content.year}).mp4`;
+    return `DIMPOZ MOVIES - ${content.title} (DIMPOZ MOVIES).mp4`;
   };
 
   const getDownloadUrl = (url: string) => {
