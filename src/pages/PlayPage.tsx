@@ -184,9 +184,9 @@ export default function PlayPage() {
       const ep = content.episodes.find(
         (e) => e.episodeNumber === currentEpisode && (e.season || 1) === currentSeason
       );
-      return `DIMPOZ MOVIES - ${content.title} - S${currentSeason}EP${currentEpisode}${ep?.title ? ` - ${ep.title}` : ""}.mp4`;
+      return `${content.title} - S${currentSeason}EP${currentEpisode}${ep?.title ? ` - ${ep.title}` : ""} (DIMPOZ MOVIES).mp4`;
     }
-    return `DIMPOZ MOVIES - ${content.title} (DIMPOZ MOVIES).mp4`;
+    return `${content.title} (DIMPOZ MOVIES).mp4`;
   };
 
   const getDownloadUrl = (url: string) => {
