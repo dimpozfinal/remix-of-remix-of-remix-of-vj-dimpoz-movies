@@ -185,6 +185,88 @@ export default function AdminPage() {
             </div>
           </div>
 
+          {/* User Navigation Activity */}
+          <div>
+            <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-4">User Navigation</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {/* Most Visited Sections */}
+              <Card className="p-4 bg-card border-border/50">
+                <h3 className="text-sm font-semibold text-foreground mb-3 flex items-center gap-2">
+                  <Eye className="w-4 h-4 text-primary" />
+                  Most Visited Sections
+                </h3>
+                {navSectionData.length > 0 ? (
+                  <div className="space-y-2.5">
+                    {navSectionData.slice(0, 6).map((s) => {
+                      const Icon = sectionIcons[s.key] || Globe;
+                      const maxVal = navSectionData[0]?.value || 1;
+                      return (
+                        <div key={s.key} className="flex items-center gap-2">
+                          <Icon className="w-4 h-4 flex-shrink-0" style={{ color: sectionColors[s.key] || "hsl(var(--muted-foreground))" }} />
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center justify-between mb-0.5">
+                              <span className="text-xs font-medium text-foreground">{s.name}</span>
+                              <span className="text-[10px] text-muted-foreground">{s.value} visits</span>
+                            </div>
+                            <div className="w-full h-1.5 bg-secondary rounded-full overflow-hidden">
+                              <div
+                                className="h-full rounded-full transition-all"
+                                style={{
+                                  width: `${(s.value / maxVal) * 100}%`,
+                                  background: sectionColors[s.key] || "hsl(var(--primary))",
+                                }}
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                ) : (
+                  <p className="text-muted-foreground text-xs text-center py-8">No navigation data yet</p>
+                )}
+              </Card>
+
+              {/* Recent Navigation Feed */}
+              <Card className="p-4 bg-card border-border/50">
+                <h3 className="text-sm font-semibold text-foreground mb-3 flex items-center gap-2">
+                  <Navigation className="w-4 h-4 text-primary animate-pulse" />
+                  Recent Navigation
+                </h3>
+                <div className="space-y-1.5 max-h-64 overflow-y-auto pr-1">
+                  {recentNav.length === 0 ? (
+                    <p className="text-muted-foreground text-xs text-center py-8">No navigation activity yet</p>
+                  ) : (
+                    recentNav.map((nav, i) => {
+                      const Icon = sectionIcons[nav.section] || Globe;
+                      return (
+                        <div
+                          key={i}
+                          className="flex items-center gap-2 p-2 rounded-lg bg-secondary/50 border border-border/50"
+                        >
+                          <div
+                            className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0"
+                            style={{ background: `${sectionColors[nav.section] || "hsl(var(--primary))"}20` }}
+                          >
+                            <Icon className="w-3.5 h-3.5" style={{ color: sectionColors[nav.section] || "hsl(var(--primary))" }} />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <p className="text-[11px] text-foreground truncate font-medium">
+                              {nav.userEmail?.split("@")[0] || "User"}
+                            </p>
+                            <p className="text-[9px] text-muted-foreground">
+                              → {nav.section.charAt(0).toUpperCase() + nav.section.slice(1).replace("-", " ")} · {timeAgo(nav.timestamp)}
+                            </p>
+                          </div>
+                        </div>
+                      );
+                    })
+                  )}
+                </div>
+              </Card>
+            </div>
+          </div>
+
           {/* Security Section */}
           <div>
             <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-4">Security</h2>
