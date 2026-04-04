@@ -2,16 +2,35 @@ import React, { useEffect, useState } from "react";
 import { useAuth } from "@/lib/auth-context";
 import { useNavigate, Link } from "react-router-dom";
 import { database } from "@/lib/firebase";
-import { ref as dbRef, get } from "firebase/database";
+import { ref as dbRef, get, onValue } from "firebase/database";
 import { Card } from "@/components/ui/card";
-import { Shield, Film, Tv, Music, Image, Users, BarChart3, Wallet, Activity, ArrowLeft, TrendingUp } from "lucide-react";
+import { Shield, Film, Tv, Music, Image, Users, BarChart3, Wallet, Activity, ArrowLeft, TrendingUp, Navigation, Globe, Home, Star, Search, Eye } from "lucide-react";
 import AdminPasswordGate from "@/components/AdminPasswordGate";
 import AdminChangePassword from "@/components/AdminChangePassword";
+
+interface NavActivity {
+  userId: string;
+  userEmail: string;
+  section: string;
+  timestamp: string;
+}
+
+const sectionIcons: Record<string, typeof Home> = {
+  home: Home, movies: Film, series: Tv, music: Music,
+  "top-rated": Star, search: Search, animation: Film,
+};
+
+const sectionColors: Record<string, string> = {
+  home: "hsl(200, 80%, 50%)", movies: "hsl(350, 70%, 50%)", series: "hsl(280, 60%, 55%)",
+  music: "hsl(140, 60%, 45%)", "top-rated": "hsl(40, 80%, 55%)", search: "hsl(200, 60%, 60%)",
+  animation: "hsl(30, 80%, 55%)",
+};
 
 export default function AdminPage() {
   const { user, loading, isAdmin } = useAuth();
   const navigate = useNavigate();
   const [stats, setStats] = useState({ movies: 0, series: 0, users: 0 });
+  const [navActivities, setNavActivities] = useState<NavActivity[]>([]);
 
   useEffect(() => {
     if (!loading && (!user || !isAdmin)) {
@@ -20,25 +39,36 @@ export default function AdminPage() {
   }, [user, loading, isAdmin, navigate]);
 
   useEffect(() => {
-    if (isAdmin) {
-      const fetchStats = async () => {
-        try {
-          const [moviesSnap, seriesSnap, usersSnap] = await Promise.all([
-            get(dbRef(database, "movies")),
-            get(dbRef(database, "series")),
-            get(dbRef(database, "users")),
-          ]);
-          setStats({
-            movies: moviesSnap.exists() ? Object.keys(moviesSnap.val()).length : 0,
-            series: seriesSnap.exists() ? Object.keys(seriesSnap.val()).length : 0,
-            users: usersSnap.exists() ? Object.keys(usersSnap.val()).length : 0,
-          });
-        } catch (error) {
-          console.error("Error fetching stats:", error);
-        }
-      };
-      fetchStats();
-    }
+    if (!isAdmin) return;
+
+    const fetchStats = async () => {
+      try {
+        const [moviesSnap, seriesSnap, usersSnap] = await Promise.all([
+          get(dbRef(database, "movies")),
+          get(dbRef(database, "series")),
+          get(dbRef(database, "users")),
+        ]);
+        setStats({
+          movies: moviesSnap.exists() ? Object.keys(moviesSnap.val()).length : 0,
+          series: seriesSnap.exists() ? Object.keys(seriesSnap.val()).length : 0,
+          users: usersSnap.exists() ? Object.keys(usersSnap.val()).length : 0,
+        });
+      } catch (error) {
+        console.error("Error fetching stats:", error);
+      }
+    };
+    fetchStats();
+
+    // Real-time listener for navigation activity
+    const navRef = dbRef(database, "navigation_activity");
+    const unsubNav = onValue(navRef, (snap) => {
+      if (snap.exists()) {
+        const navList = Object.values(snap.val()) as NavActivity[];
+        setNavActivities(navList.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()));
+      }
+    });
+
+    return () => unsubNav();
   }, [isAdmin]);
 
   if (loading) {
@@ -52,6 +82,18 @@ export default function AdminPage() {
   if (!isAdmin) return null;
 
   const totalContent = stats.movies + stats.series;
+
+  // Navigation section counts
+  const navSectionCounts = navActivities.reduce<Record<string, number>>((acc, n) => {
+    acc[n.section] = (acc[n.section] || 0) + 1;
+    return acc;
+  }, {});
+
+  const navSectionData = Object.entries(navSectionCounts)
+    .map(([name, value]) => ({ name: name.charAt(0).toUpperCase() + name.slice(1).replace("-", " "), key: name, value }))
+    .sort((a, b) => b.value - a.value);
+
+  const recentNav = navActivities.slice(0, 15);
 
   const statCards = [
     { label: "Total Movies", value: stats.movies, icon: Film, color: "from-blue-500/20 to-blue-600/10" },
@@ -143,6 +185,88 @@ export default function AdminPage() {
             </div>
           </div>
 
+          {/* User Navigation Activity */}
+          <div>
+            <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-4">User Navigation</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {/* Most Visited Sections */}
+              <Card className="p-4 bg-card border-border/50">
+                <h3 className="text-sm font-semibold text-foreground mb-3 flex items-center gap-2">
+                  <Eye className="w-4 h-4 text-primary" />
+                  Most Visited Sections
+                </h3>
+                {navSectionData.length > 0 ? (
+                  <div className="space-y-2.5">
+                    {navSectionData.slice(0, 6).map((s) => {
+                      const Icon = sectionIcons[s.key] || Globe;
+                      const maxVal = navSectionData[0]?.value || 1;
+                      return (
+                        <div key={s.key} className="flex items-center gap-2">
+                          <Icon className="w-4 h-4 flex-shrink-0" style={{ color: sectionColors[s.key] || "hsl(var(--muted-foreground))" }} />
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center justify-between mb-0.5">
+                              <span className="text-xs font-medium text-foreground">{s.name}</span>
+                              <span className="text-[10px] text-muted-foreground">{s.value} visits</span>
+                            </div>
+                            <div className="w-full h-1.5 bg-secondary rounded-full overflow-hidden">
+                              <div
+                                className="h-full rounded-full transition-all"
+                                style={{
+                                  width: `${(s.value / maxVal) * 100}%`,
+                                  background: sectionColors[s.key] || "hsl(var(--primary))",
+                                }}
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                ) : (
+                  <p className="text-muted-foreground text-xs text-center py-8">No navigation data yet</p>
+                )}
+              </Card>
+
+              {/* Recent Navigation Feed */}
+              <Card className="p-4 bg-card border-border/50">
+                <h3 className="text-sm font-semibold text-foreground mb-3 flex items-center gap-2">
+                  <Navigation className="w-4 h-4 text-primary animate-pulse" />
+                  Recent Navigation
+                </h3>
+                <div className="space-y-1.5 max-h-64 overflow-y-auto pr-1">
+                  {recentNav.length === 0 ? (
+                    <p className="text-muted-foreground text-xs text-center py-8">No navigation activity yet</p>
+                  ) : (
+                    recentNav.map((nav, i) => {
+                      const Icon = sectionIcons[nav.section] || Globe;
+                      return (
+                        <div
+                          key={i}
+                          className="flex items-center gap-2 p-2 rounded-lg bg-secondary/50 border border-border/50"
+                        >
+                          <div
+                            className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0"
+                            style={{ background: `${sectionColors[nav.section] || "hsl(var(--primary))"}20` }}
+                          >
+                            <Icon className="w-3.5 h-3.5" style={{ color: sectionColors[nav.section] || "hsl(var(--primary))" }} />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <p className="text-[11px] text-foreground truncate font-medium">
+                              {nav.userEmail?.split("@")[0] || "User"}
+                            </p>
+                            <p className="text-[9px] text-muted-foreground">
+                              → {nav.section.charAt(0).toUpperCase() + nav.section.slice(1).replace("-", " ")} · {timeAgo(nav.timestamp)}
+                            </p>
+                          </div>
+                        </div>
+                      );
+                    })
+                  )}
+                </div>
+              </Card>
+            </div>
+          </div>
+
           {/* Security Section */}
           <div>
             <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-4">Security</h2>
@@ -152,4 +276,18 @@ export default function AdminPage() {
       </div>
     </AdminPasswordGate>
   );
+}
+
+function timeAgo(dateStr: string): string {
+  const now = Date.now();
+  const then = new Date(dateStr).getTime();
+  const diff = now - then;
+  const mins = Math.floor(diff / 60000);
+  if (mins < 1) return "Just now";
+  if (mins < 60) return `${mins}m ago`;
+  const hrs = Math.floor(mins / 60);
+  if (hrs < 24) return `${hrs}h ago`;
+  const days = Math.floor(hrs / 24);
+  if (days < 7) return `${days}d ago`;
+  return new Date(dateStr).toLocaleDateString();
 }
