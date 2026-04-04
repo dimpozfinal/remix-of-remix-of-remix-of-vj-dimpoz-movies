@@ -8,10 +8,29 @@ import { Shield, Film, Tv, Music, Image, Users, BarChart3, Wallet, Activity, Arr
 import AdminPasswordGate from "@/components/AdminPasswordGate";
 import AdminChangePassword from "@/components/AdminChangePassword";
 
+interface NavActivity {
+  userId: string;
+  userEmail: string;
+  section: string;
+  timestamp: string;
+}
+
+const sectionIcons: Record<string, typeof Home> = {
+  home: Home, movies: Film, series: Tv, music: Music,
+  "top-rated": Star, search: Search, animation: Film,
+};
+
+const sectionColors: Record<string, string> = {
+  home: "hsl(200, 80%, 50%)", movies: "hsl(350, 70%, 50%)", series: "hsl(280, 60%, 55%)",
+  music: "hsl(140, 60%, 45%)", "top-rated": "hsl(40, 80%, 55%)", search: "hsl(200, 60%, 60%)",
+  animation: "hsl(30, 80%, 55%)",
+};
+
 export default function AdminPage() {
   const { user, loading, isAdmin } = useAuth();
   const navigate = useNavigate();
   const [stats, setStats] = useState({ movies: 0, series: 0, users: 0 });
+  const [navActivities, setNavActivities] = useState<NavActivity[]>([]);
 
   useEffect(() => {
     if (!loading && (!user || !isAdmin)) {
@@ -20,25 +39,36 @@ export default function AdminPage() {
   }, [user, loading, isAdmin, navigate]);
 
   useEffect(() => {
-    if (isAdmin) {
-      const fetchStats = async () => {
-        try {
-          const [moviesSnap, seriesSnap, usersSnap] = await Promise.all([
-            get(dbRef(database, "movies")),
-            get(dbRef(database, "series")),
-            get(dbRef(database, "users")),
-          ]);
-          setStats({
-            movies: moviesSnap.exists() ? Object.keys(moviesSnap.val()).length : 0,
-            series: seriesSnap.exists() ? Object.keys(seriesSnap.val()).length : 0,
-            users: usersSnap.exists() ? Object.keys(usersSnap.val()).length : 0,
-          });
-        } catch (error) {
-          console.error("Error fetching stats:", error);
-        }
-      };
-      fetchStats();
-    }
+    if (!isAdmin) return;
+
+    const fetchStats = async () => {
+      try {
+        const [moviesSnap, seriesSnap, usersSnap] = await Promise.all([
+          get(dbRef(database, "movies")),
+          get(dbRef(database, "series")),
+          get(dbRef(database, "users")),
+        ]);
+        setStats({
+          movies: moviesSnap.exists() ? Object.keys(moviesSnap.val()).length : 0,
+          series: seriesSnap.exists() ? Object.keys(seriesSnap.val()).length : 0,
+          users: usersSnap.exists() ? Object.keys(usersSnap.val()).length : 0,
+        });
+      } catch (error) {
+        console.error("Error fetching stats:", error);
+      }
+    };
+    fetchStats();
+
+    // Real-time listener for navigation activity
+    const navRef = dbRef(database, "navigation_activity");
+    const unsubNav = onValue(navRef, (snap) => {
+      if (snap.exists()) {
+        const navList = Object.values(snap.val()) as NavActivity[];
+        setNavActivities(navList.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()));
+      }
+    });
+
+    return () => unsubNav();
   }, [isAdmin]);
 
   if (loading) {
@@ -52,6 +82,18 @@ export default function AdminPage() {
   if (!isAdmin) return null;
 
   const totalContent = stats.movies + stats.series;
+
+  // Navigation section counts
+  const navSectionCounts = navActivities.reduce<Record<string, number>>((acc, n) => {
+    acc[n.section] = (acc[n.section] || 0) + 1;
+    return acc;
+  }, {});
+
+  const navSectionData = Object.entries(navSectionCounts)
+    .map(([name, value]) => ({ name: name.charAt(0).toUpperCase() + name.slice(1).replace("-", " "), key: name, value }))
+    .sort((a, b) => b.value - a.value);
+
+  const recentNav = navActivities.slice(0, 15);
 
   const statCards = [
     { label: "Total Movies", value: stats.movies, icon: Film, color: "from-blue-500/20 to-blue-600/10" },
