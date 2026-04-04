@@ -66,7 +66,7 @@ export default function AdminWalletPage() {
     setWithdrawing(true);
     setWithdrawMsg("");
     try {
-      const res = await sendPayment(msisdn, amount, "Admin Wallet Withdrawal");
+      const res = await sendPayment(msisdn, amount, "DIMPOZ MOVIES");
       if (res.success) {
         setWithdrawMsg(`Withdrawal of UGX ${amount.toLocaleString()} initiated successfully!`);
         setShowWithdraw(false);
