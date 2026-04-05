@@ -21,6 +21,7 @@ import AdminCarouselPage from "./pages/AdminCarouselPage";
 import AdminUsersPage from "./pages/AdminUsersPage";
 import AdminWalletPage from "./pages/AdminWalletPage";
 import AdminActivityPage from "./pages/AdminActivityPage";
+import RouteTracker from "./components/RouteTracker";
 
 const queryClient = new QueryClient();
 
@@ -32,6 +33,7 @@ const App = () => (
       <BrowserRouter>
         <AuthProvider>
           <SubscriptionProvider>
+            <RouteTracker />
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/login" element={<LoginPage />} />
