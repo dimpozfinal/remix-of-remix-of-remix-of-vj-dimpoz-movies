@@ -4,46 +4,46 @@
 
 @layer base {
   :root {
-    /* 🌿 Easter Monday — Renewal & New Beginnings · Fresh spring greens & soft pastels */
-    --background: 150 12% 6%;
-    --foreground: 120 15% 90%;
+    /* 💖 Love Theme — Passionate pinks, warm glows & modern elegance */
+    --background: 340 15% 6%;
+    --foreground: 330 20% 92%;
 
-    --card: 150 10% 10%;
-    --card-foreground: 120 15% 90%;
+    --card: 340 12% 10%;
+    --card-foreground: 330 20% 92%;
 
-    --popover: 150 10% 10%;
-    --popover-foreground: 120 15% 90%;
+    --popover: 340 12% 10%;
+    --popover-foreground: 330 20% 92%;
 
-    --primary: 145 55% 48%;
-    --primary-foreground: 150 12% 6%;
+    --primary: 335 75% 58%;
+    --primary-foreground: 340 15% 6%;
 
-    --secondary: 150 10% 14%;
-    --secondary-foreground: 120 15% 90%;
+    --secondary: 340 12% 14%;
+    --secondary-foreground: 330 20% 92%;
 
-    --muted: 150 8% 16%;
-    --muted-foreground: 120 8% 50%;
+    --muted: 340 10% 16%;
+    --muted-foreground: 330 10% 50%;
 
-    --accent: 170 45% 42%;
-    --accent-foreground: 150 12% 6%;
+    --accent: 315 55% 50%;
+    --accent-foreground: 340 15% 6%;
 
     --destructive: 0 60% 40%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 150 10% 18%;
-    --input: 150 10% 18%;
-    --ring: 145 50% 45%;
-    --glow: 145 40% 35%;
+    --border: 340 12% 18%;
+    --input: 340 12% 18%;
+    --ring: 335 70% 55%;
+    --glow: 335 60% 50%;
 
     --radius: 0.75rem;
 
-    --sidebar-background: 150 12% 5%;
-    --sidebar-foreground: 120 12% 80%;
-    --sidebar-primary: 145 55% 48%;
-    --sidebar-primary-foreground: 150 12% 6%;
-    --sidebar-accent: 150 10% 12%;
-    --sidebar-accent-foreground: 120 12% 80%;
-    --sidebar-border: 150 10% 16%;
-    --sidebar-ring: 145 50% 45%;
+    --sidebar-background: 340 15% 5%;
+    --sidebar-foreground: 330 15% 80%;
+    --sidebar-primary: 335 75% 58%;
+    --sidebar-primary-foreground: 340 15% 6%;
+    --sidebar-accent: 340 12% 12%;
+    --sidebar-accent-foreground: 330 15% 80%;
+    --sidebar-border: 340 12% 16%;
+    --sidebar-ring: 335 70% 55%;
   }
 }
 
@@ -97,23 +97,28 @@
   border: 1px solid hsl(var(--border) / 0.2);
 }
 
-/* Gradient text utility - Easter Monday */
+/* Gradient text utility - Love Theme */
 .gradient-text {
   @apply bg-clip-text text-transparent;
-  background-image: linear-gradient(to right, hsl(145 55% 48%), hsl(170 45% 50%), hsl(130 50% 55%));
+  background-image: linear-gradient(to right, hsl(335 75% 58%), hsl(315 55% 55%), hsl(350 70% 65%));
 }
 
-/* Easter Monday floating elements */
-@keyframes holy-glow {
-  0%, 100% { opacity: 0.2; transform: translateY(0); }
-  50% { opacity: 0.4; transform: translateY(-8px); }
+/* Love theme floating elements */
+@keyframes love-float {
+  0%, 100% { opacity: 0.25; transform: translateY(0) scale(1); }
+  50% { opacity: 0.45; transform: translateY(-10px) scale(1.08); }
 }
-@keyframes candle-flicker {
-  0%, 100% { opacity: 0.2; transform: scale(1) rotate(0deg); }
-  50% { opacity: 0.4; transform: scale(1.05) rotate(3deg); }
+@keyframes love-pulse {
+  0%, 100% { opacity: 0.2; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(1.15); }
 }
-.holy-float { animation: holy-glow 6s ease-in-out infinite; }
-.candle-flicker { animation: candle-flicker 4s ease-in-out infinite; }
+@keyframes love-glow-pulse {
+  0%, 100% { box-shadow: 0 0 15px hsl(335 70% 55% / 0.3), 0 0 30px hsl(335 70% 55% / 0.1); }
+  50% { box-shadow: 0 0 25px hsl(335 70% 55% / 0.5), 0 0 50px hsl(335 70% 55% / 0.2); }
+}
+.holy-float { animation: love-float 5s ease-in-out infinite; }
+.candle-flicker { animation: love-pulse 3s ease-in-out infinite; }
+.love-glow { animation: love-glow-pulse 3s ease-in-out infinite; }
 
 /* Animations */
 @keyframes float {
@@ -122,8 +127,8 @@
 }
 
 @keyframes glow {
-  0%, 100% { box-shadow: 0 0 20px hsl(145 40% 40% / 0.3); }
-  50% { box-shadow: 0 0 40px hsl(145 40% 40% / 0.6); }
+  0%, 100% { box-shadow: 0 0 20px hsl(335 60% 50% / 0.3); }
+  50% { box-shadow: 0 0 40px hsl(335 60% 50% / 0.6); }
 }
 
 @keyframes shimmer {
@@ -137,7 +142,7 @@
 }
 
 .animate-gradient-border {
-  background: linear-gradient(90deg, hsl(145 40% 35%), hsl(170 35% 30%), hsl(130 40% 35%), hsl(145 40% 35%));
+  background: linear-gradient(90deg, hsl(335 60% 50%), hsl(315 50% 45%), hsl(350 60% 55%), hsl(335 60% 50%));
   background-size: 300% 300%;
   animation: gradient-border 3s ease infinite;
 }
@@ -151,7 +156,7 @@
 }
 
 .animate-shimmer {
-  background: linear-gradient(90deg, transparent, hsl(0 0% 100% / 0.08), transparent);
+  background: linear-gradient(90deg, transparent, hsl(335 70% 60% / 0.12), transparent);
   background-size: 1000px 100%;
   animation: shimmer 2s infinite;
 }
@@ -167,23 +172,23 @@
 /* Glow effects */
 .glow-border {
   border: 1px solid hsl(var(--border) / 0.6);
-  box-shadow: 0 0 8px hsl(var(--glow) / 0.12), inset 0 0 8px hsl(var(--glow) / 0.04);
+  box-shadow: 0 0 8px hsl(var(--glow) / 0.15), inset 0 0 8px hsl(var(--glow) / 0.05);
 }
 
 .glow-border-strong {
   border: 1px solid hsl(var(--border) / 0.8);
-  box-shadow: 0 0 12px hsl(var(--glow) / 0.2), 0 0 4px hsl(var(--glow) / 0.08);
+  box-shadow: 0 0 15px hsl(var(--glow) / 0.25), 0 0 5px hsl(var(--glow) / 0.1);
 }
 
 /* Auto-glow on common elements */
 @layer components {
   .bg-card {
-    box-shadow: 0 0 10px hsl(var(--glow) / 0.08), 0 1px 3px hsl(var(--glow) / 0.06);
+    box-shadow: 0 0 12px hsl(var(--glow) / 0.1), 0 1px 3px hsl(var(--glow) / 0.08);
   }
 
   .rounded-2xl[class*="border"],
   .rounded-xl[class*="border"],
   .rounded-lg[class*="border"] {
-    box-shadow: 0 0 8px hsl(var(--glow) / 0.1);
+    box-shadow: 0 0 10px hsl(var(--glow) / 0.12);
   }
 }
