@@ -296,7 +296,7 @@ export default function PlayPage() {
               <a
                 href={getDownloadUrl(streamUrl)}
                 onClick={(e) => { e.preventDefault(); handleDownload(); }}
-                className="absolute top-2 right-2 w-10 h-10 z-20 flex items-center justify-center rounded-full bg-card/90 backdrop-blur-sm border border-border cursor-pointer hover:bg-primary/20 transition"
+                className="absolute top-0 right-0 w-14 h-14 z-20 flex items-center justify-center rounded-full bg-card/90 backdrop-blur-sm border border-border cursor-pointer hover:bg-primary/20 transition"
                 title="Download"
               >
                 <Download className="w-4 h-4 text-primary" />
