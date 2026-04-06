@@ -296,11 +296,10 @@ export default function PlayPage() {
               <a
                 href={getDownloadUrl(streamUrl)}
                 onClick={(e) => { e.preventDefault(); handleDownload(); }}
-                className="absolute top-0 right-0 w-14 h-14 z-20 flex items-end justify-start p-1.5 cursor-pointer"
-                style={{ background: "linear-gradient(135deg, transparent 40%, hsl(var(--card) / 0.95) 100%)" }}
+                className="absolute top-2 right-2 w-10 h-10 z-20 flex items-center justify-center rounded-full bg-card/90 backdrop-blur-sm border border-border cursor-pointer hover:bg-primary/20 transition"
                 title="Download"
               >
-                <Download className="w-5 h-5 text-primary opacity-80 hover:opacity-100 transition" />
+                <Download className="w-4 h-4 text-primary" />
               </a>
               <div
                 className="absolute bottom-0 right-0 w-14 h-10 z-20"
