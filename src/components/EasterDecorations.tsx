@@ -1,10 +1,10 @@
 const symbols = [
-  { emoji: "✝️", top: "10%", left: "3%", size: "text-2xl", anim: "holy-float", delay: "0s" },
-  { emoji: "🌅", top: "20%", right: "4%", size: "text-xl", anim: "candle-flicker", delay: "1s" },
-  { emoji: "🕊️", bottom: "25%", left: "2%", size: "text-lg", anim: "holy-float", delay: "0.5s" },
-  { emoji: "🌸", top: "50%", right: "3%", size: "text-lg", anim: "candle-flicker", delay: "2s" },
-  { emoji: "⭐", top: "70%", left: "4%", size: "text-xl", anim: "holy-float", delay: "1.5s" },
-  { emoji: "✝️", bottom: "15%", right: "5%", size: "text-2xl", anim: "holy-float", delay: "0.8s" },
+  { emoji: "🌿", top: "10%", left: "3%", size: "text-2xl", anim: "holy-float", delay: "0s" },
+  { emoji: "🕊️", top: "20%", right: "4%", size: "text-xl", anim: "candle-flicker", delay: "1s" },
+  { emoji: "🌱", bottom: "25%", left: "2%", size: "text-lg", anim: "holy-float", delay: "0.5s" },
+  { emoji: "🌷", top: "50%", right: "3%", size: "text-lg", anim: "candle-flicker", delay: "2s" },
+  { emoji: "☘️", top: "70%", left: "4%", size: "text-xl", anim: "holy-float", delay: "1.5s" },
+  { emoji: "🌿", bottom: "15%", right: "5%", size: "text-2xl", anim: "holy-float", delay: "0.8s" },
 ];
 
 export default function EasterDecorations() {
