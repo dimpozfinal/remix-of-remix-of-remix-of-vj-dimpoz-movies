@@ -45,7 +45,7 @@ export default function Sidebar({ onFilterChange, activeFilter, onShowSubscripti
             alt="Logo"
             className="w-6 h-6"
           />
-          <span className="absolute -top-1 -right-1 text-xs candle-flicker">🌿</span>
+          <span className="absolute -top-1 -right-1 text-xs candle-flicker">💖</span>
         </div>
       </div>
 
