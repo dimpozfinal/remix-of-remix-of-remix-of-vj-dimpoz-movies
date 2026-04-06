@@ -356,21 +356,48 @@ export default function PopularGrid({
         </section>
       )}
 
-      {/* Latest Episodes */}
+      {/* Latest Episodes - each episode shown independently */}
       {latestEpisodes.length > 0 && (
         <section>
           <h2 className="text-sm font-bold text-foreground mb-3">📺 New Episodes</h2>
-          <ContentGrid
-            items={latestEpisodes}
-            onPosterClick={handlePosterClick}
-            onSelectSeries={setSelectedSeries}
-            user={user}
-            onRequireAuth={onRequireAuth}
-            onShowSubscription={onShowSubscription}
-            hasActiveSubscription={hasActiveSubscription}
-            isAdmin={isAdmin}
-            showDateBadge
-          />
+          <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-2 md:gap-2.5 w-full overflow-hidden">
+            {latestEpisodes.flatMap((series) => {
+              const eps = Array.isArray(series.episodes) ? series.episodes : Object.values(series.episodes || {}) as Episode[];
+              return eps.map((ep, idx) => (
+                <button
+                  key={`${series.id}-s${ep.season || 1}-e${ep.episodeNumber}-${idx}`}
+                  onClick={() => {
+                    if (!user) { onRequireAuth?.(); return; }
+                    if (!hasActiveSubscription && !isAdmin) { onShowSubscription(); return; }
+                    navigate(`/play/${series.id}?type=series&ep=${ep.episodeNumber}&season=${ep.season || 1}`);
+                  }}
+                  className="flex flex-col items-center group focus:outline-none"
+                >
+                  <div className="relative bg-card w-full hover:scale-105 transition-all duration-200 border-2 border-transparent rounded-lg overflow-hidden group-focus:border-green-500 group-active:border-green-500 hover:border-[hsl(var(--glow))] hover:shadow-[0_0_12px_hsl(var(--glow)/0.4)]">
+                    <div className="relative w-full" style={{ aspectRatio: "2/3" }}>
+                      <div className="absolute inset-0 bg-secondary" />
+                      <img
+                        src={series.image || "/placeholder.svg"}
+                        alt={`${series.title} S${ep.season || 1} E${ep.episodeNumber}`}
+                        className="absolute inset-0 w-full h-full object-cover"
+                        loading="lazy"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
+                      {/* Episode badge */}
+                      <div className="absolute top-1 right-1 px-2 py-1 bg-primary/90 backdrop-blur-sm text-primary-foreground text-[9px] md:text-[10px] font-bold rounded-md shadow-lg border border-primary-foreground/20">
+                        S{ep.season || 1} E{ep.episodeNumber}
+                      </div>
+                      {/* Title overlay */}
+                      <div className="absolute bottom-0 left-0 right-0 p-1.5">
+                        <p className="text-[9px] md:text-[10px] text-white font-bold leading-tight truncate drop-shadow-lg">{series.title}</p>
+                        <p className="text-[7px] md:text-[8px] text-white/70 truncate">{ep.title}</p>
+                      </div>
+                    </div>
+                  </div>
+                </button>
+              ));
+            })}
+          </div>
         </section>
       )}
 
