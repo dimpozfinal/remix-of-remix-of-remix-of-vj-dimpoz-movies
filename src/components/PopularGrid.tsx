@@ -64,6 +64,7 @@ export default function PopularGrid({
   useEffect(() => {
     setSelectedSeries(null);
     setSelectedSeason(1);
+    setShowAllEpisodes(false);
   }, [activeFilter, searchQuery, categoryFilter]);
 
   // Open subscription modal when subscription filter is selected
