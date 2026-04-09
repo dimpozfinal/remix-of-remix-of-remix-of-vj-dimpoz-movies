@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { database } from "@/lib/firebase";
 import { ref, onValue, get } from "firebase/database";
+import { ChevronRight } from "lucide-react";
 import { Play, Star } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/lib/auth-context";
