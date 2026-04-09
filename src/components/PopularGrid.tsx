@@ -55,6 +55,8 @@ export default function PopularGrid({
   const [loading, setLoading] = useState(true);
   const [selectedSeries, setSelectedSeries] = useState<Movie | null>(null);
   const [selectedSeason, setSelectedSeason] = useState(1);
+  const [showAllEpisodes, setShowAllEpisodes] = useState(false);
+
   const navigate = useNavigate();
   const { user, isAdmin } = useAuth();
   const { hasActiveSubscription } = useSubscription();
