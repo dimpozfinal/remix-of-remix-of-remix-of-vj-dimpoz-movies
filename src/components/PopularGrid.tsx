@@ -342,32 +342,12 @@ export default function PopularGrid({
   // Home view: Recently Added + Latest Episodes + Popular
   return (
     <div className="mb-4 pb-16 md:pb-0 space-y-6">
-      {/* Recently Added */}
-      {recentlyAdded.length > 0 && (
-        <section>
-          <h2 className="text-sm font-bold text-foreground mb-3">🆕 Recently Added</h2>
-          <ContentGrid
-            items={recentlyAdded}
-            onPosterClick={handlePosterClick}
-            onSelectSeries={setSelectedSeries}
-            user={user}
-            onRequireAuth={onRequireAuth}
-            onShowSubscription={onShowSubscription}
-            hasActiveSubscription={hasActiveSubscription}
-            isAdmin={isAdmin}
-            showDateBadge
-          />
-        </section>
-      )}
-
-      {/* Latest Episodes - each episode shown independently */}
+      {/* Latest Episodes - shown first for quick access */}
       {latestEpisodes.length > 0 && (() => {
-        // Flatten all episodes and sort by latest first
         const allEps = latestEpisodes.flatMap((series) => {
           const eps = Array.isArray(series.episodes) ? series.episodes : Object.values(series.episodes || {}) as Episode[];
           return eps.map((ep) => ({ series, ep }));
         }).sort((a, b) => {
-          // Sort by episode-level createdAt if available, then series timestamp, then highest episode number
           const epTsA = (a.ep as any).createdAt || (a.ep as any).addedAt || "";
           const epTsB = (b.ep as any).createdAt || (b.ep as any).addedAt || "";
           if (epTsA && epTsB) {
@@ -459,6 +439,25 @@ export default function PopularGrid({
           </section>
         );
       })()}
+
+      {/* Recently Added */}
+      {recentlyAdded.length > 0 && (
+        <section>
+          <h2 className="text-sm font-bold text-foreground mb-3">🆕 Recently Added</h2>
+          <ContentGrid
+            items={recentlyAdded}
+            onPosterClick={handlePosterClick}
+            onSelectSeries={setSelectedSeries}
+            user={user}
+            onRequireAuth={onRequireAuth}
+            onShowSubscription={onShowSubscription}
+            hasActiveSubscription={hasActiveSubscription}
+            isAdmin={isAdmin}
+            showDateBadge
+          />
+        </section>
+      )}
+
 
       {/* Popular */}
       <section>
