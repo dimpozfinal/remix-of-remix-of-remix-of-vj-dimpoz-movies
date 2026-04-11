@@ -367,9 +367,18 @@ export default function PopularGrid({
           const eps = Array.isArray(series.episodes) ? series.episodes : Object.values(series.episodes || {}) as Episode[];
           return eps.map((ep) => ({ series, ep }));
         }).sort((a, b) => {
+          // Sort by episode-level createdAt if available, then series timestamp, then highest episode number
+          const epTsA = (a.ep as any).createdAt || (a.ep as any).addedAt || "";
+          const epTsB = (b.ep as any).createdAt || (b.ep as any).addedAt || "";
+          if (epTsA && epTsB) {
+            const diff = new Date(epTsB).getTime() - new Date(epTsA).getTime();
+            if (diff !== 0) return diff;
+          }
           const tsA = a.series.updatedAt || a.series.createdAt || "";
           const tsB = b.series.updatedAt || b.series.createdAt || "";
-          return new Date(tsB).getTime() - new Date(tsA).getTime() || b.ep.episodeNumber - a.ep.episodeNumber;
+          const seriesDiff = new Date(tsB).getTime() - new Date(tsA).getTime();
+          if (seriesDiff !== 0) return seriesDiff;
+          return b.ep.episodeNumber - a.ep.episodeNumber;
         });
         const visibleEps = showAllEpisodes ? allEps : allEps.slice(0, 8);
 
