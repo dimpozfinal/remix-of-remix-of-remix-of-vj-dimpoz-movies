@@ -342,6 +342,104 @@ export default function PopularGrid({
   // Home view: Recently Added + Latest Episodes + Popular
   return (
     <div className="mb-4 pb-16 md:pb-0 space-y-6">
+      {/* Latest Episodes - shown first for quick access */}
+      {latestEpisodes.length > 0 && (() => {
+        const allEps = latestEpisodes.flatMap((series) => {
+          const eps = Array.isArray(series.episodes) ? series.episodes : Object.values(series.episodes || {}) as Episode[];
+          return eps.map((ep) => ({ series, ep }));
+        }).sort((a, b) => {
+          const epTsA = (a.ep as any).createdAt || (a.ep as any).addedAt || "";
+          const epTsB = (b.ep as any).createdAt || (b.ep as any).addedAt || "";
+          if (epTsA && epTsB) {
+            const diff = new Date(epTsB).getTime() - new Date(epTsA).getTime();
+            if (diff !== 0) return diff;
+          }
+          const tsA = a.series.updatedAt || a.series.createdAt || "";
+          const tsB = b.series.updatedAt || b.series.createdAt || "";
+          const seriesDiff = new Date(tsB).getTime() - new Date(tsA).getTime();
+          if (seriesDiff !== 0) return seriesDiff;
+          return b.ep.episodeNumber - a.ep.episodeNumber;
+        });
+        const visibleEps = showAllEpisodes ? allEps : allEps.slice(0, 8);
+
+        return (
+          <section>
+            <div className="flex items-center justify-between mb-3">
+              <h2 className="text-sm font-bold text-foreground">📺 New Episodes</h2>
+              {allEps.length > 8 && (
+                <button
+                  onClick={() => setShowAllEpisodes(!showAllEpisodes)}
+                  className="flex items-center gap-0.5 text-xs text-primary font-medium hover:underline"
+                >
+                  {showAllEpisodes ? "Show Less" : "More"}
+                  <ChevronRight className={`w-3.5 h-3.5 transition-transform ${showAllEpisodes ? "rotate-90" : ""}`} />
+                </button>
+              )}
+            </div>
+            {!showAllEpisodes ? (
+              <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
+                {visibleEps.map(({ series, ep }, idx) => (
+                  <button
+                    key={`${series.id}-s${ep.season || 1}-e${ep.episodeNumber}-${idx}`}
+                    onClick={() => {
+                      if (!user) { onRequireAuth?.(); return; }
+                      if (!hasActiveSubscription && !isAdmin) { onShowSubscription(); return; }
+                      navigate(`/play/${series.id}?type=series&ep=${ep.episodeNumber}&season=${ep.season || 1}`);
+                    }}
+                    className="flex-shrink-0 w-[100px] md:w-[120px] flex flex-col items-center group focus:outline-none"
+                  >
+                    <div className="relative bg-card w-full hover:scale-105 transition-all duration-200 border-2 border-transparent rounded-lg overflow-hidden group-focus:border-primary group-active:border-primary hover:border-[hsl(var(--glow))] hover:shadow-[0_0_12px_hsl(var(--glow)/0.4)]">
+                      <div className="relative w-full" style={{ aspectRatio: "2/3" }}>
+                        <div className="absolute inset-0 bg-secondary" />
+                        <img src={series.image || "/placeholder.svg"} alt={`${series.title} S${ep.season || 1} E${ep.episodeNumber}`} className="absolute inset-0 w-full h-full object-cover" loading="lazy" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
+                        <div className="absolute top-1 right-1 px-2 py-1 bg-primary/90 backdrop-blur-sm text-primary-foreground text-[9px] md:text-[10px] font-bold rounded-md shadow-lg border border-primary-foreground/20">
+                          S{ep.season || 1} E{ep.episodeNumber}
+                        </div>
+                        <div className="absolute bottom-0 left-0 right-0 p-1.5">
+                          <p className="text-[9px] md:text-[10px] text-white font-bold leading-tight truncate drop-shadow-lg">{series.title}</p>
+                          <p className="text-[7px] md:text-[8px] text-white/70 truncate">{ep.title}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </button>
+                ))}
+              </div>
+            ) : (
+              <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-2 md:gap-2.5 w-full overflow-hidden">
+                {allEps.map(({ series, ep }, idx) => (
+                  <button
+                    key={`${series.id}-s${ep.season || 1}-e${ep.episodeNumber}-${idx}`}
+                    onClick={() => {
+                      if (!user) { onRequireAuth?.(); return; }
+                      if (!hasActiveSubscription && !isAdmin) { onShowSubscription(); return; }
+                      navigate(`/play/${series.id}?type=series&ep=${ep.episodeNumber}&season=${ep.season || 1}`);
+                    }}
+                    className="flex flex-col items-center group focus:outline-none"
+                  >
+                    <div className="relative bg-card w-full hover:scale-105 transition-all duration-200 border-2 border-transparent rounded-lg overflow-hidden group-focus:border-primary group-active:border-primary hover:border-[hsl(var(--glow))] hover:shadow-[0_0_12px_hsl(var(--glow)/0.4)]">
+                      <div className="relative w-full" style={{ aspectRatio: "2/3" }}>
+                        <div className="absolute inset-0 bg-secondary" />
+                        <img src={series.image || "/placeholder.svg"} alt={`${series.title} S${ep.season || 1} E${ep.episodeNumber}`} className="absolute inset-0 w-full h-full object-cover" loading="lazy" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
+                        <div className="absolute top-1 right-1 px-2 py-1 bg-primary/90 backdrop-blur-sm text-primary-foreground text-[9px] md:text-[10px] font-bold rounded-md shadow-lg border border-primary-foreground/20">
+                          S{ep.season || 1} E{ep.episodeNumber}
+                        </div>
+                        <div className="absolute bottom-0 left-0 right-0 p-1.5">
+                          <p className="text-[9px] md:text-[10px] text-white font-bold leading-tight truncate drop-shadow-lg">{series.title}</p>
+                          <p className="text-[7px] md:text-[8px] text-white/70 truncate">{ep.title}</p>
+                        </div>
+                      </div>
+                    </div>
+                    <p className="mt-1 text-foreground text-[8px] md:text-[10px] font-medium text-center line-clamp-2 leading-tight w-full px-0.5">{series.title}</p>
+                  </button>
+                ))}
+              </div>
+            )}
+          </section>
+        );
+      })()}
+
       {/* Recently Added */}
       {recentlyAdded.length > 0 && (
         <section>
