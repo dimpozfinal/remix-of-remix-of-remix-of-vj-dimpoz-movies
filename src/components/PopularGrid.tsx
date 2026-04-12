@@ -362,23 +362,24 @@ export default function PopularGrid({
 
       {/* Latest Episodes - each episode shown independently */}
       {latestEpisodes.length > 0 && (() => {
-        // Flatten all episodes and sort by latest first
-        const allEps = latestEpisodes.flatMap((series) => {
+        // Only show the latest added episode per series, sorted by most recent first
+        const allEps = latestEpisodes.map((series) => {
           const eps = Array.isArray(series.episodes) ? series.episodes : Object.values(series.episodes || {}) as Episode[];
-          return eps.map((ep) => ({ series, ep }));
-        }).sort((a, b) => {
-          // Sort by episode-level createdAt if available, then series timestamp, then highest episode number
-          const epTsA = (a.ep as any).createdAt || (a.ep as any).addedAt || "";
-          const epTsB = (b.ep as any).createdAt || (b.ep as any).addedAt || "";
-          if (epTsA && epTsB) {
-            const diff = new Date(epTsB).getTime() - new Date(epTsA).getTime();
-            if (diff !== 0) return diff;
-          }
-          const tsA = a.series.updatedAt || a.series.createdAt || "";
-          const tsB = b.series.updatedAt || b.series.createdAt || "";
-          const seriesDiff = new Date(tsB).getTime() - new Date(tsA).getTime();
-          if (seriesDiff !== 0) return seriesDiff;
-          return b.ep.episodeNumber - a.ep.episodeNumber;
+          // Pick the most recently added episode (by timestamp or highest episode number)
+          const sorted = [...eps].sort((a, b) => {
+            const tsA = (a as any).createdAt || (a as any).addedAt || "";
+            const tsB = (b as any).createdAt || (b as any).addedAt || "";
+            if (tsA && tsB) {
+              const diff = new Date(tsB).getTime() - new Date(tsA).getTime();
+              if (diff !== 0) return diff;
+            }
+            return b.episodeNumber - a.episodeNumber;
+          });
+          return sorted.length > 0 ? { series, ep: sorted[0] } : null;
+        }).filter(Boolean as unknown as (v: any) => v is { series: any; ep: Episode }).sort((a, b) => {
+          const epTsA = (a.ep as any).createdAt || (a.ep as any).addedAt || a.series.updatedAt || a.series.createdAt || "";
+          const epTsB = (b.ep as any).createdAt || (b.ep as any).addedAt || b.series.updatedAt || b.series.createdAt || "";
+          return new Date(epTsB).getTime() - new Date(epTsA).getTime();
         });
         const visibleEps = showAllEpisodes ? allEps : allEps.slice(0, 8);
 
