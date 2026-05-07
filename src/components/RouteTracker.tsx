@@ -43,15 +43,6 @@ export default function RouteTracker() {
     if (section !== "admin") {
       trackNavigation(user.uid, section, user.email || undefined);
     }
-    trackActivity({
-      userId: user.uid,
-      userEmail: user.email || undefined,
-      userName: user.displayName || undefined,
-      type: "navigation",
-      action: "page_view",
-      target: section,
-      path: location.pathname,
-    });
   }, [location.pathname, user]);
 
   // Global click + input tracking
