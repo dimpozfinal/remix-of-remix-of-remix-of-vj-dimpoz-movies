@@ -15,6 +15,18 @@ interface NavActivity {
   timestamp: string;
 }
 
+interface UserActivity {
+  userId: string;
+  userEmail?: string;
+  userName?: string;
+  type: string;
+  action: string;
+  target?: string;
+  path?: string;
+  details?: Record<string, any>;
+  timestamp: string;
+}
+
 const sectionIcons: Record<string, typeof Home> = {
   home: Home, movies: Film, series: Tv, music: Music,
   "top-rated": Star, search: Search, animation: Film,
@@ -31,6 +43,7 @@ export default function AdminPage() {
   const navigate = useNavigate();
   const [stats, setStats] = useState({ movies: 0, series: 0, users: 0 });
   const [navActivities, setNavActivities] = useState<NavActivity[]>([]);
+  const [userActivities, setUserActivities] = useState<UserActivity[]>([]);
 
   useEffect(() => {
     if (!loading && (!user || !isAdmin)) {
@@ -68,7 +81,21 @@ export default function AdminPage() {
       }
     });
 
-    return () => unsubNav();
+    // Real-time listener for full user activity (clicks, navigation, inputs)
+    const actRef = dbRef(database, "user_activity");
+    const unsubAct = onValue(actRef, (snap) => {
+      if (snap.exists()) {
+        const list = Object.values(snap.val()) as UserActivity[];
+        setUserActivities(
+          list.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()).slice(0, 200)
+        );
+      }
+    });
+
+    return () => {
+      unsubNav();
+      unsubAct();
+    };
   }, [isAdmin]);
 
   if (loading) {
@@ -267,7 +294,54 @@ export default function AdminPage() {
             </div>
           </div>
 
-          {/* Security Section */}
+          {/* Full User Activity Log */}
+          <div>
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">Live User Activity Log</h2>
+              <span className="text-[10px] text-muted-foreground">{userActivities.length} recent events</span>
+            </div>
+            <Card className="p-4 bg-card border-border/50">
+              {userActivities.length === 0 ? (
+                <p className="text-muted-foreground text-xs text-center py-8">No activity captured yet</p>
+              ) : (
+                <div className="space-y-1 max-h-[420px] overflow-y-auto pr-1">
+                  {userActivities.map((act, i) => {
+                    const typeColor =
+                      act.type === "click" ? "hsl(200, 80%, 55%)" :
+                      act.type === "navigation" ? "hsl(280, 60%, 60%)" :
+                      act.type === "input" ? "hsl(140, 60%, 50%)" :
+                      "hsl(var(--muted-foreground))";
+                    const who = act.userName || act.userEmail?.split("@")[0] || "User";
+                    return (
+                      <div key={i} className="flex items-start gap-2 p-2 rounded-md bg-secondary/40 border border-border/40 text-[11px]">
+                        <span
+                          className="inline-block px-1.5 py-0.5 rounded text-[9px] font-bold uppercase flex-shrink-0"
+                          style={{ background: `${typeColor}25`, color: typeColor }}
+                        >
+                          {act.type}
+                        </span>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-foreground truncate">
+                            <span className="font-semibold">{who}</span>
+                            <span className="text-muted-foreground"> · {act.userEmail || "—"}</span>
+                          </p>
+                          <p className="text-muted-foreground truncate">
+                            <span className="text-foreground/80">{act.action}</span>
+                            {act.target ? <> → <span className="text-foreground">{act.target}</span></> : null}
+                            {act.path ? <span className="text-muted-foreground"> · {act.path}</span> : null}
+                          </p>
+                        </div>
+                        <span className="text-[9px] text-muted-foreground flex-shrink-0 whitespace-nowrap">
+                          {timeAgo(act.timestamp)}
+                        </span>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </Card>
+          </div>
+
           <div>
             <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-4">Security</h2>
             <AdminChangePassword />

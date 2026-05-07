@@ -42,11 +42,17 @@ export default function AdminWalletPage() {
     setFetching(true);
     try {
       const [balRes, txRes] = await Promise.all([getWalletBalance(), getTransactions()]);
-      if (balRes.success && balRes.relworx) {
-        setBalance(balRes.relworx.balance ?? balRes.relworx.available_balance ?? 0);
+      if (balRes?.success) {
+        const bal =
+          balRes.balance ??
+          balRes.available_balance ??
+          balRes.relworx?.balance ??
+          balRes.relworx?.available_balance ??
+          0;
+        setBalance(Number(bal) || 0);
       }
-      if (txRes.success && txRes.relworx) {
-        const list = txRes.relworx.transactions ?? [];
+      if (txRes?.success) {
+        const list = txRes.transactions ?? txRes.relworx?.transactions ?? [];
         setTransactions(list);
       }
     } catch (e) {
