@@ -43,6 +43,7 @@ export default function AdminPage() {
   const navigate = useNavigate();
   const [stats, setStats] = useState({ movies: 0, series: 0, users: 0 });
   const [navActivities, setNavActivities] = useState<NavActivity[]>([]);
+  const [userActivities, setUserActivities] = useState<UserActivity[]>([]);
 
   useEffect(() => {
     if (!loading && (!user || !isAdmin)) {
