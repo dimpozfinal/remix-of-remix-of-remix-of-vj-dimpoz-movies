@@ -81,7 +81,21 @@ export default function AdminPage() {
       }
     });
 
-    return () => unsubNav();
+    // Real-time listener for full user activity (clicks, navigation, inputs)
+    const actRef = dbRef(database, "user_activity");
+    const unsubAct = onValue(actRef, (snap) => {
+      if (snap.exists()) {
+        const list = Object.values(snap.val()) as UserActivity[];
+        setUserActivities(
+          list.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()).slice(0, 200)
+        );
+      }
+    });
+
+    return () => {
+      unsubNav();
+      unsubAct();
+    };
   }, [isAdmin]);
 
   if (loading) {
