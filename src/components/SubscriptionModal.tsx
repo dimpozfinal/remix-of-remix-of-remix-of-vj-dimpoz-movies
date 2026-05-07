@@ -63,12 +63,27 @@ export default function SubscriptionModal({ isOpen, onClose }: SubscriptionModal
 
     try {
       const result = await requestPayment(msisdn, selectedPlan.price, `DIMPOZ ${selectedPlan.name} Subscription`);
-      if (result.success && result.relworx?.internal_reference) {
-        internalRefRef.current = result.relworx.internal_reference;
+      const internalRef = result?.internal_reference || result?.relworx?.internal_reference;
+      if (result?.success && internalRef) {
+        internalRefRef.current = internalRef;
+        // Log pending transaction for admin
+        try {
+          await set(ref(database, `transactions/${internalRef}`), {
+            userId: user.uid,
+            userEmail: user.email || "",
+            planId: selectedPlan.id,
+            planName: selectedPlan.name,
+            amount: selectedPlan.price,
+            msisdn,
+            referenceId: internalRef,
+            status: "pending",
+            timestamp: new Date().toISOString(),
+          });
+        } catch (e) { console.error("log tx error", e); }
         setStatusMsg("Payment prompt sent! Waiting for confirmation...");
         startPolling();
       } else {
-        setStatusMsg(result.relworx?.message || result.message || "Failed to initiate payment. Please try again.");
+        setStatusMsg(result?.message || result?.relworx?.message || "Failed to initiate payment. Please try again.");
         setStep("failed");
       }
     } catch (err: any) {
