@@ -15,6 +15,18 @@ interface NavActivity {
   timestamp: string;
 }
 
+interface UserActivity {
+  userId: string;
+  userEmail?: string;
+  userName?: string;
+  type: string;
+  action: string;
+  target?: string;
+  path?: string;
+  details?: Record<string, any>;
+  timestamp: string;
+}
+
 const sectionIcons: Record<string, typeof Home> = {
   home: Home, movies: Film, series: Tv, music: Music,
   "top-rated": Star, search: Search, animation: Film,
