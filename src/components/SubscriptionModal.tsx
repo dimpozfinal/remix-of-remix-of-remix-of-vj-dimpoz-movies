@@ -106,15 +106,23 @@ export default function SubscriptionModal({ isOpen, onClose }: SubscriptionModal
       try {
         const res = await checkRequestStatus(internalRefRef.current);
         console.log("Payment status poll:", res);
-        const status = res.relworx?.request_status || res.relworx?.status || res.request_status;
+        const status = res.request_status || res.status || res.relworx?.request_status || res.relworx?.status;
+        const finalize = async (finalStatus: string, message?: string) => {
+          try {
+            await set(ref(database, `transactions/${internalRefRef.current}/status`), finalStatus);
+            if (message) await set(ref(database, `transactions/${internalRefRef.current}/message`), message);
+          } catch {}
+        };
         if (status === "success") {
           stopPolling();
+          await finalize("successful");
           setStatusMsg("Payment confirmed! Activating subscription...");
           await activateSubscription();
           setStep("success");
         } else if (status === "failed" || status === "cancelled") {
           stopPolling();
-          setStatusMsg(res.relworx?.message || "Payment failed or was declined.");
+          await finalize("failed", res.message);
+          setStatusMsg(res.message || res.relworx?.message || "Payment failed or was declined.");
           setStep("failed");
         } else {
           setStatusMsg(`Waiting for payment confirmation... (${attempts})`);
