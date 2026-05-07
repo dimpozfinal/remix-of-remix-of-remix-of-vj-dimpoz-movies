@@ -1,5 +1,5 @@
 import { database } from "./firebase";
-import { ref as dbRef, push, serverTimestamp } from "firebase/database";
+import { ref as dbRef, push } from "firebase/database";
 
 export function trackNavigation(userId: string, section: string, userEmail?: string) {
   if (!userId || !section) return;
@@ -10,4 +10,31 @@ export function trackNavigation(userId: string, section: string, userEmail?: str
     section,
     timestamp: new Date().toISOString(),
   }).catch((err) => console.error("Track nav error:", err));
+}
+
+export interface ActivityEvent {
+  userId: string;
+  userEmail?: string;
+  userName?: string;
+  type: "click" | "navigation" | "input" | "scroll" | "custom";
+  action: string;
+  target?: string;
+  path?: string;
+  details?: Record<string, any>;
+}
+
+export function trackActivity(event: ActivityEvent) {
+  if (!event.userId) return;
+  const ref = dbRef(database, "user_activity");
+  push(ref, {
+    userId: event.userId,
+    userEmail: event.userEmail || "",
+    userName: event.userName || "",
+    type: event.type,
+    action: event.action,
+    target: event.target || "",
+    path: event.path || (typeof window !== "undefined" ? window.location.pathname : ""),
+    details: event.details || {},
+    timestamp: new Date().toISOString(),
+  }).catch((err) => console.error("Track activity error:", err));
 }
