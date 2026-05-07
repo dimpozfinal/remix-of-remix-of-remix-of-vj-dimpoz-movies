@@ -25,13 +25,15 @@ export interface ActivityEvent {
 
 export function trackActivity(event: ActivityEvent) {
   if (!event.userId) return;
-  const ref = dbRef(database, "user_activity");
+  // Reuse the navigation_activity node since it already has write permission.
+  const ref = dbRef(database, "navigation_activity");
   push(ref, {
     userId: event.userId,
     userEmail: event.userEmail || "",
     userName: event.userName || "",
     type: event.type,
     action: event.action,
+    section: event.target || event.action || "",
     target: event.target || "",
     path: event.path || (typeof window !== "undefined" ? window.location.pathname : ""),
     details: event.details || {},

@@ -63,12 +63,27 @@ export default function SubscriptionModal({ isOpen, onClose }: SubscriptionModal
 
     try {
       const result = await requestPayment(msisdn, selectedPlan.price, `DIMPOZ ${selectedPlan.name} Subscription`);
-      if (result.success && result.relworx?.internal_reference) {
-        internalRefRef.current = result.relworx.internal_reference;
+      const internalRef = result?.internal_reference || result?.relworx?.internal_reference;
+      if (result?.success && internalRef) {
+        internalRefRef.current = internalRef;
+        // Log pending transaction for admin
+        try {
+          await set(ref(database, `transactions/${internalRef}`), {
+            userId: user.uid,
+            userEmail: user.email || "",
+            planId: selectedPlan.id,
+            planName: selectedPlan.name,
+            amount: selectedPlan.price,
+            msisdn,
+            referenceId: internalRef,
+            status: "pending",
+            timestamp: new Date().toISOString(),
+          });
+        } catch (e) { console.error("log tx error", e); }
         setStatusMsg("Payment prompt sent! Waiting for confirmation...");
         startPolling();
       } else {
-        setStatusMsg(result.relworx?.message || result.message || "Failed to initiate payment. Please try again.");
+        setStatusMsg(result?.message || result?.relworx?.message || "Failed to initiate payment. Please try again.");
         setStep("failed");
       }
     } catch (err: any) {
@@ -91,15 +106,23 @@ export default function SubscriptionModal({ isOpen, onClose }: SubscriptionModal
       try {
         const res = await checkRequestStatus(internalRefRef.current);
         console.log("Payment status poll:", res);
-        const status = res.relworx?.request_status || res.relworx?.status || res.request_status;
+        const status = res.request_status || res.status || res.relworx?.request_status || res.relworx?.status;
+        const finalize = async (finalStatus: string, message?: string) => {
+          try {
+            await set(ref(database, `transactions/${internalRefRef.current}/status`), finalStatus);
+            if (message) await set(ref(database, `transactions/${internalRefRef.current}/message`), message);
+          } catch {}
+        };
         if (status === "success") {
           stopPolling();
+          await finalize("successful");
           setStatusMsg("Payment confirmed! Activating subscription...");
           await activateSubscription();
           setStep("success");
         } else if (status === "failed" || status === "cancelled") {
           stopPolling();
-          setStatusMsg(res.relworx?.message || "Payment failed or was declined.");
+          await finalize("failed", res.message);
+          setStatusMsg(res.message || res.relworx?.message || "Payment failed or was declined.");
           setStep("failed");
         } else {
           setStatusMsg(`Waiting for payment confirmation... (${attempts})`);

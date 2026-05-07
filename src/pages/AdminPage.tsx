@@ -81,8 +81,8 @@ export default function AdminPage() {
       }
     });
 
-    // Real-time listener for full user activity (clicks, navigation, inputs)
-    const actRef = dbRef(database, "user_activity");
+    // User activity is now stored under the same navigation_activity node.
+    const actRef = dbRef(database, "navigation_activity");
     const unsubAct = onValue(actRef, (snap) => {
       if (snap.exists()) {
         const list = Object.values(snap.val()) as UserActivity[];
