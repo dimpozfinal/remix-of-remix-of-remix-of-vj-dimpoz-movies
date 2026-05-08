@@ -19,148 +19,292 @@
     "movies": {
       ".read": true,
       ".write": "auth != null && (auth.token.email === 'arthurdimpoz@gmail.com')",
+      ".indexOn": ["createdAt", "isTrending", "isRecentlyAdded", "category", "genre"],
       "$movieId": {
         ".validate": "newData.hasChildren(['title', 'image', 'rating', 'year'])",
-        "title": { ".validate": "newData.isString() && newData.val().length > 0" },
-        "image": { ".validate": "newData.isString() && newData.val().length > 0" },
-        "rating": { ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 10" },
-        "year": { ".validate": "newData.isNumber() && newData.val() >= 1900 && newData.val() <= 2100" },
-        "videoUrl": { ".validate": "newData.isString()" },
-        "category": { ".validate": "newData.isString()" },
-        "genre": { ".validate": "newData.isString()" },
-        "createdAt": { ".validate": "newData.isString()" },
-        "streamlink": { ".validate": "newData.isString()" },
-        "description": { ".validate": "newData.isString()" },
-        "country": { ".validate": "newData.isString()" },
-        "isTrending": { ".validate": "newData.isBoolean()" },
-        "isRecentlyAdded": { ".validate": "newData.isBoolean()" }
+        "title": { ".validate": "newData.isString() && newData.val().length > 0" 
+        },
+        "image": { 
+          ".validate": "newData.isString() && newData.val().length > 0" 
+        },
+        "rating": { 
+          ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 10" 
+        },
+        "year": { 
+          ".validate": "newData.isNumber() && newData.val() >= 1900 && newData.val() <= 2100" 
+        },
+        "videoUrl": { 
+          ".validate": "newData.isString()" 
+        },
+        "category": { 
+          ".validate": "newData.isString()" 
+        },
+        "genre": { 
+          ".validate": "newData.isString()" 
+        },
+        "createdAt": { 
+          ".validate": "newData.isString()" 
+        },
+        "streamlink": { 
+          ".validate": "newData.isString()" 
+        },
+        "description": { 
+          ".validate": "newData.isString()" 
+        },
+        "country": { 
+          ".validate": "newData.isString()" 
+        },
+        "isTrending": { 
+          ".validate": "newData.isBoolean()" 
+        },
+        "isRecentlyAdded": { 
+          ".validate": "newData.isBoolean()" 
+        }
       }
     },
     "series": {
       ".read": true,
       ".write": "auth != null && (auth.token.email === 'arthurdimpoz@gmail.com')",
+      ".indexOn": ["createdAt", "updatedAt", "isTrending", "isRecentlyAdded", "category", "genre"],
       "$seriesId": {
         ".validate": "newData.hasChildren(['title', 'image', 'rating', 'year', 'episodes'])",
-        "title": { ".validate": "newData.isString() && newData.val().length > 0" },
-        "image": { ".validate": "newData.isString() && newData.val().length > 0" },
-        "rating": { ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 10" },
-        "year": { ".validate": "newData.isNumber() && newData.val() >= 1900 && newData.val() <= 2100" },
-        "episodes": { ".validate": "newData.isString() || newData.hasChildren()" },
-        "videoUrl": { ".validate": "newData.isString()" },
-        "category": { ".validate": "newData.isString()" },
-        "genre": { ".validate": "newData.isString()" },
-        "createdAt": { ".validate": "newData.isString()" },
-        "updatedAt": { ".validate": "newData.isString()" },
-        "description": { ".validate": "newData.isString()" },
-        "country": { ".validate": "newData.isString()" },
-        "seasons": { ".validate": "newData.isNumber()" },
-        "isTrending": { ".validate": "newData.isBoolean()" },
-        "isRecentlyAdded": { ".validate": "newData.isBoolean()" }
+        "title": { 
+          ".validate": "newData.isString() && newData.val().length > 0" 
+        },
+        "image": { 
+          ".validate": "newData.isString() && newData.val().length > 0" 
+        },
+        "rating": { 
+          ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 10" 
+        },
+        "year": { 
+          ".validate": "newData.isNumber() && newData.val() >= 1900 && newData.val() <= 2100" 
+        },
+        "episodes": { 
+          ".validate": "newData.isString() || newData.hasChildren()" 
+        },
+        "videoUrl": { 
+          ".validate": "newData.isString()" 
+        },
+        "category": { 
+          ".validate": "newData.isString()" 
+        },
+        "genre": { 
+          ".validate": "newData.isString()" 
+        },
+        "createdAt": { 
+          ".validate": "newData.isString()" 
+        },
+        "updatedAt": { 
+          ".validate": "newData.isString()" 
+        },
+        "description": { 
+          ".validate": "newData.isString()" 
+        },
+        "country": { 
+          ".validate": "newData.isString()" 
+        },
+        "seasons": { 
+          ".validate": "newData.isNumber()" 
+        },
+        "isTrending": { 
+          ".validate": "newData.isBoolean()" 
+        },
+        "isRecentlyAdded": { 
+          ".validate": "newData.isBoolean()" 
+        }
       }
     },
     "originals": {
       ".read": true,
-      ".write": "auth != null && (auth.token.email === 'arthurdimpoz@gmail.com')"
+      ".write": "auth != null && (auth.token.email === 'arthurdimpoz@gmail.com')",
+      ".indexOn": ["createdAt", "isTrending", "isRecentlyAdded"]
     },
     "music": {
       ".read": true,
       ".write": "auth != null && (auth.token.email === 'arthurdimpoz@gmail.com')",
+      ".indexOn": ["createdAt", "artist"],
       "$musicId": {
         ".validate": "newData.hasChildren(['title', 'image', 'artist'])",
-        "title": { ".validate": "newData.isString() && newData.val().length > 0" },
-        "image": { ".validate": "newData.isString() && newData.val().length > 0" },
-        "artist": { ".validate": "newData.isString() && newData.val().length > 0" },
-        "videoUrl": { ".validate": "newData.isString()" },
-        "year": { ".validate": "newData.isNumber() && newData.val() >= 1900 && newData.val() <= 2100" },
-        "createdAt": { ".validate": "newData.isString()" }
+        "title": { 
+          ".validate": "newData.isString() && newData.val().length > 0" 
+        },
+        "image": { 
+          ".validate": "newData.isString() && newData.val().length > 0" 
+        },
+        "artist": { 
+          ".validate": "newData.isString() && newData.val().length > 0" 
+        },
+        "videoUrl": { 
+          ".validate": "newData.isString()" 
+        },
+        "year": { 
+          ".validate": "newData.isNumber() && newData.val() >= 1900 && newData.val() <= 2100" 
+        },
+        "createdAt": { 
+          ".validate": "newData.isString()" 
+        }
       }
     },
     "animation": {
       ".read": true,
       ".write": "auth != null && (auth.token.email === 'arthurdimpoz@gmail.com')",
+      ".indexOn": ["createdAt", "genre"],
       "$animationId": {
         ".validate": "newData.hasChildren(['title', 'image', 'rating', 'year'])",
-        "title": { ".validate": "newData.isString() && newData.val().length > 0" },
-        "image": { ".validate": "newData.isString() && newData.val().length > 0" },
-        "rating": { ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 10" },
-        "year": { ".validate": "newData.isNumber() && newData.val() >= 1900 && newData.val() <= 2100" },
-        "episodes": { ".validate": "newData.isString() || newData.hasChildren()" },
-        "videoUrl": { ".validate": "newData.isString()" },
-        "genre": { ".validate": "newData.isString()" },
-        "createdAt": { ".validate": "newData.isString()" }
+        "title": { 
+          ".validate": "newData.isString() && newData.val().length > 0" 
+        },
+        "image": { 
+          ".validate": "newData.isString() && newData.val().length > 0" 
+        },
+        "rating": { 
+          ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 10" 
+        },
+        "year": { 
+          ".validate": "newData.isNumber() && newData.val() >= 1900 && newData.val() <= 2100" 
+        },
+        "episodes": { 
+          ".validate": "newData.isString() || newData.hasChildren()" 
+        },
+        "videoUrl": { 
+          ".validate": "newData.isString()" 
+        },
+        "genre": { 
+          ".validate": "newData.isString()" 
+        },
+        "createdAt": { 
+          ".validate": "newData.isString()" 
+        }
       }
     },
     "carousel": {
       ".read": true,
       ".write": "auth != null && (auth.token.email === 'arthurdimpoz@gmail.com')",
+      ".indexOn": ["createdAt", "type"],
       "$carouselId": {
         ".validate": "newData.hasChildren(['title', 'subtitle', 'image'])",
-        "title": { ".validate": "newData.isString() && newData.val().length > 0" },
-        "subtitle": { ".validate": "newData.isString()" },
-        "image": { ".validate": "newData.isString() && newData.val().length > 0" },
-        "videoUrl": { ".validate": "newData.isString()" },
-        "type": { ".validate": "newData.isString()" },
-        "createdAt": { ".validate": "newData.isString()" }
+        "title": { 
+          ".validate": "newData.isString() && newData.val().length > 0" 
+        },
+        "subtitle": { 
+          ".validate": "newData.isString()" 
+        },
+        "image": { 
+          ".validate": "newData.isString() && newData.val().length > 0" 
+        },
+        "videoUrl": { 
+          ".validate": "newData.isString()" 
+        },
+        "type": { 
+          ".validate": "newData.isString()" 
+        },
+        "createdAt": { 
+          ".validate": "newData.isString()" 
+        }
       }
     },
     "subscriptions": {
       ".read": "auth != null && (auth.token.email === 'arthurdimpoz@gmail.com')",
       ".write": "auth != null && (auth.token.email === 'arthurdimpoz@gmail.com')",
+      ".indexOn": ["endDate", "active", "planId"],
       "$uid": {
         ".read": "auth != null && (auth.uid === $uid || auth.token.email === 'arthurdimpoz@gmail.com')",
         ".write": "auth != null && (auth.uid === $uid || auth.token.email === 'arthurdimpoz@gmail.com')",
         ".validate": "newData.hasChildren(['planId', 'startDate', 'endDate', 'active'])",
-        "planId": { ".validate": "newData.isString()" },
-        "startDate": { ".validate": "newData.isString()" },
-        "endDate": { ".validate": "newData.isString()" },
-        "active": { ".validate": "newData.isBoolean()" }
+        "planId": { 
+          ".validate": "newData.isString()" 
+        },
+        "startDate": { 
+          ".validate": "newData.isString()" 
+        },
+        "endDate": { 
+          ".validate": "newData.isString()" 
+        },
+        "active": { 
+          ".validate": "newData.isBoolean()" 
+        }
       }
     },
     "watchHistory": {
       ".read": "auth != null",
+      ".indexOn": ["lastWatched"],
       "$uid": {
         ".read": "auth != null && auth.uid === $uid",
         ".write": "auth != null && auth.uid === $uid",
+        ".indexOn": ["lastWatched"],
         "$contentId": {
           ".validate": "newData.hasChildren(['contentId', 'title', 'image', 'progress', 'lastWatched'])",
-          "contentId": { ".validate": "newData.isString() && newData.val().length > 0" },
-          "title": { ".validate": "newData.isString() && newData.val().length > 0" },
-          "image": { ".validate": "newData.isString()" },
-          "progress": { ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 100" },
-          "videoUrl": { ".validate": "newData.isString()" },
-          "type": { ".validate": "newData.isString()" },
-          "lastWatched": { ".validate": "newData.isNumber()" }
+          "contentId": { 
+            ".validate": "newData.isString() && newData.val().length > 0" 
+          },
+          "title": { 
+            ".validate": "newData.isString() && newData.val().length > 0" 
+          },
+          "image": { 
+            ".validate": "newData.isString()" 
+          },
+          "progress": { 
+            ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 100" 
+          },
+          "videoUrl": { 
+            ".validate": "newData.isString()" 
+          },
+          "type": { 
+            ".validate": "newData.isString()" 
+          },
+          "lastWatched": { 
+            ".validate": "newData.isNumber()" 
+          }
         }
       }
     },
     "continueWatching": {
       ".read": "auth != null",
+      ".indexOn": ["lastWatched"],
       "$uid": {
         ".read": "auth != null && (auth.uid === $uid || auth.token.email === 'arthurdimpoz@gmail.com')",
         ".write": "auth != null && (auth.uid === $uid || auth.token.email === 'arthurdimpoz@gmail.com')",
+        ".indexOn": ["lastWatched"],
         "$contentId": {
           ".validate": "newData.hasChildren(['contentId', 'title', 'image', 'progress', 'lastWatched'])",
-          "contentId": { ".validate": "newData.isString() && newData.val().length > 0" },
-          "title": { ".validate": "newData.isString() && newData.val().length > 0" },
-          "image": { ".validate": "newData.isString()" },
-          "progress": { ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 100" },
-          "contentType": { ".validate": "newData.isString()" },
-          "streamlink": { ".validate": "newData.isString()" },
-          "lastWatched": { ".validate": "newData.isNumber()" }
+          "contentId": { 
+            ".validate": "newData.isString() && newData.val().length > 0" 
+          },
+          "title": { 
+            ".validate": "newData.isString() && newData.val().length > 0" 
+          },
+          "image": { 
+            ".validate": "newData.isString()" 
+          },
+          "progress": { 
+            ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 100" 
+          },
+          "contentType": { 
+            ".validate": "newData.isString()" 
+          },
+          "streamlink": { 
+            ".validate": "newData.isString()" 
+          },
+          "lastWatched": { 
+            ".validate": "newData.isNumber()" 
+          }
         }
       }
     },
     "wallet": {
       ".read": "auth != null && (auth.token.email === 'arthurdimpoz@gmail.com')",
-      ".write": "auth != null",
+      ".write": "auth != null && (auth.token.email === 'arthurdimpoz@gmail.com')",
+      ".indexOn": ["updatedAt"],
       "balance": {
         ".read": "auth != null && (auth.token.email === 'arthurdimpoz@gmail.com')",
-        ".write": "auth != null",
+        ".write": "auth != null && (auth.token.email === 'arthurdimpoz@gmail.com')",
         ".validate": "newData.isNumber() || newData.hasChildren(['amount', 'updatedBy', 'updatedAt'])"
       },
       "transactions": {
         ".read": "auth != null && (auth.token.email === 'arthurdimpoz@gmail.com')",
-        ".write": "auth != null",
+        ".write": "auth != null && (auth.token.email === 'arthurdimpoz@gmail.com')",
+        ".indexOn": ["timestamp", "type"],
         "$txId": {
           ".validate": "newData.hasChildren(['type', 'amount', 'timestamp'])"
         }
@@ -169,34 +313,89 @@
     "transactions": {
       ".read": "auth != null && (auth.token.email === 'arthurdimpoz@gmail.com')",
       ".write": "auth != null",
-      ".indexOn": ["timestamp", "userId", "status"]
+      ".indexOn": ["timestamp", "userId", "status", "type"]
     },
     "navigation_activity": {
       ".read": "auth != null && (auth.token.email === 'arthurdimpoz@gmail.com')",
       ".write": "auth != null",
-      ".indexOn": ["timestamp", "userId", "section", "type"]
+      ".indexOn": ["timestamp", "userId", "section", "type", "action"]
     },
     "user_activity": {
       ".read": "auth != null && (auth.token.email === 'arthurdimpoz@gmail.com')",
       ".write": "auth != null",
-      ".indexOn": ["timestamp", "userId", "type"]
+      ".indexOn": ["timestamp", "userId", "type", "action"]
     },
     "users": {
       ".read": "auth != null && (auth.token.email === 'arthurdimpoz@gmail.com')",
       ".write": "auth != null && (auth.token.email === 'arthurdimpoz@gmail.com')",
+      ".indexOn": ["createdAt", "email", "lastActive"],
       "$uid": {
         ".read": "auth != null && (auth.uid === $uid || auth.token.email === 'arthurdimpoz@gmail.com')",
-        ".write": "auth != null && (auth.uid === $uid || auth.token.email === 'arthurdimpoz@gmail.com')"
+        ".write": "auth != null && (auth.uid === $uid || auth.token.email === 'arthurdimpoz@gmail.com')",
+        ".validate": "newData.hasChildren(['email', 'createdAt'])",
+        "email": { 
+          ".validate": "newData.isString() && newData.val().matches(/^[^\\s@]+@[^\\s@]+$/)" 
+        },
+        "displayName": { 
+          ".validate": "newData.isString()" 
+        },
+        "photoURL": { 
+          ".validate": "newData.isString()" 
+        },
+        "createdAt": { 
+          ".validate": "newData.isString() || newData.isNumber()" 
+        },
+        "lastActive": { 
+          ".validate": "newData.isString() || newData.isNumber()" 
+        },
+        "subscription": { 
+          ".validate": "newData.hasChildren(['planId', 'endDate', 'active'])" 
+        }
       }
     },
     "blockedDevices": {
       ".read": "auth != null && (auth.token.email === 'arthurdimpoz@gmail.com')",
       ".write": "auth != null && (auth.token.email === 'arthurdimpoz@gmail.com')",
+      ".indexOn": ["blockedAt"],
       "$deviceId": {
         ".validate": "newData.hasChildren(['blockedAt', 'reason'])",
-        "blockedAt": { ".validate": "newData.isString()" },
-        "reason": { ".validate": "newData.isString()" }
+        "blockedAt": { 
+          ".validate": "newData.isString()" 
+        },
+        "reason": { 
+          ".validate": "newData.isString()" 
+        }
       }
+    },
+    "paymentRequests": {
+      ".read": "auth != null && (auth.token.email === 'arthurdimpoz@gmail.com')",
+      ".write": "auth != null",
+      ".indexOn": ["timestamp", "userId", "status", "phoneNumber"]
+    },
+    "contentViews": {
+      ".read": "auth != null && (auth.token.email === 'arthurdimpoz@gmail.com')",
+      ".write": "auth != null",
+      ".indexOn": ["timestamp", "userId", "contentId", "contentType"]
+    },
+    "downloads": {
+      ".read": "auth != null && (auth.token.email === 'arthurdimpoz@gmail.com')",
+      ".write": "auth != null",
+      ".indexOn": ["timestamp", "userId", "contentId"]
+    },
+    "searchQueries": {
+      ".read": "auth != null && (auth.token.email === 'arthurdimpoz@gmail.com')",
+      ".write": "auth != null",
+      ".indexOn": ["timestamp", "userId", "query"]
+    },
+    "notifications": {
+      ".read": "auth != null",
+      ".write": "auth != null && (auth.token.email === 'arthurdimpoz@gmail.com')",
+      ".indexOn": ["timestamp", "userId", "read"]
+    },
+    "analytics": {
+      ".read": "auth != null && (auth.token.email === 'arthurdimpoz@gmail.com')",
+      ".write": "auth != null",
+      ".indexOn": ["timestamp", "event", "userId"]
     }
   }
 }
