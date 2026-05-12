@@ -340,12 +340,6 @@ export default function PlayPage() {
             Share
           </button>
         </div>
-        {is30Min && dlCounts && (
-          <div className="mt-2 flex items-center gap-2 text-[10px] text-muted-foreground">
-            <AlertTriangle className="w-3 h-3 text-amber-400" />
-            <span>3 Hour Pass: {dlCounts.movies}/{dlCounts.maxMovies} movie · {dlCounts.episodes}/{dlCounts.maxEpisodes} episodes downloaded (new content only)</span>
-          </div>
-        )}
       </div>
 
       {/* Content Info */}
