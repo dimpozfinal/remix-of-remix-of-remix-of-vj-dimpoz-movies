@@ -1,13 +1,12 @@
-// Download limit tracking for 30 Min Pass subscribers
-// Limits: max 3 series episodes + 1 movie per subscription session
+// Download limit tracking (legacy — no active plans use limits)
 
 const STORAGE_KEY = "download_tracker";
 
 interface DownloadTracker {
   planId: string;
   subscriptionStart: string;
-  movieDownloads: string[]; // content IDs
-  episodeDownloads: string[]; // "contentId-S1E2" format
+  movieDownloads: string[];
+  episodeDownloads: string[];
 }
 
 function getTracker(): DownloadTracker | null {
@@ -29,35 +28,21 @@ export function resetTracker(planId: string, subscriptionStart: string) {
 
 export function getDownloadCounts(): { movies: number; episodes: number; maxMovies: number; maxEpisodes: number } {
   const tracker = getTracker();
-  if (!tracker) return { movies: 0, episodes: 0, maxMovies: 1, maxEpisodes: 3 };
+  if (!tracker) return { movies: 0, episodes: 0, maxMovies: 0, maxEpisodes: 0 };
   return {
     movies: tracker.movieDownloads.length,
     episodes: tracker.episodeDownloads.length,
-    maxMovies: 1,
-    maxEpisodes: 3,
+    maxMovies: 0,
+    maxEpisodes: 0,
   };
 }
 
-export function canDownload(type: "movie" | "episode"): boolean {
-  const tracker = getTracker();
-  if (!tracker || tracker.planId !== "30min") return true; // No limits for other plans
-  if (type === "movie") return tracker.movieDownloads.length < 1;
-  return tracker.episodeDownloads.length < 3;
+export function canDownload(_type: "movie" | "episode"): boolean {
+  return true;
 }
 
-export function recordDownload(type: "movie" | "episode", contentId: string) {
-  const tracker = getTracker();
-  if (!tracker || tracker.planId !== "30min") return;
-  if (type === "movie") {
-    if (!tracker.movieDownloads.includes(contentId)) {
-      tracker.movieDownloads.push(contentId);
-    }
-  } else {
-    if (!tracker.episodeDownloads.includes(contentId)) {
-      tracker.episodeDownloads.push(contentId);
-    }
-  }
-  saveTracker(tracker);
+export function recordDownload(_type: "movie" | "episode", _contentId: string) {
+  // No limits — all plans have unlimited downloads
 }
 
 export function isThirtyMinPlan(planId: string | undefined): boolean {
