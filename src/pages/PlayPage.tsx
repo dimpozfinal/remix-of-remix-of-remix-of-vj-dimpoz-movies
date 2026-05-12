@@ -4,8 +4,8 @@ import { database } from "@/lib/firebase";
 import { ref, get } from "firebase/database";
 import { useAuth } from "@/lib/auth-context";
 import { useSubscription } from "@/lib/subscription-context";
-import { Star, Download, Share2, ArrowLeft, Play, AlertTriangle } from "lucide-react";
-import { canDownload, recordDownload, isThirtyMinPlan, getDownloadCounts, resetTracker } from "@/lib/download-limits";
+import { Star, Download, Share2, ArrowLeft, Play } from "lucide-react";
+import { canDownload, recordDownload, getDownloadCounts } from "@/lib/download-limits";
 import { toast } from "sonner";
 
 interface Episode {
