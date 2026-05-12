@@ -4,8 +4,7 @@ import { database } from "@/lib/firebase";
 import { ref, get } from "firebase/database";
 import { useAuth } from "@/lib/auth-context";
 import { useSubscription } from "@/lib/subscription-context";
-import { Star, Download, Share2, ArrowLeft, Play, AlertTriangle } from "lucide-react";
-import { canDownload, recordDownload, isThirtyMinPlan, getDownloadCounts, resetTracker } from "@/lib/download-limits";
+import { Star, Download, Share2, ArrowLeft, Play } from "lucide-react";
 import { toast } from "sonner";
 
 interface Episode {
@@ -206,38 +205,7 @@ export default function PlayPage() {
   };
 
   const handleDownload = () => {
-    // Initialize tracker for 30 min plan if needed
-    if (isThirtyMinPlan(currentPlanId || undefined) && subscription) {
-      const counts = getDownloadCounts();
-      if (counts.movies === 0 && counts.episodes === 0) {
-        resetTracker("30min", subscription.startDate);
-      }
-    }
-
     const downloadType = isSeries ? "episode" : "movie";
-
-    // Download limits only apply to content added within the last 24 hours
-    if (isThirtyMinPlan(currentPlanId || undefined) && isContentNew()) {
-      if (!canDownload(downloadType)) {
-        const counts = getDownloadCounts();
-        toast.error(
-          downloadType === "movie"
-            ? `Download limit reached! You've used your 1 movie download for this 3 Hour Pass.`
-            : `Download limit reached! You've used all 3 episode downloads for this 3 Hour Pass. (${counts.episodes}/${counts.maxEpisodes})`,
-          { duration: 5000 }
-        );
-        return;
-      }
-
-      const contentKey = isSeries ? `${id}-S${currentSeason}E${currentEpisode}` : id!;
-      recordDownload(downloadType, contentKey);
-
-      const counts = getDownloadCounts();
-      const remaining = downloadType === "movie"
-        ? counts.maxMovies - counts.movies
-        : counts.maxEpisodes - counts.episodes;
-      toast.info(`Download started! ${remaining} ${downloadType} download${remaining !== 1 ? "s" : ""} remaining on your 3 Hour Pass.`, { duration: 4000 });
-    }
 
     const url = getDownloadUrl(getStreamUrl());
     window.open(url, "_blank", "noopener,noreferrer");
@@ -256,8 +224,6 @@ export default function PlayPage() {
 
   const streamUrl = getStreamUrl();
   const isSeries = type === "series" && content.episodes && content.episodes.length > 0;
-  const is30Min = isThirtyMinPlan(currentPlanId || undefined);
-  const dlCounts = is30Min ? getDownloadCounts() : null;
 
   // Derive available seasons and filter episodes by current season
   const availableSeasons = isSeries
@@ -373,12 +339,6 @@ export default function PlayPage() {
             Share
           </button>
         </div>
-        {is30Min && dlCounts && (
-          <div className="mt-2 flex items-center gap-2 text-[10px] text-muted-foreground">
-            <AlertTriangle className="w-3 h-3 text-amber-400" />
-            <span>3 Hour Pass: {dlCounts.movies}/{dlCounts.maxMovies} movie · {dlCounts.episodes}/{dlCounts.maxEpisodes} episodes downloaded (new content only)</span>
-          </div>
-        )}
       </div>
 
       {/* Content Info */}

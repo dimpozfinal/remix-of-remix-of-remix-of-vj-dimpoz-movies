@@ -1,16 +1,9 @@
-import { Crown, Zap, Star, Clock, ArrowLeft, Sparkles, Shield } from "lucide-react";
+import { Crown, Zap, Star, ArrowLeft, Sparkles, Shield } from "lucide-react";
 import { SUBSCRIPTION_PLANS } from "@/lib/subscription-context";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
 const PLAN_STYLES = [
-  {
-    icon: Clock,
-    gradient: "from-cyan-400 via-sky-500 to-blue-600",
-    glow: "0 0 20px rgba(6,182,212,0.4), 0 0 40px rgba(6,182,212,0.15)",
-    border: "border-cyan-500/30",
-    btnBg: "bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500",
-  },
   {
     icon: Zap,
     gradient: "from-emerald-400 via-green-500 to-teal-600",
@@ -50,7 +43,7 @@ export default function SubscribePage() {
     <div className="min-h-screen bg-[#07070d] relative overflow-hidden">
       {/* Background glow effects */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-purple-600/8 rounded-full blur-[120px]" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-sky-600/8 rounded-full blur-[120px]" />
         <div className="absolute bottom-0 left-1/4 w-[400px] h-[200px] bg-cyan-600/6 rounded-full blur-[100px]" />
         <div className="absolute bottom-1/4 right-0 w-[300px] h-[200px] bg-amber-600/5 rounded-full blur-[100px]" />
       </div>
@@ -68,7 +61,7 @@ export default function SubscribePage() {
         {/* Header */}
         <div className="text-center mb-4 md:mb-10">
           <h1 className="text-xl sm:text-3xl md:text-5xl font-black text-white mb-1 md:mb-3 tracking-tight">
-            Unlock <span className="bg-gradient-to-r from-amber-400 via-orange-400 to-rose-500 bg-clip-text text-transparent">Premium</span>
+            Unlock <span className="bg-gradient-to-r from-sky-400 via-cyan-400 to-blue-500 bg-clip-text text-transparent">Premium</span>
           </h1>
           <p className="text-white/30 text-[10px] sm:text-xs max-w-sm mx-auto">
             Pay with MTN or Airtel Money
@@ -135,14 +128,6 @@ export default function SubscribePage() {
                       <span className="text-white/25 text-[7px] block">UGX</span>
                     </div>
 
-                    {plan.id === "30min" && (
-                      <div className="text-[7px] sm:text-[8px] text-cyan-300/60 leading-tight mb-1 space-y-0.5">
-                        <p>⏱️ 3 hours access</p>
-                        <p>🎬 1 new movie DL</p>
-                        <p>📺 3 new episode DLs</p>
-                      </div>
-                    )}
-
                     {/* CTA */}
                     <button
                       className={`w-full py-1 sm:py-1.5 rounded-lg text-[9px] sm:text-[10px] font-bold text-white transition-all duration-300 ${style.btnBg}`}
@@ -161,7 +146,7 @@ export default function SubscribePage() {
         <div className="flex items-center justify-center gap-4 sm:gap-6">
           {[
             { icon: Shield, label: "Secure", color: "text-emerald-400" },
-            { icon: Zap, label: "Instant", color: "text-cyan-400" },
+            { icon: Zap, label: "Instant", color: "text-sky-400" },
             { icon: Star, label: "MTN & Airtel", color: "text-amber-400" },
           ].map(({ icon: TIcon, label, color }) => (
             <div key={label} className="flex items-center gap-1 text-white/20 text-[9px] sm:text-[10px]">

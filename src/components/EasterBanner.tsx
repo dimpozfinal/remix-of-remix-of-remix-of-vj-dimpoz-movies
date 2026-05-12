@@ -74,11 +74,11 @@ export default function EasterBanner() {
 
   return (
     <div
-      className="w-full py-2.5 px-4 text-center text-xs font-semibold tracking-wider z-50 relative overflow-hidden love-glow rounded-lg my-2"
+      className="w-full py-2.5 px-4 text-center text-xs font-semibold tracking-wider z-50 relative overflow-hidden sky-glow rounded-lg my-2"
       style={{
-        background: "linear-gradient(90deg, hsl(335 75% 58% / 0.12), hsl(315 55% 50% / 0.18), hsl(350 70% 60% / 0.12))",
-        borderBottom: "1px solid hsl(335 70% 55% / 0.3)",
-        color: "hsl(335 60% 72%)",
+        background: "linear-gradient(90deg, hsl(200 85% 55% / 0.12), hsl(190 75% 50% / 0.18), hsl(210 80% 60% / 0.12))",
+        borderBottom: "1px solid hsl(200 80% 55% / 0.3)",
+        color: "hsl(200 85% 72%)",
         letterSpacing: "0.08em",
       }}
     >
