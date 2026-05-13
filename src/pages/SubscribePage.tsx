@@ -1,38 +1,20 @@
-import { Crown, Zap, Star, ArrowLeft, Sparkles, Shield } from "lucide-react";
+import { Crown, Zap, Star, ArrowLeft, Sparkles, Shield, Check } from "lucide-react";
 import { SUBSCRIPTION_PLANS } from "@/lib/subscription-context";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
-const PLAN_STYLES = [
-  {
-    icon: Zap,
-    gradient: "from-emerald-400 via-green-500 to-teal-600",
-    glow: "0 0 20px rgba(16,185,129,0.4), 0 0 40px rgba(16,185,129,0.15)",
-    border: "border-emerald-500/30",
-    btnBg: "bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500",
-  },
-  {
-    icon: Star,
-    gradient: "from-amber-400 via-orange-500 to-red-500",
-    glow: "0 0 25px rgba(245,158,11,0.5), 0 0 50px rgba(245,158,11,0.2)",
-    border: "border-amber-400/40",
-    btnBg: "bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500",
-    popular: true,
-  },
-  {
-    icon: Crown,
-    gradient: "from-violet-400 via-purple-500 to-indigo-600",
-    glow: "0 0 20px rgba(139,92,246,0.4), 0 0 40px rgba(139,92,246,0.15)",
-    border: "border-violet-500/30",
-    btnBg: "bg-gradient-to-r from-violet-500 to-indigo-600 hover:from-violet-400 hover:to-indigo-500",
-  },
-  {
-    icon: Sparkles,
-    gradient: "from-rose-400 via-pink-500 to-fuchsia-600",
-    glow: "0 0 20px rgba(244,63,94,0.4), 0 0 40px rgba(244,63,94,0.15)",
-    border: "border-rose-500/30",
-    btnBg: "bg-gradient-to-r from-rose-500 to-fuchsia-600 hover:from-rose-400 hover:to-fuchsia-500",
-  },
+const PLAN_META = [
+  { icon: Zap, label: "Quick", tone: "from-sky-400 to-cyan-500" },
+  { icon: Star, label: "Popular", tone: "from-cyan-400 to-blue-500", popular: true },
+  { icon: Sparkles, label: "Value", tone: "from-blue-400 to-sky-600" },
+  { icon: Crown, label: "Best", tone: "from-sky-300 to-blue-600" },
+];
+
+const PERKS = [
+  "Unlimited streaming",
+  "HD & 4K quality",
+  "Unlimited downloads",
+  "All movies & series",
 ];
 
 export default function SubscribePage() {
@@ -40,100 +22,129 @@ export default function SubscribePage() {
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
 
   return (
-    <div className="min-h-screen bg-[#07070d] relative overflow-hidden">
-      {/* Background glow effects */}
+    <div className="min-h-screen bg-background relative overflow-hidden">
+      {/* Background ambient glow */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-sky-600/8 rounded-full blur-[120px]" />
-        <div className="absolute bottom-0 left-1/4 w-[400px] h-[200px] bg-cyan-600/6 rounded-full blur-[100px]" />
-        <div className="absolute bottom-1/4 right-0 w-[300px] h-[200px] bg-amber-600/5 rounded-full blur-[100px]" />
+        <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[700px] h-[400px] bg-primary/20 rounded-full blur-[140px]" />
+        <div className="absolute bottom-0 left-0 w-[400px] h-[300px] bg-accent/15 rounded-full blur-[120px]" />
+        <div className="absolute top-1/3 right-0 w-[400px] h-[300px] bg-primary/10 rounded-full blur-[120px]" />
       </div>
 
-      <div className="relative z-10 max-w-5xl mx-auto px-3 py-4 md:py-10">
+      <div className="relative z-10 max-w-6xl mx-auto px-4 py-6 md:py-12">
         {/* Back */}
         <button
           onClick={() => navigate("/")}
-          className="flex items-center gap-1.5 text-white/30 hover:text-white/70 text-xs mb-4 md:mb-8 transition-colors group"
+          className="flex items-center gap-1.5 text-muted-foreground hover:text-foreground text-sm mb-6 md:mb-10 transition-colors group"
         >
-          <ArrowLeft className="w-3.5 h-3.5 group-hover:-translate-x-1 transition-transform" />
+          <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
           Back
         </button>
 
         {/* Header */}
-        <div className="text-center mb-4 md:mb-10">
-          <h1 className="text-xl sm:text-3xl md:text-5xl font-black text-white mb-1 md:mb-3 tracking-tight">
-            Unlock <span className="bg-gradient-to-r from-sky-400 via-cyan-400 to-blue-500 bg-clip-text text-transparent">Premium</span>
+        <div className="text-center mb-8 md:mb-12">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 mb-4 rounded-full border border-primary/30 bg-primary/10 backdrop-blur-sm">
+            <Sparkles className="w-3 h-3 text-primary" />
+            <span className="text-[10px] font-semibold text-primary uppercase tracking-wider">Premium Access</span>
+          </div>
+          <h1 className="text-3xl sm:text-4xl md:text-6xl font-black text-foreground mb-3 tracking-tight">
+            Choose Your <span className="gradient-text">Plan</span>
           </h1>
-          <p className="text-white/30 text-[10px] sm:text-xs max-w-sm mx-auto">
-            Pay with MTN or Airtel Money
+          <p className="text-muted-foreground text-sm md:text-base max-w-md mx-auto">
+            Stream unlimited movies. Pay with MTN or Airtel Money.
           </p>
         </div>
 
-        {/* Plans — single row */}
-        <div className="flex gap-2 sm:gap-2.5 mb-6 md:mb-10 overflow-x-auto pb-2 scrollbar-hide justify-center">
+        {/* Plans grid */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-5 mb-10">
           {SUBSCRIPTION_PLANS.map((plan, i) => {
-            const style = PLAN_STYLES[i] || PLAN_STYLES[0];
-            const Icon = style.icon;
+            const meta = PLAN_META[i] || PLAN_META[0];
+            const Icon = meta.icon;
             const isHovered = hoveredIdx === i;
-            const isPopular = style.popular;
+            const isPopular = meta.popular;
 
             return (
               <div
                 key={plan.id}
                 onMouseEnter={() => setHoveredIdx(i)}
                 onMouseLeave={() => setHoveredIdx(null)}
-                className={`relative flex-shrink-0 w-[110px] sm:w-[130px] md:w-[150px] rounded-xl transition-all duration-500 ${
-                  isHovered ? "-translate-y-1.5 scale-[1.05]" : ""
-                } ${isPopular && !isHovered ? "scale-[1.02]" : ""}`}
-                style={{
-                  boxShadow: isHovered || isPopular ? style.glow : "0 4px 20px rgba(0,0,0,0.3)",
-                }}
+                className={`relative group transition-all duration-500 ${
+                  isHovered ? "-translate-y-2" : ""
+                } ${isPopular ? "lg:-translate-y-1" : ""}`}
               >
                 {isPopular && (
-                  <div className="absolute -top-2 left-1/2 -translate-x-1/2 z-20">
-                    <span className="px-2 py-[2px] bg-gradient-to-r from-amber-400 to-orange-500 text-black text-[7px] font-black rounded-full shadow-lg shadow-amber-500/40 uppercase tracking-wider whitespace-nowrap">
-                      Best
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 z-20">
+                    <span className="px-3 py-1 bg-gradient-to-r from-primary to-accent text-primary-foreground text-[9px] font-black rounded-full shadow-lg shadow-primary/40 uppercase tracking-wider whitespace-nowrap">
+                      Most Popular
                     </span>
                   </div>
                 )}
 
                 <div
-                  className={`h-full rounded-xl border transition-all duration-500 overflow-hidden backdrop-blur-sm ${
-                    isPopular ? style.border : isHovered ? "border-white/15" : "border-white/[0.05]"
+                  className={`relative h-full rounded-2xl border backdrop-blur-xl overflow-hidden transition-all duration-500 ${
+                    isPopular
+                      ? "border-primary/50 bg-gradient-to-b from-primary/10 to-card/60"
+                      : isHovered
+                      ? "border-primary/30 bg-card/70"
+                      : "border-border/50 bg-card/40"
                   }`}
                   style={{
-                    background: isHovered
-                      ? "linear-gradient(180deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%)"
-                      : "linear-gradient(180deg, rgba(255,255,255,0.03) 0%, rgba(0,0,0,0.2) 100%)",
+                    boxShadow: isPopular || isHovered
+                      ? "0 20px 50px -10px hsl(var(--primary) / 0.35), 0 0 30px hsl(var(--primary) / 0.15)"
+                      : "0 4px 20px rgba(0,0,0,0.2)",
                   }}
                 >
-                  {/* Top glow bar */}
-                  <div className={`h-[2px] w-full bg-gradient-to-r ${style.gradient} ${isHovered ? "opacity-100" : "opacity-40"} transition-opacity`} />
+                  {/* Top gradient accent */}
+                  <div className={`h-[3px] w-full bg-gradient-to-r ${meta.tone}`} />
 
-                  <div className="p-2 sm:p-2.5 flex flex-col items-center text-center">
-                    {/* Icon */}
-                    <div
-                      className={`w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-gradient-to-br ${style.gradient} flex items-center justify-center mb-1.5`}
-                      style={{ boxShadow: isHovered ? style.glow : "none" }}
-                    >
-                      <Icon className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white" />
+                  <div className="p-4 md:p-5 flex flex-col h-full">
+                    {/* Icon + label */}
+                    <div className="flex items-center justify-between mb-3">
+                      <div
+                        className={`w-10 h-10 rounded-xl bg-gradient-to-br ${meta.tone} flex items-center justify-center shadow-lg shadow-primary/30`}
+                      >
+                        <Icon className="w-5 h-5 text-primary-foreground" />
+                      </div>
+                      <span className="text-[9px] font-bold text-muted-foreground uppercase tracking-wider">
+                        {meta.label}
+                      </span>
                     </div>
 
-                    <p className="text-white/40 text-[8px] sm:text-[9px] font-medium">{plan.duration}</p>
+                    {/* Plan name */}
+                    <h3 className="text-foreground font-bold text-base md:text-lg mb-1">{plan.name}</h3>
+                    <p className="text-muted-foreground text-xs mb-4">{plan.duration} access</p>
 
                     {/* Price */}
-                    <div className="my-1">
-                      <span className={`text-sm sm:text-base md:text-lg font-black bg-gradient-to-r ${style.gradient} bg-clip-text text-transparent`}>
-                        {plan.price.toLocaleString()}
-                      </span>
-                      <span className="text-white/25 text-[7px] block">UGX</span>
+                    <div className="mb-4">
+                      <div className="flex items-baseline gap-1">
+                        <span className="text-2xl md:text-3xl font-black text-foreground">
+                          {plan.price.toLocaleString()}
+                        </span>
+                        <span className="text-muted-foreground text-xs font-medium">UGX</span>
+                      </div>
+                      <p className="text-[10px] text-muted-foreground mt-0.5">
+                        {Math.round(plan.price / plan.days).toLocaleString()} UGX / day
+                      </p>
                     </div>
+
+                    {/* Perks */}
+                    <ul className="space-y-1.5 mb-5 flex-1">
+                      {PERKS.slice(0, 3).map((perk) => (
+                        <li key={perk} className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
+                          <Check className="w-3 h-3 text-primary flex-shrink-0" />
+                          {perk}
+                        </li>
+                      ))}
+                    </ul>
 
                     {/* CTA */}
                     <button
-                      className={`w-full py-1 sm:py-1.5 rounded-lg text-[9px] sm:text-[10px] font-bold text-white transition-all duration-300 ${style.btnBg}`}
-                      style={{ boxShadow: isHovered ? style.glow : "none" }}
+                      className={`w-full py-2.5 rounded-xl text-xs font-bold transition-all duration-300 ${
+                        isPopular || isHovered
+                          ? "bg-gradient-to-r from-primary to-accent text-primary-foreground shadow-lg shadow-primary/40"
+                          : "bg-secondary text-foreground hover:bg-secondary/80"
+                      }`}
                     >
-                      Get
+                      Get Started
                     </button>
                   </div>
                 </div>
@@ -142,15 +153,16 @@ export default function SubscribePage() {
           })}
         </div>
 
-        {/* Trust */}
-        <div className="flex items-center justify-center gap-4 sm:gap-6">
+        {/* Trust bar */}
+        <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-8 py-4 border-t border-border/30">
           {[
-            { icon: Shield, label: "Secure", color: "text-emerald-400" },
-            { icon: Zap, label: "Instant", color: "text-sky-400" },
-            { icon: Star, label: "MTN & Airtel", color: "text-amber-400" },
-          ].map(({ icon: TIcon, label, color }) => (
-            <div key={label} className="flex items-center gap-1 text-white/20 text-[9px] sm:text-[10px]">
-              <TIcon className={`w-3 h-3 ${color}`} />
+            { icon: Shield, label: "Secure Payment" },
+            { icon: Zap, label: "Instant Access" },
+            { icon: Star, label: "MTN & Airtel" },
+            { icon: Sparkles, label: "Cancel Anytime" },
+          ].map(({ icon: TIcon, label }) => (
+            <div key={label} className="flex items-center gap-1.5 text-muted-foreground text-[11px] sm:text-xs">
+              <TIcon className="w-3.5 h-3.5 text-primary" />
               {label}
             </div>
           ))}
