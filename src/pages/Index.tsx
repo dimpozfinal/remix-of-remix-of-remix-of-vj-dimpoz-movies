@@ -29,7 +29,6 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background flex overflow-x-hidden max-w-[100vw]">
-      <EasterDecorations />
       <Sidebar onFilterChange={handleFilterChange} activeFilter={activeFilter} onShowSubscription={() => setShowSubscriptionModal(true)} />
 
       <div className="flex-1 md:ml-[72px] flex flex-col min-w-0 overflow-x-hidden">
