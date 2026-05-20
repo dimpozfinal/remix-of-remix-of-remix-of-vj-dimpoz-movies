@@ -6,6 +6,7 @@ import { useAuth } from "@/lib/auth-context";
 import { useSubscription } from "@/lib/subscription-context";
 import { Star, Download, Share2, ArrowLeft, Play } from "lucide-react";
 import { toast } from "sonner";
+import { canDownload, recordDownload, getLimitInfo } from "@/lib/download-limits";
 
 interface Episode {
   episodeNumber: number;
@@ -205,8 +206,24 @@ export default function PlayPage() {
   };
 
   const handleDownload = () => {
-    const downloadType = isSeries ? "episode" : "movie";
-
+    if (!isAdmin) {
+      const contentKey = isSeries ? `${id}-s${currentSeason}e${currentEpisode}` : `${id}`;
+      const check = canDownload(currentPlanId, contentKey);
+      if (!check.ok) {
+        toast.error(check.reason || "Download limit reached");
+        return;
+      }
+      recordDownload(currentPlanId, contentKey);
+      const info = getLimitInfo(currentPlanId);
+      if (info) {
+        const remaining = Math.max(0, info.max - (info.used + (check.info?.used === info.used ? 1 : 0)));
+        toast.success(
+          info.scope === "daily"
+            ? `Download started. ${remaining} downloads left today.`
+            : `Download started. ${remaining} downloads left on this plan.`
+        );
+      }
+    }
     const url = getDownloadUrl(getStreamUrl());
     window.open(url, "_blank", "noopener,noreferrer");
   };

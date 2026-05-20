@@ -1,20 +1,21 @@
-import { Crown, Zap, Star, ArrowLeft, Sparkles, Shield, Check } from "lucide-react";
+import { Crown, Zap, Star, ArrowLeft, Sparkles, Shield, Check, Clock } from "lucide-react";
 import { SUBSCRIPTION_PLANS } from "@/lib/subscription-context";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
 const PLAN_META = [
-  { icon: Zap, label: "Quick", tone: "from-sky-400 to-cyan-500" },
-  { icon: Star, label: "Popular", tone: "from-cyan-400 to-blue-500", popular: true },
-  { icon: Sparkles, label: "Value", tone: "from-blue-400 to-sky-600" },
-  { icon: Crown, label: "Best", tone: "from-sky-300 to-blue-600" },
+  { icon: Clock, label: "Mini", tone: "from-red-500 to-rose-600" },
+  { icon: Zap, label: "Quick", tone: "from-red-600 to-amber-500" },
+  { icon: Star, label: "Popular", tone: "from-amber-400 to-red-600", popular: true },
+  { icon: Sparkles, label: "Value", tone: "from-red-500 to-yellow-500" },
+  { icon: Crown, label: "Best", tone: "from-yellow-400 to-red-600" },
 ];
 
 const PERKS = [
   "Unlimited streaming",
   "HD & 4K quality",
-  "Unlimited downloads",
   "All movies & series",
+  "Premium access",
 ];
 
 export default function SubscribePage() {
@@ -55,7 +56,7 @@ export default function SubscribePage() {
         </div>
 
         {/* Plans grid */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-5 mb-10">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 md:gap-5 mb-10">
           {SUBSCRIPTION_PLANS.map((plan, i) => {
             const meta = PLAN_META[i] || PLAN_META[0];
             const Icon = meta.icon;
@@ -122,18 +123,29 @@ export default function SubscribePage() {
                         <span className="text-muted-foreground text-xs font-medium">UGX</span>
                       </div>
                       <p className="text-[10px] text-muted-foreground mt-0.5">
-                        {Math.round(plan.price / plan.days).toLocaleString()} UGX / day
+                        {plan.days >= 1
+                          ? `${Math.round(plan.price / plan.days).toLocaleString()} UGX / day`
+                          : `${plan.duration} access`}
                       </p>
                     </div>
 
                     {/* Perks */}
                     <ul className="space-y-1.5 mb-5 flex-1">
-                      {PERKS.slice(0, 3).map((perk) => (
-                        <li key={perk} className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
-                          <Check className="w-3 h-3 text-primary flex-shrink-0" />
-                          {perk}
-                        </li>
-                      ))}
+                      {(() => {
+                        const downloadPerk =
+                          plan.id === "12hr"
+                            ? "5 downloads total"
+                            : plan.id === "3days"
+                            ? "10 downloads / day"
+                            : "Unlimited downloads";
+                        const perks = [PERKS[0], PERKS[1], downloadPerk];
+                        return perks.map((perk) => (
+                          <li key={perk} className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
+                            <Check className="w-3 h-3 text-primary flex-shrink-0" />
+                            {perk}
+                          </li>
+                        ));
+                      })()}
                     </ul>
 
                     {/* CTA */}
