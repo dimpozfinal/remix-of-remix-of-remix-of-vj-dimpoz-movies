@@ -14,8 +14,9 @@ export default {
     },
     extend: {
       fontFamily: {
-        sans: ['"DM Sans"', 'system-ui', 'sans-serif'],
-        display: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+        sans: ['Inter', 'system-ui', 'sans-serif'],
+        display: ['"Archivo"', 'Inter', 'system-ui', 'sans-serif'],
+        heading: ['"Archivo Black"', '"Archivo"', 'system-ui', 'sans-serif'],
       },
       colors: {
         border: "hsl(var(--border))",
