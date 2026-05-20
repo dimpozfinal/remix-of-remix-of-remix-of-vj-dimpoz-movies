@@ -56,7 +56,7 @@ export default function SubscribePage() {
         </div>
 
         {/* Plans grid */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-5 mb-10">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 md:gap-5 mb-10">
           {SUBSCRIPTION_PLANS.map((plan, i) => {
             const meta = PLAN_META[i] || PLAN_META[0];
             const Icon = meta.icon;
@@ -123,18 +123,29 @@ export default function SubscribePage() {
                         <span className="text-muted-foreground text-xs font-medium">UGX</span>
                       </div>
                       <p className="text-[10px] text-muted-foreground mt-0.5">
-                        {Math.round(plan.price / plan.days).toLocaleString()} UGX / day
+                        {plan.days >= 1
+                          ? `${Math.round(plan.price / plan.days).toLocaleString()} UGX / day`
+                          : `${plan.duration} access`}
                       </p>
                     </div>
 
                     {/* Perks */}
                     <ul className="space-y-1.5 mb-5 flex-1">
-                      {PERKS.slice(0, 3).map((perk) => (
-                        <li key={perk} className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
-                          <Check className="w-3 h-3 text-primary flex-shrink-0" />
-                          {perk}
-                        </li>
-                      ))}
+                      {(() => {
+                        const downloadPerk =
+                          plan.id === "12hr"
+                            ? "5 downloads total"
+                            : plan.id === "3days"
+                            ? "10 downloads / day"
+                            : "Unlimited downloads";
+                        const perks = [PERKS[0], PERKS[1], downloadPerk];
+                        return perks.map((perk) => (
+                          <li key={perk} className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
+                            <Check className="w-3 h-3 text-primary flex-shrink-0" />
+                            {perk}
+                          </li>
+                        ));
+                      })()}
                     </ul>
 
                     {/* CTA */}
