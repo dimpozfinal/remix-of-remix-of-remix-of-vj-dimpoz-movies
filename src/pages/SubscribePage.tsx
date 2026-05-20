@@ -1,20 +1,21 @@
-import { Crown, Zap, Star, ArrowLeft, Sparkles, Shield, Check } from "lucide-react";
+import { Crown, Zap, Star, ArrowLeft, Sparkles, Shield, Check, Clock } from "lucide-react";
 import { SUBSCRIPTION_PLANS } from "@/lib/subscription-context";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
 const PLAN_META = [
-  { icon: Zap, label: "Quick", tone: "from-sky-400 to-cyan-500" },
-  { icon: Star, label: "Popular", tone: "from-cyan-400 to-blue-500", popular: true },
-  { icon: Sparkles, label: "Value", tone: "from-blue-400 to-sky-600" },
-  { icon: Crown, label: "Best", tone: "from-sky-300 to-blue-600" },
+  { icon: Clock, label: "Mini", tone: "from-red-500 to-rose-600" },
+  { icon: Zap, label: "Quick", tone: "from-red-600 to-amber-500" },
+  { icon: Star, label: "Popular", tone: "from-amber-400 to-red-600", popular: true },
+  { icon: Sparkles, label: "Value", tone: "from-red-500 to-yellow-500" },
+  { icon: Crown, label: "Best", tone: "from-yellow-400 to-red-600" },
 ];
 
 const PERKS = [
   "Unlimited streaming",
   "HD & 4K quality",
-  "Unlimited downloads",
   "All movies & series",
+  "Premium access",
 ];
 
 export default function SubscribePage() {
