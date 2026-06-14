@@ -192,8 +192,9 @@ export default function PlayPage() {
   const getDownloadUrl = (url: string) => {
     const fileId = extractFileId(url);
     if (fileId) {
-      // Use Google Drive's native download endpoint
-      return `https://drive.google.com/uc?export=download&id=${fileId}`;
+      // Proxy through worker so the raw Google Drive link is never exposed (not copyable / not openable in GDrive apps)
+      const fileName = encodeURIComponent(getDownloadFilename());
+      return `https://black-band-8860.arthurdimpoz.workers.dev/download?fileId=${fileId}&fileName=${fileName}`;
     }
     return url;
   };
