@@ -214,36 +214,18 @@ export default function PlayPage() {
         return;
       }
       recordDownload(currentPlanId, contentKey);
+      const info = getLimitInfo(currentPlanId);
+      if (info) {
+        const remaining = Math.max(0, info.max - (info.used + (check.info?.used === info.used ? 1 : 0)));
+        toast.success(
+          info.scope === "daily"
+            ? `Download started. ${remaining} downloads left today.`
+            : `Download started. ${remaining} downloads left on this plan.`
+        );
+      }
     }
     const url = getDownloadUrl(getStreamUrl());
-    const filename = getDownloadFilename();
-
-    // In-page download via hidden iframe (no new browser tab/window)
-    let frame = document.getElementById("dimpoz-dl-frame") as HTMLIFrameElement | null;
-    if (!frame) {
-      frame = document.createElement("iframe");
-      frame.id = "dimpoz-dl-frame";
-      frame.style.display = "none";
-      document.body.appendChild(frame);
-    }
-    frame.src = url;
-
-    // Fallback anchor with download attribute (same tab)
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = filename;
-    a.rel = "noopener";
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-
-    const info = getLimitInfo(currentPlanId);
-    const remainingMsg = info
-      ? info.scope === "daily"
-        ? ` • ${Math.max(0, info.max - info.used)} left today`
-        : ` • ${Math.max(0, info.max - info.used)} left on plan`
-      : "";
-    toast.success(`Downloading: ${filename}${remainingMsg}`, { duration: 6000 });
+    window.open(url, "_blank", "noopener,noreferrer");
   };
 
   const handleShare = async () => {
