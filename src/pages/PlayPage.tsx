@@ -192,8 +192,8 @@ export default function PlayPage() {
   const getDownloadUrl = (url: string) => {
     const fileId = extractFileId(url);
     if (fileId) {
-      // Use Google Drive's native download endpoint (confirm=t bypasses the virus-scan interstitial for large files)
-      return `https://drive.google.com/uc?export=download&id=${fileId}&confirm=t`;
+      // Google Drive direct download endpoint (usercontent host bypasses the virus-scan interstitial instantly)
+      return `https://drive.usercontent.google.com/download?id=${fileId}&export=download&authuser=0&confirm=t`;
     }
     return url;
   };
