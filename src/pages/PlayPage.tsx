@@ -205,7 +205,7 @@ export default function PlayPage() {
     return (now - created) < 48 * 60 * 60 * 1000; // within 48 hours
   };
 
-  const handleDownload = () => {
+  const handleDownload = async () => {
     if (!isAdmin) {
       const contentKey = isSeries ? `${id}-s${currentSeason}e${currentEpisode}` : `${id}`;
       const check = canDownload(currentPlanId, contentKey);
