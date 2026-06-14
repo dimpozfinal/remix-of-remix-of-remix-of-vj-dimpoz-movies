@@ -192,8 +192,8 @@ export default function PlayPage() {
   const getDownloadUrl = (url: string) => {
     const fileId = extractFileId(url);
     if (fileId) {
-      const fileName = encodeURIComponent(getDownloadFilename());
-      return `https://black-band-8860.arthurdimpoz.workers.dev/download?fileId=${fileId}&fileName=${fileName}`;
+      // Use Google Drive's native download endpoint
+      return `https://drive.google.com/uc?export=download&id=${fileId}`;
     }
     return url;
   };
@@ -218,24 +218,16 @@ export default function PlayPage() {
     const url = getDownloadUrl(getStreamUrl());
     const filename = getDownloadFilename();
 
-    // In-page download via hidden iframe (no new browser tab/window)
+    // In-page download via hidden iframe — keeps user on the site (no new tab/window)
     let frame = document.getElementById("dimpoz-dl-frame") as HTMLIFrameElement | null;
     if (!frame) {
       frame = document.createElement("iframe");
       frame.id = "dimpoz-dl-frame";
       frame.style.display = "none";
+      frame.setAttribute("sandbox", "allow-downloads allow-scripts allow-same-origin allow-forms");
       document.body.appendChild(frame);
     }
     frame.src = url;
-
-    // Fallback anchor with download attribute (same tab)
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = filename;
-    a.rel = "noopener";
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
 
     const info = getLimitInfo(currentPlanId);
     const remainingMsg = info
