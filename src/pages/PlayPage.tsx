@@ -192,8 +192,8 @@ export default function PlayPage() {
   const getDownloadUrl = (url: string) => {
     const fileId = extractFileId(url);
     if (fileId) {
-      // Use Google Drive's native download endpoint (confirm=t bypasses the virus-scan interstitial for large files)
-      return `https://drive.google.com/uc?export=download&id=${fileId}&confirm=t`;
+      // Google Drive direct download endpoint (usercontent host bypasses the virus-scan interstitial instantly)
+      return `https://drive.usercontent.google.com/download?id=${fileId}&export=download&authuser=0&confirm=t`;
     }
     return url;
   };
@@ -205,7 +205,7 @@ export default function PlayPage() {
     return (now - created) < 48 * 60 * 60 * 1000; // within 48 hours
   };
 
-  const handleDownload = () => {
+  const handleDownload = async () => {
     if (!isAdmin) {
       const contentKey = isSeries ? `${id}-s${currentSeason}e${currentEpisode}` : `${id}`;
       const check = canDownload(currentPlanId, contentKey);
@@ -218,25 +218,6 @@ export default function PlayPage() {
     const url = getDownloadUrl(getStreamUrl());
     const filename = getDownloadFilename();
 
-    // In-page download via hidden iframe (no new browser tab/window)
-    let frame = document.getElementById("dimpoz-dl-frame") as HTMLIFrameElement | null;
-    if (!frame) {
-      frame = document.createElement("iframe");
-      frame.id = "dimpoz-dl-frame";
-      frame.style.display = "none";
-      document.body.appendChild(frame);
-    }
-    frame.src = url;
-
-    // Fallback anchor with download attribute (same tab)
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = filename;
-    a.rel = "noopener";
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-
     const info = getLimitInfo(currentPlanId);
     const remainingMsg = info
       ? info.scope === "daily"
@@ -244,6 +225,32 @@ export default function PlayPage() {
         : ` • ${Math.max(0, info.max - info.used)} left on plan`
       : "";
     toast.success(`Downloading: ${filename}${remainingMsg}`, { duration: 6000 });
+
+    // Try blob fetch to enforce website filename; fallback to hidden iframe if CORS blocks.
+    try {
+      const res = await fetch(url, { credentials: "omit" });
+      if (!res.ok) throw new Error("fetch failed");
+      const blob = await res.blob();
+      const blobUrl = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = blobUrl;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setTimeout(() => URL.revokeObjectURL(blobUrl), 60_000);
+      return;
+    } catch {
+      // CORS or network fallback: instant in-page download via hidden iframe (no new tab)
+      let frame = document.getElementById("dimpoz-dl-frame") as HTMLIFrameElement | null;
+      if (!frame) {
+        frame = document.createElement("iframe");
+        frame.id = "dimpoz-dl-frame";
+        frame.style.display = "none";
+        document.body.appendChild(frame);
+      }
+      frame.src = url;
+    }
   };
 
   const handleShare = async () => {
