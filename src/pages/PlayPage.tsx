@@ -192,9 +192,8 @@ export default function PlayPage() {
   const getDownloadUrl = (url: string) => {
     const fileId = extractFileId(url);
     if (fileId) {
-      // Proxy through worker so the raw Google Drive link is never exposed (not copyable / not openable in GDrive apps)
-      const fileName = encodeURIComponent(getDownloadFilename());
-      return `https://black-band-8860.arthurdimpoz.workers.dev/download?fileId=${fileId}&fileName=${fileName}`;
+      // Use Google Drive's native download endpoint
+      return `https://drive.google.com/uc?export=download&id=${fileId}`;
     }
     return url;
   };
@@ -286,17 +285,15 @@ export default function PlayPage() {
                 allowFullScreen
                 style={{ border: "none" }}
               />
-              {/* Block Google Drive popout icon (top-right) — button, not anchor, so URL can't be copied */}
-              <button
-                type="button"
-                onClick={(e) => { e.preventDefault(); e.stopPropagation(); handleDownload(); }}
-                onContextMenu={(e) => e.preventDefault()}
-                onDragStart={(e) => e.preventDefault()}
+              {/* Block Google Drive popout icon (top-right) */}
+              <a
+                href={getDownloadUrl(streamUrl)}
+                onClick={(e) => { e.preventDefault(); handleDownload(); }}
                 className="absolute top-0 right-0 w-14 h-14 z-20 flex items-center justify-center rounded-full bg-card/90 backdrop-blur-sm border border-border cursor-pointer hover:bg-primary/20 transition"
                 title="Download"
               >
                 <Download className="w-4 h-4 text-primary" />
-              </button>
+              </a>
               <div
                 className="absolute bottom-0 right-0 w-14 h-10 z-20"
                 style={{ background: "transparent" }}
