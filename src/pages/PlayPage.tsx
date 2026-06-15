@@ -192,8 +192,8 @@ export default function PlayPage() {
   const getDownloadUrl = (url: string) => {
     const fileId = extractFileId(url);
     if (fileId) {
-      const fileName = encodeURIComponent(getDownloadFilename());
-      return `https://black-band-8860.arthurdimpoz.workers.dev/download?fileId=${fileId}&fileName=${fileName}`;
+      // Native Google Drive download endpoint — bypasses the Drive viewer/app
+      return `https://drive.usercontent.google.com/download?id=${fileId}&export=download&confirm=t`;
     }
     return url;
   };
@@ -225,7 +225,13 @@ export default function PlayPage() {
       }
     }
     const url = getDownloadUrl(getStreamUrl());
-    window.open(url, "_blank", "noopener,noreferrer");
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = getDownloadFilename();
+    a.rel = "noopener noreferrer";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
   };
 
   const handleShare = async () => {
