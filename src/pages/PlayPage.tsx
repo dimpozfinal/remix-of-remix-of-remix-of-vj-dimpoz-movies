@@ -225,7 +225,13 @@ export default function PlayPage() {
       }
     }
     const url = getDownloadUrl(getStreamUrl());
-    window.open(url, "_blank", "noopener,noreferrer");
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = getDownloadFilename();
+    a.rel = "noopener noreferrer";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
   };
 
   const handleShare = async () => {
