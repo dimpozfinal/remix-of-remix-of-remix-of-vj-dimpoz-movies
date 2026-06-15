@@ -192,8 +192,8 @@ export default function PlayPage() {
   const getDownloadUrl = (url: string) => {
     const fileId = extractFileId(url);
     if (fileId) {
-      const fileName = encodeURIComponent(getDownloadFilename());
-      return `https://black-band-8860.arthurdimpoz.workers.dev/download?fileId=${fileId}&fileName=${fileName}`;
+      // Native Google Drive download endpoint — bypasses the Drive viewer/app
+      return `https://drive.usercontent.google.com/download?id=${fileId}&export=download&confirm=t`;
     }
     return url;
   };
