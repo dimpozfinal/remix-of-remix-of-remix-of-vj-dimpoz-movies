@@ -4,7 +4,7 @@ import { database } from "@/lib/firebase";
 import { ref, get } from "firebase/database";
 import { useAuth } from "@/lib/auth-context";
 import { useSubscription } from "@/lib/subscription-context";
-import { Star, Download, Share2, ArrowLeft, Play } from "lucide-react";
+import { Star, Download, Share2, ArrowLeft, Play, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { canDownload, recordDownload, getLimitInfo } from "@/lib/download-limits";
 
@@ -52,6 +52,7 @@ export default function PlayPage() {
 
   const [content, setContent] = useState<ContentData | null>(null);
   const [loading, setLoading] = useState(true);
+  const [downloading, setDownloading] = useState(false);
   const [currentEpisode, setCurrentEpisode] = useState<number>(epNum ? parseInt(epNum) : 1);
   const [currentSeason, setCurrentSeason] = useState<number>(1);
   const [related, setRelated] = useState<RelatedItem[]>([]);
@@ -205,7 +206,8 @@ export default function PlayPage() {
     return (now - created) < 48 * 60 * 60 * 1000; // within 48 hours
   };
 
-  const handleDownload = () => {
+  const handleDownload = async () => {
+    if (downloading) return;
     if (!isAdmin) {
       const contentKey = isSeries ? `${id}-s${currentSeason}e${currentEpisode}` : `${id}`;
       const check = canDownload(currentPlanId, contentKey);
@@ -224,14 +226,41 @@ export default function PlayPage() {
         );
       }
     }
+
     const url = getDownloadUrl(getStreamUrl());
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = getDownloadFilename();
-    a.rel = "noopener noreferrer";
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
+    setDownloading(true);
+    toast.info("Preparing download...", { duration: 3000 });
+
+    try {
+      const response = await fetch(url, { method: "GET" });
+      if (!response.ok) throw new Error("Download failed");
+
+      const blob = await response.blob();
+      const blobUrl = window.URL.createObjectURL(blob);
+
+      const a = document.createElement("a");
+      a.href = blobUrl;
+      a.download = getDownloadFilename();
+      a.style.display = "none";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+
+      window.URL.revokeObjectURL(blobUrl);
+      toast.success("Download complete!");
+    } catch {
+      // Fallback: open in current tab with hidden anchor (keeps it on-site as much as possible)
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = getDownloadFilename();
+      a.rel = "noopener noreferrer";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      toast.success("Download started!");
+    } finally {
+      setDownloading(false);
+    }
   };
 
   const handleShare = async () => {
@@ -282,14 +311,18 @@ export default function PlayPage() {
                 style={{ border: "none" }}
               />
               {/* Block Google Drive popout icon (top-right) */}
-              <a
-                href={getDownloadUrl(streamUrl)}
-                onClick={(e) => { e.preventDefault(); handleDownload(); }}
-                className="absolute top-0 right-0 w-14 h-14 z-20 flex items-center justify-center rounded-full bg-card/90 backdrop-blur-sm border border-border cursor-pointer hover:bg-primary/20 transition"
-                title="Download"
+              <button
+                onClick={handleDownload}
+                disabled={downloading}
+                className="absolute top-0 right-0 w-14 h-14 z-20 flex items-center justify-center rounded-full bg-card/90 backdrop-blur-sm border border-border cursor-pointer hover:bg-primary/20 transition disabled:opacity-60"
+                title={downloading ? "Downloading..." : "Download"}
               >
-                <Download className="w-4 h-4 text-primary" />
-              </a>
+                {downloading ? (
+                  <Loader2 className="w-4 h-4 text-primary animate-spin" />
+                ) : (
+                  <Download className="w-4 h-4 text-primary" />
+                )}
+              </button>
               <div
                 className="absolute bottom-0 right-0 w-14 h-10 z-20"
                 style={{ background: "transparent" }}
@@ -348,10 +381,15 @@ export default function PlayPage() {
           {streamUrl && (
             <button
               onClick={handleDownload}
-              className="flex items-center gap-2 px-4 py-2 bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg text-sm font-medium transition shadow-lg shadow-primary/20"
+              disabled={downloading}
+              className="flex items-center gap-2 px-4 py-2 bg-primary hover:bg-primary/90 disabled:bg-primary/60 text-primary-foreground rounded-lg text-sm font-medium transition shadow-lg shadow-primary/20"
             >
-              <Download className="w-4 h-4" />
-              Download
+              {downloading ? (
+                <Loader2 className="w-4 h-4 animate-spin" />
+              ) : (
+                <Download className="w-4 h-4" />
+              )}
+              {downloading ? "Preparing..." : "Download"}
             </button>
           )}
           <button
