@@ -52,6 +52,7 @@ export default function PlayPage() {
 
   const [content, setContent] = useState<ContentData | null>(null);
   const [loading, setLoading] = useState(true);
+  const [downloading, setDownloading] = useState(false);
   const [currentEpisode, setCurrentEpisode] = useState<number>(epNum ? parseInt(epNum) : 1);
   const [currentSeason, setCurrentSeason] = useState<number>(1);
   const [related, setRelated] = useState<RelatedItem[]>([]);
