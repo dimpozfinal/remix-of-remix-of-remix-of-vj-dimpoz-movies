@@ -56,15 +56,10 @@ export function getLimitInfo(planId: string | undefined | null): LimitInfo | nul
   if (planId === "12hr") {
     const t = ensureTracker(planId);
     const used = t.downloads.length;
-    return { used, max: 5, scope: "total", remaining: Math.max(0, 5 - used) };
+    return { used, max: 10, scope: "total", remaining: Math.max(0, 10 - used) };
   }
-  if (planId === "3days") {
-    const t = ensureTracker(planId);
-    const key = todayKey();
-    const used = (t.daily[key] || []).length;
-    return { used, max: 10, scope: "daily", remaining: Math.max(0, 10 - used) };
-  }
-  return null; // unlimited
+  // All other plans have unlimited downloads
+  return null;
 }
 
 export function canDownload(planId: string | undefined | null, contentId: string): { ok: boolean; reason?: string; info?: LimitInfo } {
@@ -74,14 +69,9 @@ export function canDownload(planId: string | undefined | null, contentId: string
   if (planId === "12hr") {
     const t = ensureTracker(planId!);
     if (t.downloads.includes(contentId)) return { ok: true, info };
-  } else if (planId === "3days") {
-    const t = ensureTracker(planId!);
-    if ((t.daily[todayKey()] || []).includes(contentId)) return { ok: true, info };
   }
   if (info.remaining <= 0) {
-    const reason = info.scope === "daily"
-      ? `Daily download limit reached (${info.max}/day). Try again tomorrow or upgrade your plan.`
-      : `Download limit reached (${info.max} for this plan). Upgrade to download more.`;
+    const reason = `Download limit reached (${info.max} for this plan). Upgrade to download more.`;
     return { ok: false, reason, info };
   }
   return { ok: true, info };
@@ -95,15 +85,8 @@ export function recordDownload(planId: string | undefined | null, contentId: str
       t.downloads.push(contentId);
       saveTracker(t);
     }
-  } else if (planId === "3days") {
-    const t = ensureTracker(planId);
-    const key = todayKey();
-    t.daily[key] = t.daily[key] || [];
-    if (!t.daily[key].includes(contentId)) {
-      t.daily[key].push(contentId);
-      saveTracker(t);
-    }
   }
+  // All other plans are unlimited — no tracking needed
 }
 
 export function isThirtyMinPlan(_planId: string | undefined): boolean {
