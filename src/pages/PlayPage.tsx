@@ -206,7 +206,8 @@ export default function PlayPage() {
     return (now - created) < 48 * 60 * 60 * 1000; // within 48 hours
   };
 
-  const handleDownload = () => {
+  const handleDownload = async () => {
+    if (downloading) return;
     if (!isAdmin) {
       const contentKey = isSeries ? `${id}-s${currentSeason}e${currentEpisode}` : `${id}`;
       const check = canDownload(currentPlanId, contentKey);
@@ -225,14 +226,41 @@ export default function PlayPage() {
         );
       }
     }
+
     const url = getDownloadUrl(getStreamUrl());
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = getDownloadFilename();
-    a.rel = "noopener noreferrer";
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
+    setDownloading(true);
+    toast.info("Preparing download...", { duration: 3000 });
+
+    try {
+      const response = await fetch(url, { method: "GET" });
+      if (!response.ok) throw new Error("Download failed");
+
+      const blob = await response.blob();
+      const blobUrl = window.URL.createObjectURL(blob);
+
+      const a = document.createElement("a");
+      a.href = blobUrl;
+      a.download = getDownloadFilename();
+      a.style.display = "none";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+
+      window.URL.revokeObjectURL(blobUrl);
+      toast.success("Download complete!");
+    } catch {
+      // Fallback: open in current tab with hidden anchor (keeps it on-site as much as possible)
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = getDownloadFilename();
+      a.rel = "noopener noreferrer";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      toast.success("Download started!");
+    } finally {
+      setDownloading(false);
+    }
   };
 
   const handleShare = async () => {
