@@ -311,14 +311,18 @@ export default function PlayPage() {
                 style={{ border: "none" }}
               />
               {/* Block Google Drive popout icon (top-right) */}
-              <a
-                href={getDownloadUrl(streamUrl)}
-                onClick={(e) => { e.preventDefault(); handleDownload(); }}
-                className="absolute top-0 right-0 w-14 h-14 z-20 flex items-center justify-center rounded-full bg-card/90 backdrop-blur-sm border border-border cursor-pointer hover:bg-primary/20 transition"
-                title="Download"
+              <button
+                onClick={handleDownload}
+                disabled={downloading}
+                className="absolute top-0 right-0 w-14 h-14 z-20 flex items-center justify-center rounded-full bg-card/90 backdrop-blur-sm border border-border cursor-pointer hover:bg-primary/20 transition disabled:opacity-60"
+                title={downloading ? "Downloading..." : "Download"}
               >
-                <Download className="w-4 h-4 text-primary" />
-              </a>
+                {downloading ? (
+                  <Loader2 className="w-4 h-4 text-primary animate-spin" />
+                ) : (
+                  <Download className="w-4 h-4 text-primary" />
+                )}
+              </button>
               <div
                 className="absolute bottom-0 right-0 w-14 h-10 z-20"
                 style={{ background: "transparent" }}
