@@ -4,7 +4,7 @@ import { database } from "@/lib/firebase";
 import { ref, get } from "firebase/database";
 import { useAuth } from "@/lib/auth-context";
 import { useSubscription } from "@/lib/subscription-context";
-import { Star, Download, Share2, ArrowLeft, Play } from "lucide-react";
+import { Star, Download, Share2, ArrowLeft, Play, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { canDownload, recordDownload, getLimitInfo } from "@/lib/download-limits";
 
