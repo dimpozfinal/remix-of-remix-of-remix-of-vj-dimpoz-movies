@@ -1,21 +1,14 @@
-import { Crown, Zap, Star, ArrowLeft, Sparkles, Shield, Check, Clock } from "lucide-react";
+import { Crown, Zap, Star, ArrowLeft, Sparkles, Shield, Check, Clock, X } from "lucide-react";
 import { SUBSCRIPTION_PLANS } from "@/lib/subscription-context";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
 const PLAN_META = [
-  { icon: Clock, label: "Mini", tone: "from-red-500 to-rose-600" },
-  { icon: Zap, label: "Quick", tone: "from-red-600 to-amber-500" },
-  { icon: Star, label: "Popular", tone: "from-amber-400 to-red-600", popular: true },
-  { icon: Sparkles, label: "Value", tone: "from-red-500 to-yellow-500" },
-  { icon: Crown, label: "Best", tone: "from-yellow-400 to-red-600" },
-];
-
-const PERKS = [
-  "Unlimited streaming",
-  "HD & 4K quality",
-  "All movies & series",
-  "Premium access",
+  { icon: Clock, label: "Mini" },
+  { icon: Zap, label: "Quick" },
+  { icon: Star, label: "Popular", popular: true },
+  { icon: Sparkles, label: "Value" },
+  { icon: Crown, label: "Best" },
 ];
 
 export default function SubscribePage() {
@@ -23,158 +16,122 @@ export default function SubscribePage() {
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
 
   return (
-    <div className="min-h-screen bg-background relative overflow-hidden">
-      {/* Background ambient glow */}
+    <div className="min-h-screen bg-background flex items-center justify-center p-4 relative overflow-hidden">
+      {/* Subtle background glow */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[700px] h-[400px] bg-primary/20 rounded-full blur-[140px]" />
-        <div className="absolute bottom-0 left-0 w-[400px] h-[300px] bg-accent/15 rounded-full blur-[120px]" />
-        <div className="absolute top-1/3 right-0 w-[400px] h-[300px] bg-primary/10 rounded-full blur-[120px]" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-primary/10 rounded-full blur-[150px]" />
       </div>
 
-      <div className="relative z-10 max-w-6xl mx-auto px-4 py-6 md:py-12">
-        {/* Back */}
-        <button
-          onClick={() => navigate("/")}
-          className="flex items-center gap-1.5 text-muted-foreground hover:text-foreground text-sm mb-6 md:mb-10 transition-colors group"
-        >
-          <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-          Back
-        </button>
-
-        {/* Header */}
-        <div className="text-center mb-8 md:mb-12">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 mb-4 rounded-full border border-primary/30 bg-primary/10 backdrop-blur-sm">
-            <Sparkles className="w-3 h-3 text-primary" />
-            <span className="text-[10px] font-semibold text-primary uppercase tracking-wider">Premium Access</span>
+      <div className="relative z-10 w-full max-w-[560px]">
+        {/* Main card container */}
+        <div className="rounded-3xl border border-border/40 bg-card/80 backdrop-blur-2xl shadow-2xl shadow-black/40 overflow-hidden">
+          {/* Header */}
+          <div className="px-6 pt-6 pb-4 flex items-start justify-between">
+            <div>
+              <h2 className="text-xl font-black text-foreground tracking-tight">
+                Subscribe to Download
+              </h2>
+              <p className="text-xs text-muted-foreground mt-1">
+                Unlimited HD downloads &middot; Powered by Relworx
+              </p>
+            </div>
+            <button
+              onClick={() => navigate("/")}
+              className="w-8 h-8 rounded-full bg-muted/50 flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+            >
+              <X className="w-4 h-4" />
+            </button>
           </div>
-          <h1 className="text-3xl sm:text-4xl md:text-6xl font-black text-foreground mb-3 tracking-tight">
-            Choose Your <span className="gradient-text">Plan</span>
-          </h1>
-          <p className="text-muted-foreground text-sm md:text-base max-w-md mx-auto">
-            Stream unlimited movies. Pay with MTN or Airtel Money.
-          </p>
-        </div>
 
-        {/* Plans grid */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 md:gap-5 mb-10">
-          {SUBSCRIPTION_PLANS.map((plan, i) => {
-            const meta = PLAN_META[i] || PLAN_META[0];
-            const Icon = meta.icon;
-            const isHovered = hoveredIdx === i;
-            const isPopular = meta.popular;
+          {/* Plans grid */}
+          <div className="px-6 pb-2 grid grid-cols-2 gap-3">
+            {SUBSCRIPTION_PLANS.map((plan, i) => {
+              const meta = PLAN_META[i] || PLAN_META[0];
+              const isPopular = meta.popular;
+              const isHovered = hoveredIdx === i;
 
-            return (
-              <div
-                key={plan.id}
-                onMouseEnter={() => setHoveredIdx(i)}
-                onMouseLeave={() => setHoveredIdx(null)}
-                className={`relative group transition-all duration-500 ${
-                  isHovered ? "-translate-y-2" : ""
-                } ${isPopular ? "lg:-translate-y-1" : ""}`}
-              >
-                {isPopular && (
-                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 z-20">
-                    <span className="px-3 py-1 bg-gradient-to-r from-primary to-accent text-primary-foreground text-[9px] font-black rounded-full shadow-lg shadow-primary/40 uppercase tracking-wider whitespace-nowrap">
-                      Most Popular
-                    </span>
-                  </div>
-                )}
-
+              return (
                 <div
-                  className={`relative h-full rounded-2xl border backdrop-blur-xl overflow-hidden transition-all duration-500 ${
-                    isPopular
-                      ? "border-primary/50 bg-gradient-to-b from-primary/10 to-card/60"
-                      : isHovered
-                      ? "border-primary/30 bg-card/70"
-                      : "border-border/50 bg-card/40"
-                  }`}
-                  style={{
-                    boxShadow: isPopular || isHovered
-                      ? "0 20px 50px -10px hsl(var(--primary) / 0.35), 0 0 30px hsl(var(--primary) / 0.15)"
-                      : "0 4px 20px rgba(0,0,0,0.2)",
-                  }}
+                  key={plan.id}
+                  onMouseEnter={() => setHoveredIdx(i)}
+                  onMouseLeave={() => setHoveredIdx(null)}
+                  className="relative"
                 >
-                  {/* Top gradient accent */}
-                  <div className={`h-[3px] w-full bg-gradient-to-r ${meta.tone}`} />
-
-                  <div className="p-4 md:p-5 flex flex-col h-full">
-                    {/* Icon + label */}
-                    <div className="flex items-center justify-between mb-3">
-                      <div
-                        className={`w-10 h-10 rounded-xl bg-gradient-to-br ${meta.tone} flex items-center justify-center shadow-lg shadow-primary/30`}
-                      >
-                        <Icon className="w-5 h-5 text-primary-foreground" />
-                      </div>
-                      <span className="text-[9px] font-bold text-muted-foreground uppercase tracking-wider">
-                        {meta.label}
+                  {isPopular && (
+                    <div className="absolute -top-2 left-1/2 -translate-x-1/2 z-20">
+                      <span className="px-2.5 py-0.5 bg-primary text-primary-foreground text-[9px] font-black rounded-full uppercase tracking-wider">
+                        Popular
                       </span>
                     </div>
+                  )}
 
-                    {/* Plan name */}
-                    <h3 className="text-foreground font-bold text-base md:text-lg mb-1">{plan.name}</h3>
-                    <p className="text-muted-foreground text-xs mb-4">{plan.duration} access</p>
+                  <div
+                    className={`relative h-full rounded-2xl border overflow-hidden transition-all duration-300 ${
+                      isPopular
+                        ? "border-primary/40 bg-gradient-to-b from-primary/8 to-card/60"
+                        : isHovered
+                        ? "border-border/60 bg-card/70"
+                        : "border-border/30 bg-card/40"
+                    }`}
+                  >
+                    <div className="p-4 flex flex-col h-full">
+                      {/* Plan name */}
+                      <h3 className="text-foreground font-bold text-sm mb-0.5">
+                        {plan.name.replace(" Pass", "").replace("12 Hours", "12 Hours")}
+                      </h3>
+                      <p className="text-[10px] text-muted-foreground mb-3">{plan.duration}</p>
 
-                    {/* Price */}
-                    <div className="mb-4">
-                      <div className="flex items-baseline gap-1">
-                        <span className="text-2xl md:text-3xl font-black text-foreground">
-                          {plan.price.toLocaleString()}
-                        </span>
-                        <span className="text-muted-foreground text-xs font-medium">UGX</span>
+                      {/* Price */}
+                      <div className="mb-3">
+                        <div className="flex items-baseline gap-1">
+                          <span className="text-xl font-black text-foreground">
+                            {plan.price.toLocaleString()}
+                          </span>
+                          <span className="text-[10px] text-primary font-semibold">UGX</span>
+                        </div>
                       </div>
-                      <p className="text-[10px] text-muted-foreground mt-0.5">
-                        {plan.days >= 1
-                          ? `${Math.round(plan.price / plan.days).toLocaleString()} UGX / day`
-                          : `${plan.duration} access`}
+
+                      {/* Download info */}
+                      <p className="text-[10px] text-primary font-medium mb-4">
+                        {plan.id === "12hr"
+                          ? "10 Limited Downloads"
+                          : "Unlimited Downloads"}
                       </p>
+
+                      {/* CTA */}
+                      <button
+                        className={`w-full py-2.5 rounded-xl text-[11px] font-bold transition-all duration-300 mt-auto ${
+                          isPopular || isHovered
+                            ? "bg-primary text-primary-foreground shadow-lg shadow-primary/30"
+                            : "bg-muted text-foreground hover:bg-muted/80"
+                        }`}
+                      >
+                        Subscribe to Download
+                      </button>
                     </div>
-
-                    {/* Perks */}
-                    <ul className="space-y-1.5 mb-5 flex-1">
-                      {(() => {
-                        const downloadPerk =
-                          plan.id === "12hr"
-                            ? "5 downloads total"
-                            : plan.id === "3days"
-                            ? "10 downloads / day"
-                            : "Unlimited downloads";
-                        const perks = [PERKS[0], PERKS[1], downloadPerk];
-                        return perks.map((perk) => (
-                          <li key={perk} className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
-                            <Check className="w-3 h-3 text-primary flex-shrink-0" />
-                            {perk}
-                          </li>
-                        ));
-                      })()}
-                    </ul>
-
-                    {/* CTA */}
-                    <button
-                      className={`w-full py-2.5 rounded-xl text-xs font-bold transition-all duration-300 ${
-                        isPopular || isHovered
-                          ? "bg-gradient-to-r from-primary to-accent text-primary-foreground shadow-lg shadow-primary/40"
-                          : "bg-secondary text-foreground hover:bg-secondary/80"
-                      }`}
-                    >
-                      Get Started
-                    </button>
                   </div>
                 </div>
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
+
+          {/* Footer */}
+          <div className="px-6 py-4 text-center border-t border-border/20 mt-2">
+            <p className="text-[10px] text-muted-foreground">
+              Secure payment via Relworx &middot; MTN / Airtel / Visa
+            </p>
+          </div>
         </div>
 
-        {/* Trust bar */}
-        <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-8 py-4 border-t border-border/30">
+        {/* Trust bar below */}
+        <div className="flex flex-wrap items-center justify-center gap-5 mt-5">
           {[
             { icon: Shield, label: "Secure Payment" },
             { icon: Zap, label: "Instant Access" },
             { icon: Star, label: "MTN & Airtel" },
-            { icon: Sparkles, label: "Cancel Anytime" },
           ].map(({ icon: TIcon, label }) => (
-            <div key={label} className="flex items-center gap-1.5 text-muted-foreground text-[11px] sm:text-xs">
-              <TIcon className="w-3.5 h-3.5 text-primary" />
+            <div key={label} className="flex items-center gap-1.5 text-muted-foreground text-[10px]">
+              <TIcon className="w-3 h-3 text-primary" />
               {label}
             </div>
           ))}

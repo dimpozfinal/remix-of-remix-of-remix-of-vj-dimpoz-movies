@@ -1,6 +1,6 @@
 // Download limit tracking per plan
-// 12hr plan: 5 downloads total for the period
-// 2-day plan (3days id): 10 downloads per day
+// 12hr plan: 10 downloads total for the period
+// All other plans: unlimited downloads
 
 const STORAGE_KEY = "download_tracker_v2";
 
