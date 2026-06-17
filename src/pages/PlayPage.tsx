@@ -381,10 +381,15 @@ export default function PlayPage() {
           {streamUrl && (
             <button
               onClick={handleDownload}
-              className="flex items-center gap-2 px-4 py-2 bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg text-sm font-medium transition shadow-lg shadow-primary/20"
+              disabled={downloading}
+              className="flex items-center gap-2 px-4 py-2 bg-primary hover:bg-primary/90 disabled:bg-primary/60 text-primary-foreground rounded-lg text-sm font-medium transition shadow-lg shadow-primary/20"
             >
-              <Download className="w-4 h-4" />
-              Download
+              {downloading ? (
+                <Loader2 className="w-4 h-4 animate-spin" />
+              ) : (
+                <Download className="w-4 h-4" />
+              )}
+              {downloading ? "Preparing..." : "Download"}
             </button>
           )}
           <button
