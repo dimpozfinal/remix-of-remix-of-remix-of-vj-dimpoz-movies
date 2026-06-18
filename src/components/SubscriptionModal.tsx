@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { X, Check, Loader2, Phone, Crown, Zap, Star, Clock } from "lucide-react";
+import { X, Check, Loader2, Phone, Crown, Zap, Star, Clock, Sparkles, Shield } from "lucide-react";
 import { SUBSCRIPTION_PLANS, type SubscriptionPlan } from "@/lib/subscription-context";
 import { useSubscription } from "@/lib/subscription-context";
 import { useAuth } from "@/lib/auth-context";
@@ -154,88 +154,127 @@ export default function SubscriptionModal({ isOpen, onClose }: SubscriptionModal
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-md p-3" onClick={onClose}>
       <div
-        className="relative w-full max-w-2xl bg-card border border-border rounded-2xl shadow-2xl max-h-[90vh] overflow-y-auto"
+        className="relative w-full max-w-[560px] max-h-[92vh] overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Close */}
-        <button onClick={onClose} className="absolute top-3 right-3 z-10 w-8 h-8 rounded-full bg-secondary/80 hover:bg-muted flex items-center justify-center transition">
-          <X className="w-4 h-4 text-foreground" />
-        </button>
-
         {step === "plans" && (
-          <div className="p-4 md:p-6">
-            {/* Header */}
-            <div className="text-center mb-5">
-              <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-primary to-blue-400 flex items-center justify-center mx-auto mb-3 shadow-lg">
-                <Crown className="w-6 h-6 text-white" />
+          <div className="relative">
+            {/* Subtle background glow */}
+            <div className="absolute inset-0 pointer-events-none">
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[350px] bg-primary/10 rounded-full blur-[120px]" />
+            </div>
+
+            <div className="relative rounded-3xl border border-border/40 bg-card/90 backdrop-blur-2xl shadow-2xl shadow-black/40 overflow-hidden">
+              {/* Header */}
+              <div className="px-6 pt-6 pb-4 flex items-start justify-between">
+                <div>
+                  <h2 className="text-xl font-black text-foreground tracking-tight font-display">
+                    Subscribe to Download
+                  </h2>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    Unlimited HD downloads · Powered by Relworx
+                  </p>
+                </div>
+                <button
+                  onClick={onClose}
+                  className="w-8 h-8 rounded-full bg-muted/50 flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+                >
+                  <X className="w-4 h-4" />
+                </button>
               </div>
-              <h2 className="text-lg md:text-xl font-extrabold text-foreground mb-1 font-display">Unlock Premium</h2>
-              <p className="text-muted-foreground text-xs">Choose a plan and start streaming instantly</p>
-            </div>
 
-            {/* Plans */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2 md:gap-3 mb-4">
-              {SUBSCRIPTION_PLANS.map((plan, index) => {
-                const isPopular = plan.id === "1week";
-                const Icon = PLAN_ICONS[index] || Star;
-                const gradient = PLAN_COLORS[index] || PLAN_COLORS[0];
+              {/* Plans grid */}
+              <div className="px-6 pb-2 grid grid-cols-2 gap-3">
+                {SUBSCRIPTION_PLANS.map((plan, i) => {
+                  const isPopular = plan.id === "1week";
 
-                return (
-                  <button
-                    key={plan.id}
-                    onClick={() => handleSelectPlan(plan)}
-                    className={`relative text-left p-3 rounded-xl border-2 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md ${
-                      isPopular
-                        ? "border-primary bg-primary/5 shadow-md shadow-primary/10"
-                        : "border-border hover:border-primary/50"
-                    }`}
-                  >
-                    {isPopular && (
-                      <div className="absolute -top-2 left-1/2 -translate-x-1/2">
-                        <span className="px-2 py-0.5 bg-gradient-to-r from-primary to-blue-400 text-white text-[7px] font-bold rounded-full shadow-sm">
-                          ⭐ POPULAR
-                        </span>
-                      </div>
-                    )}
-
-                    <div className={`w-7 h-7 rounded-lg bg-gradient-to-br ${gradient} flex items-center justify-center mb-2 shadow-sm`}>
-                      <Icon className="w-3.5 h-3.5 text-white" />
-                    </div>
-
-                    <h3 className="text-[10px] md:text-xs font-bold text-foreground leading-tight">{plan.name}</h3>
-                    <p className="text-[8px] text-muted-foreground mb-1.5">{plan.duration}</p>
-
-                    <div className="flex items-baseline gap-0.5">
-                      <span className="text-[7px] text-green-400 font-semibold">UGX</span>
-                      <span className="text-sm md:text-base font-extrabold text-green-400">{plan.price.toLocaleString()}</span>
-                    </div>
-
-                    <div className="mt-2 space-y-0.5">
-                      {["Unlimited streaming", "HD quality", "Downloads"].map((f) => (
-                        <div key={f} className="flex items-center gap-1">
-                          <Check className="w-2 h-2 text-primary flex-shrink-0" />
-                          <span className="text-[7px] text-muted-foreground">{f}</span>
+                  return (
+                    <button
+                      key={plan.id}
+                      onClick={() => handleSelectPlan(plan)}
+                      className="relative text-left group"
+                    >
+                      {isPopular && (
+                        <div className="absolute -top-2 left-1/2 -translate-x-1/2 z-20">
+                          <span className="px-2.5 py-0.5 bg-primary text-primary-foreground text-[9px] font-black rounded-full uppercase tracking-wider">
+                            Popular
+                          </span>
                         </div>
-                      ))}
-                    </div>
+                      )}
 
-                    <div className={`mt-2.5 w-full py-1.5 rounded-lg text-center text-[9px] font-bold transition ${
-                      isPopular
-                        ? "bg-gradient-to-r from-primary to-blue-400 text-white"
-                        : "bg-primary/10 text-primary"
-                    }`}>
-                      Subscribe
-                    </div>
-                  </button>
-                );
-              })}
+                      <div
+                        className={`relative h-full rounded-2xl border overflow-hidden transition-all duration-300 ${
+                          isPopular
+                            ? "border-primary/40 bg-gradient-to-b from-primary/10 to-card/60"
+                            : "border-border/30 bg-card/40 group-hover:border-border/60 group-hover:bg-card/70"
+                        }`}
+                      >
+                        <div className="p-4 flex flex-col h-full">
+                          <h3 className="text-foreground font-bold text-sm mb-0.5">
+                            {plan.name.replace(" Pass", "")}
+                          </h3>
+                          <p className="text-[10px] text-muted-foreground mb-3">{plan.duration}</p>
+
+                          <div className="mb-3">
+                            <div className="flex items-baseline gap-1">
+                              <span className="text-xl font-black text-foreground">
+                                {plan.price.toLocaleString()}
+                              </span>
+                              <span className="text-[10px] text-primary font-semibold">UGX</span>
+                            </div>
+                          </div>
+
+                          <p className="text-[10px] text-primary font-medium mb-4">
+                            {plan.id === "12hr" ? "10 Limited Downloads" : "Unlimited Downloads"}
+                          </p>
+
+                          <div
+                            className={`w-full py-2.5 rounded-xl text-[11px] font-bold text-center transition-all duration-300 mt-auto ${
+                              isPopular
+                                ? "bg-primary text-primary-foreground shadow-lg shadow-primary/30"
+                                : "bg-muted text-foreground group-hover:bg-primary group-hover:text-primary-foreground"
+                            }`}
+                          >
+                            Subscribe to Download
+                          </div>
+                        </div>
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* Footer */}
+              <div className="px-6 py-4 text-center border-t border-border/20 mt-2">
+                <p className="text-[10px] text-muted-foreground">
+                  Secure payment via Relworx · MTN / Airtel / Visa
+                </p>
+              </div>
             </div>
 
-            <p className="text-center text-[9px] text-muted-foreground">
-              🔒 Secure payment via MTN Mobile Money or Airtel Money
-            </p>
+            {/* Trust bar */}
+            <div className="flex flex-wrap items-center justify-center gap-5 mt-5">
+              {[
+                { icon: Shield, label: "Secure Payment" },
+                { icon: Zap, label: "Instant Access" },
+                { icon: Star, label: "MTN & Airtel" },
+              ].map(({ icon: TIcon, label }) => (
+                <div key={label} className="flex items-center gap-1.5 text-muted-foreground text-[10px]">
+                  <TIcon className="w-3 h-3 text-primary" />
+                  {label}
+                </div>
+              ))}
+            </div>
           </div>
         )}
+
+        {step !== "plans" && (
+          <div className="relative bg-card border border-border rounded-2xl shadow-2xl">
+            <button onClick={onClose} className="absolute top-3 right-3 z-10 w-8 h-8 rounded-full bg-secondary/80 hover:bg-muted flex items-center justify-center transition">
+              <X className="w-4 h-4 text-foreground" />
+            </button>
+
+
 
         {step === "phone" && selectedPlan && (
           <div className="p-6 md:p-8">
@@ -317,7 +356,10 @@ export default function SubscriptionModal({ isOpen, onClose }: SubscriptionModal
             </button>
           </div>
         )}
+          </div>
+        )}
       </div>
+
     </div>
   );
 }
