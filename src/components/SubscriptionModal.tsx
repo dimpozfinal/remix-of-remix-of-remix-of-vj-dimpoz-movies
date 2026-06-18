@@ -273,8 +273,7 @@ export default function SubscriptionModal({ isOpen, onClose }: SubscriptionModal
             <button onClick={onClose} className="absolute top-3 right-3 z-10 w-8 h-8 rounded-full bg-secondary/80 hover:bg-muted flex items-center justify-center transition">
               <X className="w-4 h-4 text-foreground" />
             </button>
-          </div>
-        )}
+
 
 
         {step === "phone" && selectedPlan && (
