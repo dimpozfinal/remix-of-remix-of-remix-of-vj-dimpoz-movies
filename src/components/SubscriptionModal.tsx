@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { X, Check, Loader2, Phone, Crown, Zap, Star, Clock } from "lucide-react";
+import { X, Check, Loader2, Phone, Crown, Zap, Star, Clock, Sparkles, Shield } from "lucide-react";
 import { SUBSCRIPTION_PLANS, type SubscriptionPlan } from "@/lib/subscription-context";
 import { useSubscription } from "@/lib/subscription-context";
 import { useAuth } from "@/lib/auth-context";
