@@ -356,7 +356,10 @@ export default function SubscriptionModal({ isOpen, onClose }: SubscriptionModal
             </button>
           </div>
         )}
+          </div>
+        )}
       </div>
+
     </div>
   );
 }
