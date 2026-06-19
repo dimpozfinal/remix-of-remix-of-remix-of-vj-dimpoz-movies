@@ -10,11 +10,11 @@ export default function Logo({ size = "md" }: { size?: "sm" | "md" | "lg" | "xl"
     <div className="flex items-center gap-2">
       <img
         src="https://i.postimg.cc/Fs2nssw-m/logo.png"
-        alt="DIMPOZ MOVIES"
+        alt="LUO CINEMA"
         className={size === "sm" ? "w-8 h-8" : size === "md" ? "w-10 h-10" : size === "lg" ? "w-12 h-12" : "w-16 h-16"}
       />
       <span className={`font-bold gradient-text ${sizeClasses[size]}`}>
-        DIMPOZ MOVIES
+        LUO CINEMA
       </span>
     </div>
   );

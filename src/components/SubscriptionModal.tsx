@@ -62,7 +62,7 @@ export default function SubscriptionModal({ isOpen, onClose }: SubscriptionModal
     setStatusMsg("Sending payment request...");
 
     try {
-      const result = await requestPayment(msisdn, selectedPlan.price, `DIMPOZ ${selectedPlan.name} Subscription`);
+      const result = await requestPayment(msisdn, selectedPlan.price, `LUO CINEMA ${selectedPlan.name} Subscription`);
       const internalRef = result?.internal_reference || result?.relworx?.internal_reference;
       if (result?.success && internalRef) {
         internalRefRef.current = internalRef;
@@ -335,7 +335,7 @@ export default function SubscriptionModal({ isOpen, onClose }: SubscriptionModal
               </div>
             </div>
             <h2 className="text-lg font-extrabold text-foreground mb-1 font-display">You're All Set! 🎉</h2>
-            <p className="text-muted-foreground text-xs mb-5">Enjoy unlimited streaming on DIMPOZ MOVIES</p>
+            <p className="text-muted-foreground text-xs mb-5">Enjoy unlimited streaming on LUO CINEMA</p>
             <button onClick={onClose} className="px-8 py-2.5 bg-gradient-to-r from-primary to-blue-400 rounded-xl text-white text-sm font-bold shadow-md hover:opacity-90 transition">
               Start Watching
             </button>

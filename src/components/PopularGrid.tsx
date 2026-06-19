@@ -249,7 +249,7 @@ export default function PopularGrid({
     if (activeFilter === "anime") return "Anime";
     if (activeFilter === "music") return "Music";
     if (activeFilter === "top-rated") return "Top Rated";
-    return "Popular on DIMPOZ MOVIES";
+    return "Popular on LUO CINEMA";
   };
 
   if (selectedSeries) {
@@ -463,7 +463,7 @@ export default function PopularGrid({
 
       {/* Popular */}
       <section>
-        <h2 className="text-sm font-bold text-foreground mb-3">🔥 Popular on DIMPOZ MOVIES</h2>
+        <h2 className="text-sm font-bold text-foreground mb-3">🔥 Popular on LUO CINEMA</h2>
         {filteredMovies.length === 0 ? (
           <div className="text-center py-8">
             <p className="text-muted-foreground text-sm">No content found</p>

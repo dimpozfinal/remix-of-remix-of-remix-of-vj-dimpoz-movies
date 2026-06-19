@@ -72,7 +72,7 @@ export default function AdminWalletPage() {
     setWithdrawing(true);
     setWithdrawMsg("");
     try {
-      const res = await sendPayment(msisdn, amount, "DIMPOZ MOVIES");
+      const res = await sendPayment(msisdn, amount, "LUO CINEMA");
       if (res.success) {
         setWithdrawMsg(`Withdrawal of UGX ${amount.toLocaleString()} initiated successfully!`);
         setShowWithdraw(false);

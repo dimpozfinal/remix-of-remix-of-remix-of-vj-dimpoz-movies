@@ -23,8 +23,8 @@ export default defineConfig(({ mode }) => ({
         globPatterns: ["**/*.{js,css,html,ico,png,svg,jpg,jpeg,webp}"],
       },
       manifest: {
-        name: "DIMPOZ MOVIES",
-        short_name: "DIMPOZ",
+        name: "LUO CINEMA",
+        short_name: "LUO CINEMA",
         description: "Stream movies, series, music and more",
         theme_color: "#1a1f3a",
         background_color: "#141829",
