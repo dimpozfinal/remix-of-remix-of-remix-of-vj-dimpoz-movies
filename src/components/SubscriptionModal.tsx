@@ -62,7 +62,7 @@ export default function SubscriptionModal({ isOpen, onClose }: SubscriptionModal
     setStatusMsg("Sending payment request...");
 
     try {
-      const result = await requestPayment(msisdn, selectedPlan.price, `DIMPOZ ${selectedPlan.name} Subscription`);
+      const result = await requestPayment(msisdn, selectedPlan.price, `LUO CINEMA ${selectedPlan.name} Subscription`);
       const internalRef = result?.internal_reference || result?.relworx?.internal_reference;
       if (result?.success && internalRef) {
         internalRefRef.current = internalRef;
