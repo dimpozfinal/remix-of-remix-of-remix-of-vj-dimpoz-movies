@@ -152,7 +152,7 @@ export default function AdminPage() {
               </div>
               <div>
                 <h1 className="text-lg md:text-xl font-bold text-foreground">Admin Dashboard</h1>
-                <p className="text-muted-foreground text-xs">DIMPOZ MOVIES Control Panel</p>
+                <p className="text-muted-foreground text-xs">LUO CINEMA Control Panel</p>
               </div>
             </div>
             <Link

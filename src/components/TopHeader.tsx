@@ -45,11 +45,11 @@ export default function TopHeader({ onSearch }: TopHeaderProps) {
       <div className="flex items-center gap-2 flex-shrink-0">
         <img
           src="https://i.postimg.cc/Fs2nssw-m/logo.png"
-          alt="DIMPOZ MOVIES"
+          alt="LUO CINEMA"
           className="w-8 h-8 drop-shadow-md"
         />
         <span className="font-extrabold text-sm gradient-text hidden sm:block tracking-tight font-display">
-          DIMPOZ MOVIES ✝️
+          LUO CINEMA ✝️
         </span>
       </div>
 

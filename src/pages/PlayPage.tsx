@@ -185,9 +185,9 @@ export default function PlayPage() {
       const ep = content.episodes.find(
         (e) => e.episodeNumber === currentEpisode && (e.season || 1) === currentSeason
       );
-      return `${content.title} - S${currentSeason}EP${currentEpisode} (DIMPOZ MOVIES).mp4`;
+      return `${content.title} - S${currentSeason}EP${currentEpisode} (LUO CINEMA).mp4`;
     }
-    return `${content.title} (DIMPOZ MOVIES).mp4`;
+    return `${content.title} (LUO CINEMA).mp4`;
   };
 
   const getDownloadUrl = (url: string) => {
@@ -265,7 +265,7 @@ export default function PlayPage() {
 
   const handleShare = async () => {
     const url = window.location.href;
-    const text = `Watch ${content.title} on DIMPOZ MOVIES`;
+    const text = `Watch ${content.title} on LUO CINEMA`;
     if (navigator.share) {
       try { await navigator.share({ title: content.title, text, url }); } catch {}
     } else {
