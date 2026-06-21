@@ -187,7 +187,7 @@ export default function AdminUsersPage() {
             onClick={() => setFilter("active")}
             className={`flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-medium transition ${
               filter === "active"
-                ? "bg-green-600 text-white"
+                ? "bg-green-600 text-primary-foreground"
                 : "bg-card border border-border text-muted-foreground hover:text-foreground"
             }`}
           >
@@ -198,7 +198,7 @@ export default function AdminUsersPage() {
             onClick={() => setFilter("non-subscribed")}
             className={`flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-medium transition ${
               filter === "non-subscribed"
-                ? "bg-red-600 text-white"
+                ? "bg-destructive text-destructive-foreground"
                 : "bg-card border border-border text-muted-foreground hover:text-foreground"
             }`}
           >
@@ -300,7 +300,7 @@ export default function AdminUsersPage() {
                         size="sm"
                         disabled={!selectedPlan}
                         onClick={() => handleActivateSubscription(u.id)}
-                        className="h-8 text-xs bg-green-600 hover:bg-green-700 text-white"
+                        className="h-8 text-xs bg-green-600 hover:bg-green-700 text-primary-foreground"
                       >
                         Confirm Activation
                       </Button>
