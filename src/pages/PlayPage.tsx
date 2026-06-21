@@ -302,7 +302,7 @@ export default function PlayPage() {
         {/* Video Player */}
         <div className={`${isSeries ? "md:flex-1" : "w-full"}`}>
           {streamUrl && (
-            <div className="relative w-full bg-black" style={{ aspectRatio: "16/9", maxHeight: "70vh" }}>
+            <div className="relative w-full bg-background" style={{ aspectRatio: "16/9", maxHeight: "70vh" }}>
               <iframe
                 src={getEmbedUrl(streamUrl)}
                 className="w-full h-full"
