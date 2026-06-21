@@ -87,8 +87,8 @@ export default function TopHeader({ onSearch }: TopHeaderProps) {
               {user.photoURL ? (
                 <img src={user.photoURL} alt="" className="w-8 h-8 rounded-xl object-cover" />
               ) : (
-                <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-primary to-blue-400 flex items-center justify-center">
-                  <User className="w-4 h-4 text-white" />
+                <div className="w-8 h-8 rounded-xl bg-primary flex items-center justify-center">
+                  <User className="w-4 h-4 text-primary-foreground" />
                 </div>
               )}
             </button>

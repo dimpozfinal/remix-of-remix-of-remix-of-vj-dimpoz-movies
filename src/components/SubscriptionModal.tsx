@@ -164,7 +164,7 @@ export default function SubscriptionModal({ isOpen, onClose }: SubscriptionModal
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[350px] bg-primary/10 rounded-full blur-[120px]" />
             </div>
 
-            <div className="relative rounded-3xl border border-border/40 bg-card/90 backdrop-blur-2xl shadow-2xl shadow-black/40 overflow-hidden">
+            <div className="relative rounded-3xl border border-border/40 bg-card/90 backdrop-blur-2xl shadow-2xl shadow-background/40 overflow-hidden">
               {/* Header */}
               <div className="px-6 pt-6 pb-4 flex items-start justify-between">
                 <div>
