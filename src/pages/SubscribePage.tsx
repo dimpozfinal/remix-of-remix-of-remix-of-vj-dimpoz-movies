@@ -24,7 +24,7 @@ export default function SubscribePage() {
 
       <div className="relative z-10 w-full max-w-[560px]">
         {/* Main card container */}
-        <div className="rounded-3xl border border-border/40 bg-card/80 backdrop-blur-2xl shadow-2xl shadow-black/40 overflow-hidden">
+        <div className="rounded-3xl border border-border/40 bg-card/80 backdrop-blur-2xl shadow-2xl shadow-background/40 overflow-hidden">
           {/* Header */}
           <div className="px-6 pt-6 pb-4 flex items-start justify-between">
             <div>
