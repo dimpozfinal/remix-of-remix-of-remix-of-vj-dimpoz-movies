@@ -122,7 +122,7 @@ export default function TopHeader({ onSearch }: TopHeaderProps) {
         ) : (
           <button
             onClick={() => navigate("/login")}
-            className="px-4 py-1.5 bg-gradient-to-r from-primary to-blue-400 hover:opacity-90 text-white rounded-xl text-[11px] font-bold transition shadow-sm"
+            className="px-4 py-1.5 bg-primary hover:opacity-90 text-primary-foreground rounded-xl text-[11px] font-bold transition shadow-sm"
           >
             Login
           </button>
