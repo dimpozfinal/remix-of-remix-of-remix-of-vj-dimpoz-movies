@@ -25,13 +25,13 @@ export function VideoPlayerModal({ isOpen, onClose, videoUrl, title }: VideoPlay
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/95">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/95">
       <div className="relative w-full max-w-6xl mx-4">
         <button onClick={onClose} className="absolute -top-10 right-0 text-foreground hover:text-accent transition">
           <X className="w-6 h-6" />
         </button>
 
-        <div className="relative w-full bg-black rounded-lg overflow-hidden" style={{ paddingBottom: "56.25%" }}>
+        <div className="relative w-full bg-background rounded-lg overflow-hidden" style={{ paddingBottom: "56.25%" }}>
           <iframe
             src={getEmbedUrl(videoUrl)}
             className="absolute top-0 left-0 w-full h-full"

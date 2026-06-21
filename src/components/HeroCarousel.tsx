@@ -152,11 +152,11 @@ export default function HeroCarousel() {
           />
           {i === currentIndex && (
             <div className="absolute bottom-0 left-0 right-0 p-3 md:p-5">
-              <h2 className="text-base md:text-xl font-bold text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
+              <h2 className="text-base md:text-xl font-bold text-foreground drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
                 {item.title}
               </h2>
               {item.subtitle && (
-                <p className="text-xs md:text-sm text-white/80 mt-0.5 drop-shadow-[0_1px_3px_rgba(0,0,0,0.8)]">
+                <p className="text-xs md:text-sm text-foreground/80 mt-0.5 drop-shadow-[0_1px_3px_rgba(0,0,0,0.8)]">
                   {item.subtitle}
                 </p>
               )}
@@ -169,13 +169,13 @@ export default function HeroCarousel() {
         <>
           <button
             onClick={() => goTo(-1)}
-            className="absolute left-2 top-1/2 -translate-y-1/2 z-10 w-8 h-8 rounded-full bg-black/40 flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition"
+            className="absolute left-2 top-1/2 -translate-y-1/2 z-10 w-8 h-8 rounded-full bg-background/40 flex items-center justify-center text-foreground opacity-0 group-hover:opacity-100 transition"
           >
             <ChevronLeft className="w-4 h-4" />
           </button>
           <button
             onClick={() => goTo(1)}
-            className="absolute right-2 top-1/2 -translate-y-1/2 z-10 w-8 h-8 rounded-full bg-black/40 flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition"
+            className="absolute right-2 top-1/2 -translate-y-1/2 z-10 w-8 h-8 rounded-full bg-background/40 flex items-center justify-center text-foreground opacity-0 group-hover:opacity-100 transition"
           >
             <ChevronRight className="w-4 h-4" />
           </button>
@@ -188,7 +188,7 @@ export default function HeroCarousel() {
                   setCurrentIndex(i);
                 }}
                 className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                  i === currentIndex ? "bg-white w-5" : "bg-white/40"
+                  i === currentIndex ? "bg-foreground w-5" : "bg-foreground/40"
                 }`}
               />
             ))}

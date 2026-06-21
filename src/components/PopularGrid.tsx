@@ -418,8 +418,8 @@ export default function PopularGrid({
                           S{ep.season || 1} E{ep.episodeNumber}
                         </div>
                         <div className="absolute bottom-0 left-0 right-0 p-1.5">
-                          <p className="text-[9px] md:text-[10px] text-white font-bold leading-tight truncate drop-shadow-lg">{series.title}</p>
-                          <p className="text-[7px] md:text-[8px] text-white/70 truncate">{ep.title}</p>
+                          <p className="text-[9px] md:text-[10px] text-foreground font-bold leading-tight truncate drop-shadow-lg">{series.title}</p>
+                          <p className="text-[7px] md:text-[8px] text-foreground/70 truncate">{ep.title}</p>
                         </div>
                       </div>
                     </div>
@@ -447,8 +447,8 @@ export default function PopularGrid({
                           S{ep.season || 1} E{ep.episodeNumber}
                         </div>
                         <div className="absolute bottom-0 left-0 right-0 p-1.5">
-                          <p className="text-[9px] md:text-[10px] text-white font-bold leading-tight truncate drop-shadow-lg">{series.title}</p>
-                          <p className="text-[7px] md:text-[8px] text-white/70 truncate">{ep.title}</p>
+                          <p className="text-[9px] md:text-[10px] text-foreground font-bold leading-tight truncate drop-shadow-lg">{series.title}</p>
+                          <p className="text-[7px] md:text-[8px] text-foreground/70 truncate">{ep.title}</p>
                         </div>
                       </div>
                     </div>
