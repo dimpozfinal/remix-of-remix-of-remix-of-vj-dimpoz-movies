@@ -16,11 +16,11 @@ type Step = "plans" | "phone" | "processing" | "success" | "failed";
 
 const PLAN_ICONS = [Clock, Zap, Star, Crown, Crown];
 const PLAN_COLORS = [
-  "from-blue-400 to-blue-600",
-  "from-emerald-400 to-emerald-600",
-  "from-amber-400 to-amber-600",
-  "from-purple-400 to-purple-600",
-  "from-rose-400 to-rose-600",
+  "from-red-500 to-red-700",
+  "from-red-600 to-red-800",
+  "from-red-500 to-red-700",
+  "from-red-600 to-red-800",
+  "from-red-500 to-red-700",
 ];
 
 export default function SubscriptionModal({ isOpen, onClose }: SubscriptionModalProps) {
@@ -279,8 +279,8 @@ export default function SubscriptionModal({ isOpen, onClose }: SubscriptionModal
         {step === "phone" && selectedPlan && (
           <div className="p-6 md:p-8">
             <div className="max-w-sm mx-auto text-center">
-              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary to-blue-400 flex items-center justify-center mx-auto mb-4 shadow-lg">
-                <Phone className="w-7 h-7 text-white" />
+              <div className="w-14 h-14 rounded-2xl bg-primary flex items-center justify-center mx-auto mb-4 shadow-lg">
+                <Phone className="w-7 h-7 text-primary-foreground" />
               </div>
               <h2 className="text-lg font-extrabold text-foreground mb-1 font-display">Enter Phone Number</h2>
               <p className="text-muted-foreground text-xs mb-1">
@@ -302,7 +302,7 @@ export default function SubscriptionModal({ isOpen, onClose }: SubscriptionModal
                 <button
                   onClick={handlePay}
                   disabled={phone.length < 10}
-                  className="w-full py-3 bg-gradient-to-r from-primary to-blue-400 hover:opacity-90 disabled:opacity-40 rounded-xl text-white text-sm font-bold transition shadow-md"
+                  className="w-full py-3 bg-primary hover:opacity-90 disabled:opacity-40 rounded-xl text-primary-foreground text-sm font-bold transition shadow-md"
                 >
                   Pay UGX {selectedPlan.price.toLocaleString()}
                 </button>
@@ -336,7 +336,7 @@ export default function SubscriptionModal({ isOpen, onClose }: SubscriptionModal
             </div>
             <h2 className="text-lg font-extrabold text-foreground mb-1 font-display">You're All Set! 🎉</h2>
             <p className="text-muted-foreground text-xs mb-5">Enjoy unlimited streaming on LUO CINEMA</p>
-            <button onClick={onClose} className="px-8 py-2.5 bg-gradient-to-r from-primary to-blue-400 rounded-xl text-white text-sm font-bold shadow-md hover:opacity-90 transition">
+            <button onClick={onClose} className="px-8 py-2.5 bg-primary rounded-xl text-primary-foreground text-sm font-bold shadow-md hover:opacity-90 transition">
               Start Watching
             </button>
           </div>
@@ -351,7 +351,7 @@ export default function SubscriptionModal({ isOpen, onClose }: SubscriptionModal
             </div>
             <h2 className="text-lg font-extrabold text-foreground mb-1 font-display">Payment Failed</h2>
             <p className="text-muted-foreground text-xs mb-5">{statusMsg}</p>
-            <button onClick={() => setStep("plans")} className="px-8 py-2.5 bg-gradient-to-r from-primary to-blue-400 rounded-xl text-white text-sm font-bold shadow-md hover:opacity-90 transition">
+            <button onClick={() => setStep("plans")} className="px-8 py-2.5 bg-primary rounded-xl text-primary-foreground text-sm font-bold shadow-md hover:opacity-90 transition">
               Try Again
             </button>
           </div>
