@@ -103,13 +103,13 @@
   border: 1px solid hsl(var(--border) / 0.2);
 }
 
-/* Gradient text utility - Arsenal Theme (Red → Gold) */
+/* Gradient text utility - LUO CINEMA (Red → White) */
 .gradient-text {
   @apply bg-clip-text text-transparent;
-  background-image: linear-gradient(to right, hsl(356 99% 50%), hsl(15 95% 55%), hsl(45 95% 55%));
+  background-image: linear-gradient(to right, hsl(357 94% 50%), hsl(0 0% 100%));
 }
 
-/* Sky blue theme floating elements */
+/* Netflix theme floating elements */
 @keyframes sky-float {
   0%, 100% { opacity: 0.25; transform: translateY(0) scale(1); }
   50% { opacity: 0.45; transform: translateY(-10px) scale(1.08); }
@@ -119,8 +119,8 @@
   50% { opacity: 0.5; transform: scale(1.15); }
 }
 @keyframes sky-glow-pulse {
-  0%, 100% { box-shadow: 0 0 15px hsl(356 99% 50% / 0.35), 0 0 30px hsl(356 99% 50% / 0.12); }
-  50% { box-shadow: 0 0 25px hsl(356 99% 50% / 0.55), 0 0 50px hsl(356 99% 50% / 0.22); }
+  0%, 100% { box-shadow: 0 0 15px hsl(357 94% 50% / 0.35), 0 0 30px hsl(357 94% 50% / 0.12); }
+  50% { box-shadow: 0 0 25px hsl(357 94% 50% / 0.55), 0 0 50px hsl(357 94% 50% / 0.22); }
 }
 .sky-float { animation: sky-float 5s ease-in-out infinite; }
 .sky-pulse { animation: sky-pulse 3s ease-in-out infinite; }
@@ -133,8 +133,8 @@
 }
 
 @keyframes glow {
-  0%, 100% { box-shadow: 0 0 20px hsl(356 99% 50% / 0.35); }
-  50% { box-shadow: 0 0 40px hsl(356 99% 50% / 0.65); }
+  0%, 100% { box-shadow: 0 0 20px hsl(357 94% 50% / 0.35); }
+  50% { box-shadow: 0 0 40px hsl(357 94% 50% / 0.65); }
 }
 
 @keyframes shimmer {
@@ -148,7 +148,7 @@
 }
 
 .animate-gradient-border {
-  background: linear-gradient(90deg, hsl(356 99% 47%), hsl(15 95% 55%), hsl(45 95% 55%), hsl(356 99% 47%));
+  background: linear-gradient(90deg, hsl(357 94% 46%), hsl(0 0% 100%), hsl(357 94% 46%));
   background-size: 300% 300%;
   animation: gradient-border 3s ease infinite;
 }
@@ -162,7 +162,7 @@
 }
 
 .animate-shimmer {
-  background: linear-gradient(90deg, transparent, hsl(356 99% 55% / 0.14), transparent);
+  background: linear-gradient(90deg, transparent, hsl(357 94% 55% / 0.14), transparent);
   background-size: 1000px 100%;
   animation: shimmer 2s infinite;
 }
