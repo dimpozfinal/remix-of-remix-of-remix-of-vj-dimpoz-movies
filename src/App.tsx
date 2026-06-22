@@ -22,7 +22,7 @@ import AdminUsersPage from "./pages/AdminUsersPage";
 import AdminWalletPage from "./pages/AdminWalletPage";
 import AdminActivityPage from "./pages/AdminActivityPage";
 import RouteTracker from "./components/RouteTracker";
-import ArsenalWatermark from "./components/ArsenalWatermark";
+
 
 const queryClient = new QueryClient();
 
@@ -35,7 +35,7 @@ const App = () => (
         <AuthProvider>
           <SubscriptionProvider>
             <RouteTracker />
-            <ArsenalWatermark />
+            
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/login" element={<LoginPage />} />
