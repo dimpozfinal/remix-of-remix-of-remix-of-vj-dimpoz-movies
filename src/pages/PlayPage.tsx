@@ -249,15 +249,16 @@ export default function PlayPage() {
       window.URL.revokeObjectURL(blobUrl);
       toast.success("Download complete!");
     } catch {
-      // Fallback: open in current tab with hidden anchor (keeps it on-site as much as possible)
+      // Fallback: open in a new tab so back button on the download page returns to the watch page
       const a = document.createElement("a");
       a.href = url;
-      a.download = getDownloadFilename();
+      a.target = "_blank";
       a.rel = "noopener noreferrer";
+      a.download = getDownloadFilename();
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
-      toast.success("Download started!");
+      toast.success("Download started in a new tab!");
     } finally {
       setDownloading(false);
     }
