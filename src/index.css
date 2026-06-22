@@ -54,25 +54,30 @@
   }
 
   body {
-    @apply bg-background text-foreground font-sans;
+    @apply text-foreground font-sans;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     font-family: 'Inter', system-ui, sans-serif;
     letter-spacing: 0.005em;
     line-height: 1.55;
+    min-height: 100vh;
+    background-color: #000000;
+    background-image:
+      radial-gradient(circle at center, #4A0000 0%, #1A0000 30%, #000000 70%);
+    background-attachment: fixed;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Archivo', 'Inter', system-ui, sans-serif;
-    letter-spacing: -0.025em;
-    font-weight: 800;
+    font-family: 'Bebas Neue', 'Archivo Black', 'Archivo', system-ui, sans-serif;
+    letter-spacing: 0.02em;
+    font-weight: 700;
     line-height: 1.1;
-    text-transform: none;
+    text-transform: uppercase;
   }
 
   h1, h2 {
-    font-family: 'Archivo Black', 'Archivo', system-ui, sans-serif;
-    letter-spacing: -0.03em;
+    font-family: 'Bebas Neue', 'Archivo Black', system-ui, sans-serif;
+    letter-spacing: 0.03em;
   }
 
   p, span, a, li, td, th, label {
@@ -103,10 +108,11 @@
   border: 1px solid hsl(var(--border) / 0.2);
 }
 
-/* Gradient text utility - LUO CINEMA (Red → White) */
+/* Solid brand red for LUO CINEMA logo text */
 .gradient-text {
-  @apply bg-clip-text text-transparent;
-  background-image: linear-gradient(to right, hsl(357 94% 50%), hsl(0 0% 100%));
+  color: #E50914;
+  font-family: 'Bebas Neue', 'Archivo Black', sans-serif;
+  letter-spacing: 0.04em;
 }
 
 /* Netflix theme floating elements */
