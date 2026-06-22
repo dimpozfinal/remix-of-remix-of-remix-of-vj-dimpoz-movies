@@ -67,26 +67,49 @@
     background-attachment: fixed;
   }
 
+  /* MovieBox-style typography: bold titles, clean sans-serif, no uppercase */
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Bebas Neue', 'Archivo Black', 'Archivo', system-ui, sans-serif;
-    letter-spacing: 0.02em;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
     font-weight: 700;
-    line-height: 1.1;
-    text-transform: uppercase;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    color: #fff;
+    text-transform: none;
   }
 
-  h1, h2 {
-    font-family: 'Bebas Neue', 'Archivo Black', system-ui, sans-serif;
-    letter-spacing: 0.03em;
+  h1 {
+    font-size: 32px;
+    font-weight: 800;
+  }
+
+  h2 {
+    font-size: 24px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+
+  h3 {
+    font-size: 20px;
+    font-weight: 700;
+  }
+
+  h4, h5, h6 {
+    font-weight: 600;
   }
 
   p, span, a, li, td, th, label {
-    letter-spacing: 0.005em;
+    letter-spacing: 0;
+    font-weight: 400;
+  }
+
+  .meta, time, small {
+    font-weight: 500;
+    color: hsl(var(--muted-foreground));
   }
 
   button {
-    font-family: 'Archivo', 'Inter', sans-serif;
-    letter-spacing: 0.015em;
+    font-family: 'Inter', system-ui, sans-serif;
+    letter-spacing: 0;
     font-weight: 600;
   }
 
