@@ -36,16 +36,7 @@ export default function MobileNav({ onFilterChange, activeFilter = "home", onSho
 
   return (
     <div className="fixed bottom-0 left-0 right-0 md:hidden z-40 pb-[env(safe-area-inset-bottom)]">
-      <div
-        className="flex items-center justify-around px-1 py-2 mx-3 mb-2 rounded-2xl"
-        style={{
-          background: "hsl(var(--card) / 0.9)",
-          backdropFilter: "blur(24px) saturate(200%)",
-          WebkitBackdropFilter: "blur(24px) saturate(200%)",
-          border: "1px solid hsl(var(--border) / 0.3)",
-          boxShadow: "0 -4px 30px hsl(var(--background) / 0.5)",
-        }}
-      >
+      <div className="flex items-center justify-around gap-1.5 px-2 py-2 mx-2 mb-2">
         {navItems.map((item) => {
           const Icon = item.icon;
           const isActive = activeFilter === item.filter;
@@ -53,27 +44,27 @@ export default function MobileNav({ onFilterChange, activeFilter = "home", onSho
             <button
               key={item.label}
               onClick={() => handleClick(item)}
-              className="relative flex flex-col items-center gap-0.5 flex-1 py-1 transition-all duration-200"
+              className="relative flex flex-col items-center gap-0.5 flex-1 py-2 px-1 rounded-2xl transition-all duration-200"
+              style={{
+                background: isActive
+                  ? "linear-gradient(135deg, hsl(var(--primary) / 0.22), hsl(var(--primary) / 0.08))"
+                  : "hsl(var(--card) / 0.85)",
+                backdropFilter: "blur(20px) saturate(180%)",
+                WebkitBackdropFilter: "blur(20px) saturate(180%)",
+                border: isActive
+                  ? "1px solid hsl(var(--primary) / 0.55)"
+                  : "1px solid hsl(var(--border) / 0.3)",
+                boxShadow: isActive
+                  ? "0 4px 16px hsl(var(--primary) / 0.3)"
+                  : "0 2px 10px hsl(var(--background) / 0.5)",
+              }}
             >
-              {isActive && (
-                <div
-                  className="absolute -top-1 left-1/2 -translate-x-1/2 w-6 h-[3px] rounded-full"
-                  style={{ background: "linear-gradient(90deg, hsl(var(--primary)), hsl(217 91% 70%))" }}
-                />
-              )}
-              <div
-                className={`flex items-center justify-center w-9 h-9 rounded-xl transition-all duration-200 ${
-                  isActive ? "scale-105" : ""
+              <Icon
+                className={`w-[18px] h-[18px] transition-all duration-200 ${
+                  isActive ? "text-primary" : "text-muted-foreground"
                 }`}
-                style={isActive ? { background: "hsl(var(--primary) / 0.12)" } : {}}
-              >
-                <Icon
-                  className={`w-[18px] h-[18px] transition-all duration-200 ${
-                    isActive ? "text-primary" : "text-muted-foreground"
-                  }`}
-                  strokeWidth={isActive ? 2.2 : 1.6}
-                />
-              </div>
+                strokeWidth={isActive ? 2.4 : 1.7}
+              />
               <span
                 className={`text-[9px] font-semibold transition-all duration-200 ${
                   isActive ? "text-primary" : "text-muted-foreground"
@@ -87,15 +78,21 @@ export default function MobileNav({ onFilterChange, activeFilter = "home", onSho
         {isAdmin && (
           <button
             onClick={() => navigate("/admin")}
-            className="relative flex flex-col items-center gap-0.5 flex-1 py-1"
+            className="relative flex flex-col items-center gap-0.5 flex-1 py-2 px-1 rounded-2xl"
+            style={{
+              background: "hsl(var(--card) / 0.85)",
+              backdropFilter: "blur(20px) saturate(180%)",
+              WebkitBackdropFilter: "blur(20px) saturate(180%)",
+              border: "1px solid hsl(var(--border) / 0.3)",
+              boxShadow: "0 2px 10px hsl(var(--background) / 0.5)",
+            }}
           >
-            <div className="flex items-center justify-center w-9 h-9 rounded-xl">
-              <Shield className="w-[18px] h-[18px] text-muted-foreground" strokeWidth={1.6} />
-            </div>
+            <Shield className="w-[18px] h-[18px] text-muted-foreground" strokeWidth={1.7} />
             <span className="text-[9px] font-semibold text-muted-foreground">Admin</span>
           </button>
         )}
       </div>
     </div>
+
   );
 }
