@@ -249,16 +249,15 @@ export default function PlayPage() {
       window.URL.revokeObjectURL(blobUrl);
       toast.success("Download complete!");
     } catch {
-      // Fallback: open in a new tab so back button on the download page returns to the watch page
-      const a = document.createElement("a");
-      a.href = url;
-      a.target = "_blank";
-      a.rel = "noopener noreferrer";
-      a.download = getDownloadFilename();
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      toast.success("Download started in a new tab!");
+      // Fallback: trigger download via hidden iframe so the user stays on the watch page
+      const existing = document.getElementById("luo-download-frame");
+      if (existing) existing.remove();
+      const iframe = document.createElement("iframe");
+      iframe.id = "luo-download-frame";
+      iframe.style.display = "none";
+      iframe.src = url;
+      document.body.appendChild(iframe);
+      toast.success("Download started — you can keep watching!");
     } finally {
       setDownloading(false);
     }
