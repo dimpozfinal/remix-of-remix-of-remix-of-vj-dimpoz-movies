@@ -138,7 +138,7 @@ export default function SubscribePage() {
 
             <div className="mx-6 border-t border-white/10" />
 
-            <div className="p-5 grid grid-cols-2 gap-4">
+            <div className="p-5 grid grid-cols-2 sm:grid-cols-3 gap-4">
               {VISIBLE_PLANS.map((plan) => {
                 const isPopular = plan.id === "1week";
                 const Icon = PLAN_ICONS[plan.id] || Star;
