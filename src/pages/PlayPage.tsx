@@ -469,6 +469,45 @@ export default function PlayPage() {
           </div>
         </div>
       )}
+
+      {/* Download popin — Google Drive consent inside the watch page */}
+      {downloadUrl && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4"
+          onClick={() => setDownloadUrl(null)}
+        >
+          <div
+            className="relative w-full max-w-2xl h-[80vh] bg-card rounded-xl border border-border shadow-2xl overflow-hidden flex flex-col"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between px-4 py-3 border-b border-border bg-background/60">
+              <div className="flex items-center gap-2">
+                <Download className="w-4 h-4 text-primary" />
+                <h3 className="text-sm font-bold text-foreground truncate">
+                  Downloading: {getDownloadFilename()}
+                </h3>
+              </div>
+              <button
+                onClick={() => setDownloadUrl(null)}
+                className="w-8 h-8 rounded-full bg-secondary hover:bg-muted flex items-center justify-center text-foreground transition"
+                title="Close"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+            <iframe
+              src={downloadUrl}
+              title="Google Drive download"
+              className="flex-1 w-full bg-white"
+              style={{ border: "none" }}
+              allow="downloads"
+            />
+            <div className="px-4 py-2 border-t border-border bg-background/60 text-[11px] text-muted-foreground text-center">
+              If the download doesn't start automatically, tap the Google Drive download button above.
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
