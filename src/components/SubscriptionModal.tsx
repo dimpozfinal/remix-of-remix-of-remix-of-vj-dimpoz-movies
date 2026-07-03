@@ -19,6 +19,8 @@ const PLAN_ICONS: Record<string, typeof Clock> = {
   "3days": Zap,
   "1week": Star,
   "2weeks": Crown,
+  "1month": Star,
+  "6month": Calendar,
 };
 
 const FEATURES = [
@@ -30,8 +32,7 @@ const FEATURES = [
   "Early access to new releases",
 ];
 
-// Keep only the first 4 plans (drop the last two)
-const VISIBLE_PLANS = SUBSCRIPTION_PLANS.slice(0, 4);
+const VISIBLE_PLANS = SUBSCRIPTION_PLANS;
 
 export default function SubscriptionModal({ isOpen, onClose }: SubscriptionModalProps) {
   const { user } = useAuth();
