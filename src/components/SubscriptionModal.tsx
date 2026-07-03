@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { X, Check, Loader2, Phone, Crown, Zap, Star, Clock } from "lucide-react";
+import { X, Check, Loader2, Phone, Crown, Zap, Star, Clock, Calendar } from "lucide-react";
 import { SUBSCRIPTION_PLANS, type SubscriptionPlan } from "@/lib/subscription-context";
 import { useSubscription } from "@/lib/subscription-context";
 import { useAuth } from "@/lib/auth-context";
@@ -19,6 +19,8 @@ const PLAN_ICONS: Record<string, typeof Clock> = {
   "3days": Zap,
   "1week": Star,
   "2weeks": Crown,
+  "1month": Star,
+  "6month": Calendar,
 };
 
 const FEATURES = [
@@ -30,8 +32,7 @@ const FEATURES = [
   "Early access to new releases",
 ];
 
-// Keep only the first 4 plans (drop the last two)
-const VISIBLE_PLANS = SUBSCRIPTION_PLANS.slice(0, 4);
+const VISIBLE_PLANS = SUBSCRIPTION_PLANS;
 
 export default function SubscriptionModal({ isOpen, onClose }: SubscriptionModalProps) {
   const { user } = useAuth();
@@ -282,7 +283,7 @@ function PlansView({ onClose, onSelect }: { onClose: () => void; onSelect: (p: S
 
       <div className="mx-6 border-t border-white/10" />
 
-      <div className="p-5 grid grid-cols-2 gap-4">
+      <div className="p-5 grid grid-cols-2 sm:grid-cols-3 gap-4">
         {VISIBLE_PLANS.map((plan) => {
           const isPopular = plan.id === "1week";
           const Icon = PLAN_ICONS[plan.id] || Star;
