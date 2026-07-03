@@ -17,6 +17,7 @@ export const SUBSCRIPTION_PLANS: SubscriptionPlan[] = [
   { id: "1week", name: "1 Week Pass", duration: "1 Week", price: 12000, days: 7 },
   { id: "2weeks", name: "2 Weeks Pass", duration: "2 Weeks", price: 17000, days: 14 },
   { id: "1month", name: "1 Month Pass", duration: "1 Month", price: 30000, days: 30 },
+  { id: "6month", name: "6 Months Pass", duration: "6 Months", price: 150000, days: 180 },
 ];
 
 interface Subscription {
