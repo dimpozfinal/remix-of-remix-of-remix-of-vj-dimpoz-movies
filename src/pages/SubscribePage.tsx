@@ -1,4 +1,4 @@
-import { Check, X, Clock, Zap, Star, Crown, Loader2, Phone } from "lucide-react";
+import { Check, X, Clock, Zap, Star, Crown, Loader2, Phone, Calendar } from "lucide-react";
 import { SUBSCRIPTION_PLANS, type SubscriptionPlan, useSubscription } from "@/lib/subscription-context";
 import { useNavigate } from "react-router-dom";
 import { useRef, useState } from "react";
