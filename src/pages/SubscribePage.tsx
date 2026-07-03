@@ -12,6 +12,8 @@ const PLAN_ICONS: Record<string, typeof Clock> = {
   "3days": Zap,
   "1week": Star,
   "2weeks": Crown,
+  "1month": Star,
+  "6month": Calendar,
 };
 
 const FEATURES = [
@@ -23,7 +25,7 @@ const FEATURES = [
   "Early access to new releases",
 ];
 
-const VISIBLE_PLANS = SUBSCRIPTION_PLANS.slice(0, 4);
+const VISIBLE_PLANS = SUBSCRIPTION_PLANS;
 
 type Step = "plans" | "phone" | "processing" | "success" | "failed";
 
