@@ -4,7 +4,7 @@ import { database } from "@/lib/firebase";
 import { ref, get } from "firebase/database";
 import { useAuth } from "@/lib/auth-context";
 import { useSubscription } from "@/lib/subscription-context";
-import { Star, Download, Share2, ArrowLeft, Play, Loader2 } from "lucide-react";
+import { Star, Download, Share2, ArrowLeft, Play, Loader2, X } from "lucide-react";
 import { toast } from "sonner";
 import { canDownload, recordDownload, getLimitInfo } from "@/lib/download-limits";
 
@@ -53,6 +53,7 @@ export default function PlayPage() {
   const [content, setContent] = useState<ContentData | null>(null);
   const [loading, setLoading] = useState(true);
   const [downloading, setDownloading] = useState(false);
+  const [downloadUrl, setDownloadUrl] = useState<string | null>(null);
   const [currentEpisode, setCurrentEpisode] = useState<number>(epNum ? parseInt(epNum) : 1);
   const [currentSeason, setCurrentSeason] = useState<number>(1);
   const [related, setRelated] = useState<RelatedItem[]>([]);
@@ -218,49 +219,20 @@ export default function PlayPage() {
       recordDownload(currentPlanId, contentKey);
       const info = getLimitInfo(currentPlanId);
       if (info) {
-        const remaining = Math.max(0, info.max - (info.used + (check.info?.used === info.used ? 1 : 0)));
+        const remaining = Math.max(0, info.max - info.used - 1);
         toast.success(
           info.scope === "daily"
-            ? `Download started. ${remaining} downloads left today.`
-            : `Download started. ${remaining} downloads left on this plan.`
+            ? `${remaining} downloads left today.`
+            : `${remaining} downloads left on this plan.`
         );
       }
     }
 
     const url = getDownloadUrl(getStreamUrl());
     setDownloading(true);
-    toast.info("Preparing download...", { duration: 3000 });
-
-    try {
-      const response = await fetch(url, { method: "GET" });
-      if (!response.ok) throw new Error("Download failed");
-
-      const blob = await response.blob();
-      const blobUrl = window.URL.createObjectURL(blob);
-
-      const a = document.createElement("a");
-      a.href = blobUrl;
-      a.download = getDownloadFilename();
-      a.style.display = "none";
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-
-      window.URL.revokeObjectURL(blobUrl);
-      toast.success("Download complete!");
-    } catch {
-      // Fallback: trigger download via hidden iframe so the user stays on the watch page
-      const existing = document.getElementById("luo-download-frame");
-      if (existing) existing.remove();
-      const iframe = document.createElement("iframe");
-      iframe.id = "luo-download-frame";
-      iframe.style.display = "none";
-      iframe.src = url;
-      document.body.appendChild(iframe);
-      toast.success("Download started — you can keep watching!");
-    } finally {
-      setDownloading(false);
-    }
+    // Open the Google Drive consent/download flow as an in-page popin
+    setDownloadUrl(url);
+    setDownloading(false);
   };
 
   const handleShare = async () => {
@@ -494,6 +466,45 @@ export default function PlayPage() {
                 </p>
               </button>
             ))}
+          </div>
+        </div>
+      )}
+
+      {/* Download popin — Google Drive consent inside the watch page */}
+      {downloadUrl && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4"
+          onClick={() => setDownloadUrl(null)}
+        >
+          <div
+            className="relative w-full max-w-2xl h-[80vh] bg-card rounded-xl border border-border shadow-2xl overflow-hidden flex flex-col"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between px-4 py-3 border-b border-border bg-background/60">
+              <div className="flex items-center gap-2">
+                <Download className="w-4 h-4 text-primary" />
+                <h3 className="text-sm font-bold text-foreground truncate">
+                  Downloading: {getDownloadFilename()}
+                </h3>
+              </div>
+              <button
+                onClick={() => setDownloadUrl(null)}
+                className="w-8 h-8 rounded-full bg-secondary hover:bg-muted flex items-center justify-center text-foreground transition"
+                title="Close"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+            <iframe
+              src={downloadUrl}
+              title="Google Drive download"
+              className="flex-1 w-full bg-white"
+              style={{ border: "none" }}
+              allow="downloads"
+            />
+            <div className="px-4 py-2 border-t border-border bg-background/60 text-[11px] text-muted-foreground text-center">
+              If the download doesn't start automatically, tap the Google Drive download button above.
+            </div>
           </div>
         </div>
       )}
