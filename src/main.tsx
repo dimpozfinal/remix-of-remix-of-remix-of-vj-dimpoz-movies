@@ -7,3 +7,12 @@ import { enableDevProtection } from "./lib/dev-protection";
 enableDevProtection();
 
 createRoot(document.getElementById("root")!).render(<App />);
+
+// Hide the initial splash once React has mounted
+requestAnimationFrame(() => {
+  // @ts-ignore
+  if (typeof window !== "undefined" && typeof window.__hideSplash === "function") {
+    // @ts-ignore
+    window.__hideSplash();
+  }
+});
