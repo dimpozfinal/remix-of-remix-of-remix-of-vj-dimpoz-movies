@@ -3,9 +3,24 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#141414" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=Archivo+Black&family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://dinpoz-movies-default-rtdb.firebaseio.com" crossorigin>
+    <link rel="preconnect" href="https://firebasestorage.googleapis.com" crossorigin>
+    <link rel="preconnect" href="https://www.image2url.com" crossorigin>
+    <link rel="preconnect" href="https://image2url.com" crossorigin>
+    <link rel="dns-prefetch" href="https://icep.ug">
+    <!-- Non-blocking Google Fonts load with fallback -->
+    <link
+      rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=Archivo+Black&family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap"
+      onload="this.rel='stylesheet'"
+    />
+    <noscript>
+      <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=Archivo+Black&family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    </noscript>
     <title>LUO CINEMA - The Home of Luo Entertainment</title>
     <meta name="description" content="Stream Luo movies, series, music and animation. LUO CINEMA - The home of Luo entertainment.">
     <meta name="author" content="LUO CINEMA" />
@@ -55,6 +70,32 @@
 </head>
 
   <body>
+    <style>
+      #initial-splash{position:fixed;inset:0;background:#141414;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;color:#fff;transition:opacity .3s ease}
+      #initial-splash.hide{opacity:0;pointer-events:none}
+      #initial-splash .brand{font-weight:900;letter-spacing:.15em;font-size:22px;color:#E50914;margin-bottom:18px}
+      #initial-splash .ring{width:44px;height:44px;border:3px solid rgba(255,255,255,.15);border-top-color:#E50914;border-radius:50%;animation:sp 1s linear infinite}
+      #initial-splash .msg{margin-top:16px;font-size:12px;color:#B3B3B3;text-align:center;max-width:280px;padding:0 20px;min-height:16px}
+      @keyframes sp{to{transform:rotate(360deg)}}
+    </style>
+    <div id="initial-splash" role="status" aria-label="Loading LUO CINEMA">
+      <div class="brand">LUO CINEMA</div>
+      <div class="ring"></div>
+      <div class="msg" id="initial-splash-msg"></div>
+    </div>
+    <script>
+      // Show a helpful message if the app is slow to boot (weak WiFi/3G)
+      (function(){
+        var msg=document.getElementById('initial-splash-msg');
+        var t1=setTimeout(function(){if(msg)msg.textContent='Still loading… check your connection.';},6000);
+        var t2=setTimeout(function(){if(msg)msg.innerHTML='Slow connection detected. <a href="javascript:location.reload()" style="color:#E50914;text-decoration:underline">Tap to retry</a>.';},15000);
+        window.__hideSplash=function(){
+          clearTimeout(t1);clearTimeout(t2);
+          var el=document.getElementById('initial-splash');
+          if(!el)return;el.classList.add('hide');setTimeout(function(){el&&el.remove();},350);
+        };
+      })();
+    </script>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
