@@ -9,7 +9,7 @@ export default function Logo({ size = "md" }: { size?: "sm" | "md" | "lg" | "xl"
   return (
     <div className="flex items-center gap-2">
       <img
-        src="/logo.png"
+        src="https://i.postimg.cc/Fs2nssw-m/logo.png"
         alt="LUO CINEMA"
         className={size === "sm" ? "w-8 h-8" : size === "md" ? "w-10 h-10" : size === "lg" ? "w-12 h-12" : "w-16 h-16"}
       />
