@@ -44,7 +44,7 @@ export default function TopHeader({ onSearch }: TopHeaderProps) {
       {/* Logo */}
       <div className="flex items-center gap-2 flex-shrink-0">
         <img
-          src="https://i.postimg.cc/Fs2nssw-m/logo.png"
+          src="/logo.png"
           alt="LUO CINEMA"
           className="w-8 h-8 drop-shadow-md"
         />

@@ -41,7 +41,7 @@ export default function Sidebar({ onFilterChange, activeFilter, onShowSubscripti
       <div className="mb-6 mt-1">
         <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-primary to-[hsl(0_30%_25%)] flex items-center justify-center shadow-lg shadow-primary/20 relative">
           <img
-            src="https://i.postimg.cc/Fs2nssw-m/logo.png"
+            src="/logo.png"
             alt="Logo"
             className="w-6 h-6"
           />
