@@ -35,8 +35,18 @@ export default function MobileNav({ onFilterChange, activeFilter = "home", onSho
   };
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 md:hidden z-40 pb-[env(safe-area-inset-bottom)]">
-      <div className="flex items-center justify-around gap-1.5 px-2 py-2 mx-2 mb-2">
+    <div className="fixed bottom-3 left-0 right-0 md:hidden z-40 pb-[env(safe-area-inset-bottom)] px-3">
+      <div
+        className="relative flex items-center justify-between gap-0.5 px-2 py-1.5 rounded-full mx-auto max-w-md"
+        style={{
+          background: "linear-gradient(180deg, hsl(0 0% 12% / 0.85), hsl(0 0% 6% / 0.9))",
+          backdropFilter: "blur(24px) saturate(180%)",
+          WebkitBackdropFilter: "blur(24px) saturate(180%)",
+          border: "1px solid hsl(var(--primary) / 0.18)",
+          boxShadow:
+            "0 10px 40px hsl(0 0% 0% / 0.5), 0 0 0 1px hsl(0 0% 100% / 0.03) inset, 0 -1px 0 hsl(0 0% 100% / 0.05) inset",
+        }}
+      >
         {navItems.map((item) => {
           const Icon = item.icon;
           const isActive = activeFilter === item.filter;
@@ -44,30 +54,27 @@ export default function MobileNav({ onFilterChange, activeFilter = "home", onSho
             <button
               key={item.label}
               onClick={() => handleClick(item)}
-              className="relative flex flex-col items-center gap-0.5 flex-1 py-2 px-1 rounded-2xl transition-all duration-200"
-              style={{
-                background: isActive
-                  ? "linear-gradient(135deg, hsl(var(--primary) / 0.22), hsl(var(--primary) / 0.08))"
-                  : "hsl(var(--card) / 0.85)",
-                backdropFilter: "blur(20px) saturate(180%)",
-                WebkitBackdropFilter: "blur(20px) saturate(180%)",
-                border: isActive
-                  ? "1px solid hsl(var(--primary) / 0.55)"
-                  : "1px solid hsl(var(--border) / 0.3)",
-                boxShadow: isActive
-                  ? "0 4px 16px hsl(var(--primary) / 0.3)"
-                  : "0 2px 10px hsl(var(--background) / 0.5)",
-              }}
+              className="relative flex flex-col items-center justify-center gap-0.5 flex-1 py-2 rounded-full transition-all duration-300"
+              style={
+                isActive
+                  ? {
+                      background:
+                        "linear-gradient(180deg, hsl(var(--primary) / 0.95), hsl(var(--primary) / 0.75))",
+                      boxShadow:
+                        "0 4px 14px hsl(var(--primary) / 0.5), 0 0 0 1px hsl(var(--primary) / 0.6) inset",
+                    }
+                  : undefined
+              }
             >
               <Icon
                 className={`w-[18px] h-[18px] transition-all duration-200 ${
-                  isActive ? "text-primary" : "text-muted-foreground"
+                  isActive ? "text-primary-foreground" : "text-muted-foreground"
                 }`}
-                strokeWidth={isActive ? 2.4 : 1.7}
+                strokeWidth={isActive ? 2.6 : 1.8}
               />
               <span
-                className={`text-[9px] font-semibold transition-all duration-200 ${
-                  isActive ? "text-primary" : "text-muted-foreground"
+                className={`text-[9px] font-bold tracking-wide transition-all duration-200 ${
+                  isActive ? "text-primary-foreground" : "text-muted-foreground"
                 }`}
               >
                 {item.label}
@@ -78,21 +85,13 @@ export default function MobileNav({ onFilterChange, activeFilter = "home", onSho
         {isAdmin && (
           <button
             onClick={() => navigate("/admin")}
-            className="relative flex flex-col items-center gap-0.5 flex-1 py-2 px-1 rounded-2xl"
-            style={{
-              background: "hsl(var(--card) / 0.85)",
-              backdropFilter: "blur(20px) saturate(180%)",
-              WebkitBackdropFilter: "blur(20px) saturate(180%)",
-              border: "1px solid hsl(var(--border) / 0.3)",
-              boxShadow: "0 2px 10px hsl(var(--background) / 0.5)",
-            }}
+            className="relative flex flex-col items-center justify-center gap-0.5 flex-1 py-2 rounded-full"
           >
-            <Shield className="w-[18px] h-[18px] text-muted-foreground" strokeWidth={1.7} />
-            <span className="text-[9px] font-semibold text-muted-foreground">Admin</span>
+            <Shield className="w-[18px] h-[18px] text-muted-foreground" strokeWidth={1.8} />
+            <span className="text-[9px] font-bold tracking-wide text-muted-foreground">Admin</span>
           </button>
         )}
       </div>
     </div>
-
   );
 }
