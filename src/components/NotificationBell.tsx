@@ -163,14 +163,17 @@ export default function NotificationBell() {
     <div className="relative" ref={containerRef}>
       <button
         onClick={handleOpen}
-        className="relative flex items-center justify-center w-8 h-8 rounded-xl hover:bg-secondary/80 transition"
+        className={`relative flex items-center justify-center w-8 h-8 rounded-xl hover:bg-secondary/80 transition ${unreadCount > 0 ? "wa-bounce" : ""}`}
         aria-label="Notifications"
       >
         <Bell className="w-4.5 h-4.5 text-foreground" />
         {unreadCount > 0 && (
-          <span className="absolute -top-0.5 -right-0.5 min-w-[16px] h-4 px-1 bg-destructive text-destructive-foreground text-[9px] font-bold rounded-full flex items-center justify-center animate-pulse">
-            {unreadCount > 9 ? "9+" : unreadCount}
-          </span>
+          <>
+            <span className="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px] px-1 bg-[#25D366] text-white text-[10px] font-bold rounded-full flex items-center justify-center wa-pop shadow-[0_0_12px_rgba(37,211,102,0.9)] ring-2 ring-background z-10">
+              {unreadCount > 9 ? "9+" : unreadCount}
+            </span>
+            <span className="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px] rounded-full bg-[#25D366]" style={{ animation: "wa-ping-green 1.5s cubic-bezier(0, 0, 0.2, 1) infinite" }} />
+          </>
         )}
       </button>
 
