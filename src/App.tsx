@@ -21,6 +21,7 @@ import AdminCarouselPage from "./pages/AdminCarouselPage";
 import AdminUsersPage from "./pages/AdminUsersPage";
 import AdminWalletPage from "./pages/AdminWalletPage";
 import AdminActivityPage from "./pages/AdminActivityPage";
+import AdminAgentsPage from "./pages/AdminAgentsPage";
 import RouteTracker from "./components/RouteTracker";
 
 
@@ -52,6 +53,7 @@ const App = () => (
               <Route path="/admin/users" element={<AdminUsersPage />} />
               <Route path="/admin/wallet" element={<AdminWalletPage />} />
               <Route path="/admin/activity" element={<AdminActivityPage />} />
+              <Route path="/admin/agents" element={<AdminAgentsPage />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </SubscriptionProvider>
