@@ -373,6 +373,9 @@ export default function PopularGrid({
               const diff = new Date(tsB).getTime() - new Date(tsA).getTime();
               if (diff !== 0) return diff;
             }
+            // Prefer newer season, then higher episode number (surfaces newly added seasons)
+            const seasonDiff = (b.season || 1) - (a.season || 1);
+            if (seasonDiff !== 0) return seasonDiff;
             return b.episodeNumber - a.episodeNumber;
           });
           return sorted.length > 0 ? { series, ep: sorted[0] } : null;
