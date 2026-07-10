@@ -74,6 +74,8 @@ const Index = () => {
       />
 
       <NewContentToast />
+      <AgentBanner onUpgrade={() => setShowSubscriptionModal(true)} />
+
     </div>
   );
 };
