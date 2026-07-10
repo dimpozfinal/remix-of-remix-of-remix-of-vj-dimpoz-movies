@@ -8,6 +8,7 @@ import CategoriesRow from "@/components/CategoriesRow";
 import AuthModal from "@/components/AuthModal";
 import SubscriptionModal from "@/components/SubscriptionModal";
 import NewContentToast from "@/components/NewContentToast";
+import AgentBanner from "@/components/AgentBanner";
 import EasterBanner from "@/components/EasterBanner";
 import { useAuth } from "@/lib/auth-context";
 import { trackNavigation } from "@/lib/track-navigation";
@@ -73,6 +74,8 @@ const Index = () => {
       />
 
       <NewContentToast />
+      <AgentBanner onUpgrade={() => setShowSubscriptionModal(true)} />
+
     </div>
   );
 };
