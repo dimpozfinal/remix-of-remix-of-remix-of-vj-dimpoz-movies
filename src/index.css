@@ -116,7 +116,7 @@
   @keyframes wa-bounce {
     0%, 100% { transform: scale(1); }
     25% { transform: scale(1.18) rotate(-8deg); }
-    50% { transform: scale(1); rotate(6deg); }
+    50% { transform: scale(1) rotate(6deg); }
     75% { transform: scale(1.1) rotate(-3deg); }
   }
   @keyframes wa-ping-green {
