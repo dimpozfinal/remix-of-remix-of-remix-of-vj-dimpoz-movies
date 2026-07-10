@@ -67,6 +67,65 @@
     background-attachment: fixed;
   }
 
+  /* Glowing green border frame around the entire viewport */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 9999;
+    border: 2px solid hsl(140 75% 60% / 0.55);
+    border-radius: 14px;
+    box-shadow:
+      0 0 12px hsl(140 80% 55% / 0.55),
+      0 0 28px hsl(140 80% 55% / 0.35),
+      0 0 60px hsl(140 80% 55% / 0.25),
+      inset 0 0 12px hsl(140 80% 55% / 0.35),
+      inset 0 0 40px hsl(140 80% 55% / 0.15);
+    animation: frame-glow 3.2s ease-in-out infinite;
+  }
+
+  @keyframes frame-glow {
+    0%, 100% {
+      border-color: hsl(140 75% 60% / 0.5);
+      box-shadow:
+        0 0 12px hsl(140 80% 55% / 0.5),
+        0 0 28px hsl(140 80% 55% / 0.3),
+        0 0 60px hsl(140 80% 55% / 0.2),
+        inset 0 0 12px hsl(140 80% 55% / 0.3),
+        inset 0 0 40px hsl(140 80% 55% / 0.12);
+    }
+    50% {
+      border-color: hsl(140 80% 65% / 0.9);
+      box-shadow:
+        0 0 20px hsl(140 85% 60% / 0.85),
+        0 0 45px hsl(140 85% 60% / 0.55),
+        0 0 90px hsl(140 85% 60% / 0.4),
+        inset 0 0 20px hsl(140 85% 60% / 0.55),
+        inset 0 0 60px hsl(140 85% 60% / 0.25);
+    }
+  }
+
+  /* WhatsApp-style notification badge pop */
+  @keyframes wa-pop {
+    0% { transform: scale(0.5); opacity: 0; }
+    55% { transform: scale(1.25); opacity: 1; }
+    75% { transform: scale(0.92); }
+    100% { transform: scale(1); opacity: 1; }
+  }
+  @keyframes wa-bounce {
+    0%, 100% { transform: scale(1); }
+    25% { transform: scale(1.18) rotate(-8deg); }
+    50% { transform: scale(1); rotate(6deg); }
+    75% { transform: scale(1.1) rotate(-3deg); }
+  }
+  @keyframes wa-ping-green {
+    0% { transform: scale(0.8); opacity: 0.75; }
+    100% { transform: scale(2.4); opacity: 0; }
+  }
+  .wa-pop { animation: wa-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
+  .wa-bounce { animation: wa-bounce 1.4s ease-in-out infinite; transform-origin: top right; }
+
   /* MovieBox-style typography: bold titles, clean sans-serif, no uppercase */
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
