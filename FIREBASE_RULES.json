@@ -390,7 +390,89 @@
     "notifications": {
       ".read": "auth != null",
       ".write": "auth != null && (auth.token.email === 'arthurdimpoz@gmail.com')",
-      ".indexOn": ["timestamp", "userId", "read"]
+      ".indexOn": ["timestamp", "userId", "read", "createdAt", "type"],
+      "$notificationId": {
+        ".validate": "newData.hasChildren(['title', 'timestamp'])",
+        "title": { ".validate": "newData.isString() && newData.val().length > 0" },
+        "message": { ".validate": "newData.isString()" },
+        "body": { ".validate": "newData.isString()" },
+        "image": { ".validate": "newData.isString()" },
+        "link": { ".validate": "newData.isString()" },
+        "type": { ".validate": "newData.isString()" },
+        "userId": { ".validate": "newData.isString()" },
+        "target": { ".validate": "newData.isString()" },
+        "timestamp": { ".validate": "newData.isString() || newData.isNumber()" },
+        "createdAt": { ".validate": "newData.isString() || newData.isNumber()" },
+        "expiresAt": { ".validate": "newData.isString() || newData.isNumber()" },
+        "read": { ".validate": "newData.isBoolean() || newData.hasChildren()" },
+        "readBy": {
+          "$uid": {
+            ".write": "auth != null && auth.uid === $uid",
+            ".validate": "newData.isBoolean() || newData.isNumber() || newData.isString()"
+          }
+        }
+      }
+    },
+    "content_updates": {
+      ".read": true,
+      ".write": "auth != null && (auth.token.email === 'arthurdimpoz@gmail.com')",
+      ".indexOn": ["createdAt", "updatedAt", "type", "contentId"],
+      "$updateId": {
+        ".validate": "newData.hasChildren(['type', 'contentId', 'createdAt'])",
+        "type": { ".validate": "newData.isString()" },
+        "contentId": { ".validate": "newData.isString()" },
+        "title": { ".validate": "newData.isString()" },
+        "image": { ".validate": "newData.isString()" },
+        "message": { ".validate": "newData.isString()" },
+        "createdAt": { ".validate": "newData.isString() || newData.isNumber()" },
+        "updatedAt": { ".validate": "newData.isString() || newData.isNumber()" }
+      }
+    },
+    "user_notifications": {
+      ".read": "auth != null && (auth.token.email === 'arthurdimpoz@gmail.com')",
+      ".indexOn": ["timestamp"],
+      "$uid": {
+        ".read": "auth != null && (auth.uid === $uid || auth.token.email === 'arthurdimpoz@gmail.com')",
+        ".write": "auth != null && (auth.uid === $uid || auth.token.email === 'arthurdimpoz@gmail.com')",
+        ".indexOn": ["timestamp", "read", "createdAt"],
+        "$notificationId": {
+          "title": { ".validate": "newData.isString()" },
+          "message": { ".validate": "newData.isString()" },
+          "body": { ".validate": "newData.isString()" },
+          "image": { ".validate": "newData.isString()" },
+          "link": { ".validate": "newData.isString()" },
+          "type": { ".validate": "newData.isString()" },
+          "read": { ".validate": "newData.isBoolean()" },
+          "timestamp": { ".validate": "newData.isString() || newData.isNumber()" },
+          "createdAt": { ".validate": "newData.isString() || newData.isNumber()" }
+        }
+      }
+    },
+    "push_subscriptions": {
+      ".read": "auth != null && (auth.token.email === 'arthurdimpoz@gmail.com')",
+      ".write": "auth != null && (auth.token.email === 'arthurdimpoz@gmail.com')",
+      ".indexOn": ["userId", "createdAt"],
+      "$uid": {
+        ".read": "auth != null && (auth.uid === $uid || auth.token.email === 'arthurdimpoz@gmail.com')",
+        ".write": "auth != null && (auth.uid === $uid || auth.token.email === 'arthurdimpoz@gmail.com')",
+        "$deviceId": {
+          ".validate": "newData.hasChildren(['token']) || newData.hasChildren(['endpoint'])",
+          "token": { ".validate": "newData.isString()" },
+          "endpoint": { ".validate": "newData.isString()" },
+          "userAgent": { ".validate": "newData.isString()" },
+          "platform": { ".validate": "newData.isString()" },
+          "createdAt": { ".validate": "newData.isString() || newData.isNumber()" },
+          "lastSeen": { ".validate": "newData.isString() || newData.isNumber()" }
+        }
+      }
+    },
+    "fcm_tokens": {
+      ".read": "auth != null && (auth.token.email === 'arthurdimpoz@gmail.com')",
+      ".indexOn": ["userId", "updatedAt"],
+      "$uid": {
+        ".read": "auth != null && (auth.uid === $uid || auth.token.email === 'arthurdimpoz@gmail.com')",
+        ".write": "auth != null && (auth.uid === $uid || auth.token.email === 'arthurdimpoz@gmail.com')"
+      }
     },
     "analytics": {
       ".read": "auth != null && (auth.token.email === 'arthurdimpoz@gmail.com')",
