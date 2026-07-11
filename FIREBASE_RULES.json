@@ -396,6 +396,22 @@
       ".read": "auth != null && (auth.token.email === 'arthurdimpoz@gmail.com')",
       ".write": "auth != null",
       ".indexOn": ["timestamp", "event", "userId"]
+    },
+    "agent_profiles": {
+      ".read": "auth != null && (auth.token.email === 'arthurdimpoz@gmail.com')",
+      ".indexOn": ["submittedAt", "planId"],
+      "$uid": {
+        ".read": "auth != null && (auth.uid === $uid || auth.token.email === 'arthurdimpoz@gmail.com')",
+        ".write": "auth != null && auth.uid === $uid",
+        ".validate": "newData.hasChildren(['userId', 'submittedAt'])",
+        "userId": { ".validate": "newData.isString() && newData.val() === $uid" },
+        "email": { ".validate": "newData.isString()" },
+        "fullName": { ".validate": "newData.isString()" },
+        "location": { ".validate": "newData.isString()" },
+        "businessName": { ".validate": "newData.isString()" },
+        "planId": { ".validate": "newData.isString()" },
+        "submittedAt": { ".validate": "newData.isString()" }
+      }
     }
   }
 }
